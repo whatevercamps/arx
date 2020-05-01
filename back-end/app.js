@@ -1,3 +1,6 @@
+const dotenv = require("dotenv");
+dotenv.config();
+
 var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
@@ -29,6 +32,7 @@ app.get(
   "/auth/facebook/callback",
   passport.authenticate("facebook", { failureRedirect: "/login" }),
   function (req, res) {
+    console.log("profile", req.user);
     // Successful authentication, redirect home.
     res.redirect("/");
   }

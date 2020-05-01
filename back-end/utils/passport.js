@@ -39,15 +39,23 @@ module.exports = function (passport) {
       {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "http://localhost:3000/auth/facebook/callback",
+        callbackURL: "http://localhost:3001/auth/facebook/callback",
       },
       function (accessToken, refreshToken, profile, cb) {
-        console.log("authenticated", accessToken, refreshToken, profile);
-        return cb(null, profile);
+        console.log("authenticated", profile._json);
+        return cb(null, profile._json);
         // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
         //   return cb(err, user);
         // });
       }
     )
   );
+
+  passport.serializeUser(function (user, done) {
+    done(null, user);
+  });
+
+  passport.deserializeUser(function (user, done) {
+    done(null, user);
+  });
 };
