@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 // import Home from "./Home";
-import Chat from "./components/Chat";
+import Home from "./Home";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
-
+import Login from "./components/Login/Login";
 function App() {
+  const [user, setUser] = useState(null);
   return (
     <div className='App'>
-      {/* <Home /> */}
       <Navbar />
-      <Chat />
+      {true ? <Home /> : <Login />}
       <Footer />
     </div>
   );
