@@ -1,0 +1,55 @@
+{
+  "users": [
+    {
+      "city": "bogotá",
+      "phone": 3488935,
+      "name": "ksjad aksd",
+      "email": "daskl@mail.com",
+      "profile_pic": "s3 url",
+      "info": {
+        "gender": [
+          "M",
+          "F",
+          "NB"
+        ],
+        "age": 123,
+        "description": "asjkdjasdjkaskjdkajda",
+        "school": "dfsd",
+        "ig": "API key"
+      },
+      "tastes": [
+        {
+          "name": "Buhodermia",
+          "category": ""
+        }
+      ],
+      "lookingFor": {
+        "gender": [
+          "F"
+        ],
+        "age": [
+          18,
+          25
+        ]
+      },
+      "unconnections": [
+        ""
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "usersID": [
+        1231983,
+        131233
+      ],
+      "conversation": [
+        {
+          "date": "",
+          "user": "",
+          "msg": ""
+        }
+      ]
+    }
+  ]
+}
