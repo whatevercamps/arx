@@ -11,6 +11,7 @@ const passportMiddleware = require("./utils/passport");
 
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
+var authRouter = require("./routes/auth");
 
 var app = express();
 
@@ -26,19 +27,8 @@ passportMiddleware(passport);
 
 app.set("superSecret", process.env.SECRET || "youreismysecretbaby");
 
-app.get("/auth/facebook", passport.authenticate("facebook"));
-
-app.get(
-  "/auth/facebook/callback",
-  passport.authenticate("facebook", { failureRedirect: "/login" }),
-  function (req, res) {
-    console.log("profile", req.user);
-    // Successful authentication, redirect home.
-    res.redirect("/");
-  }
-);
-
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/auth", authRouter);
 
 module.exports = app;

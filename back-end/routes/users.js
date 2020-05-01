@@ -2,8 +2,8 @@
 
 let express = require("express");
 let router = express.Router();
-let mongoUtils = require("../utils/mongoUtils");
-const mu = mongoUtils();
+let MongoUtils = require("../utils/mongoUtils");
+const mu = MongoUtils();
 
 /* GET users listing. */
 router.get("/", function (req, res) {

@@ -42,6 +42,27 @@ const MongoUtils = () => {
       });
   };
 
+  mu.findOrCreateUser = (client, query) => {
+    return handler(client)
+      .findOneAndUpdate(
+        query,
+        {
+          $setOnInsert: query,
+        },
+        {
+          new: true, // return new doc if one is upserted
+          upsert: true, // insert the document if it does not exist
+        }
+      )
+      .catch(function (e) {
+        console.log("catch in model", e);
+        throw e; //
+      })
+      .finally(() => {
+        client.close();
+      });
+  };
+
   mu.createUser = (client, user) => {
     return handler(client)
       .insert(user)

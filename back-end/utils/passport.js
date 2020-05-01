@@ -2,6 +2,9 @@
 // const ExtractJwt = require("passport-jwt").ExtractJwt;
 
 const FacebookStrategy = require("passport-facebook").Strategy;
+
+const mu = require("./mongoUtils")();
+
 // const ModelGenerator = require("../models/user");
 // const model = ModelGenerator();
 
@@ -40,13 +43,27 @@ module.exports = function (passport) {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
         callbackURL: "http://localhost:3001/auth/facebook/callback",
+        profileFields: ["id", "displayName", "email"],
       },
       function (accessToken, refreshToken, profile, cb) {
-        console.log("authenticated", profile._json);
-        return cb(null, profile._json);
-        // User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-        //   return cb(err, user);
-        // });
+        const prevUser = { ...profile._json };
+        let user = {};
+        if (prevUser && prevUser.id) {
+          user["facebookId"] = prevUser.id;
+          user["name"] = (prevUser && prevUser.name) || "";
+          user["email"] = (prevUser && prevUser.email) || "";
+          mu.connect()
+            .then((client) => mu.findOrCreateUser(client, user))
+            .then((resp) => {
+              console.log("resp", resp);
+              return cb(null, resp);
+            })
+            .catch((err) => {
+              return cb(err, null);
+            });
+        } else {
+          return cb(new Error("no facebook info provided"), null);
+        }
       }
     )
   );
