@@ -65,16 +65,16 @@ function App() {
       console.log("no hay socket");
     }
 
-    // return () => {
-    //   if (socket && chat && chat.mySocketId) {
-    //     let payload = { state: 4, message: "I'm leaving" };
-    //     if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
-    //     if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
-    //     socket.send(JSON.stringify(payload));
-    //   } else {
-    //     debugger;
-    //   }
-    // };
+    return () => {
+      if (socket && chat && chat.mySocketId) {
+        let payload = { state: 4, message: "I'm leaving" };
+        if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
+        if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
+        socket.send(JSON.stringify(payload));
+      } else {
+        debugger;
+      }
+    };
   }, []);
 
   const sendMessage = (msg) => {
