@@ -5,41 +5,35 @@ import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import Login from "./components/Login/Login";
 import Chat from "./components/Chat/Chat";
+
+const socket = new WebSocket("ws://localhost:3001");
+
 function App() {
   const [user, setUser] = useState({ facebookId: "1170177643325233" });
-  const [socket, setSocket] = useState(null);
   const [header, setHeader] = useState(
     "Welcome to Arx, start chatting and meeting new people!"
   );
   const [messages, setMessages] = useState([]);
   const [chat, setChat] = useState();
 
-  window.addEventListener("beforeunload", (ev) => {
-    ev.preventDefault();
-    console.log("sk", this.socket, socket);
-    if (this.socket) socket.close();
-    debugger;
-  });
+  const [messageC, setMessageC] = useState(0);
 
-  const llamarFuncion = () => {
-    console.log("*******func", this && this.messages, messages);
-  };
-
-  const setUpWs = () => {
-    const socket = new WebSocket("ws://localhost:3001");
-    socket.onopen = () => {
-      console.log("ws connected");
-
+  useEffect(() => {
+    if (socket) {
+      socket.onopen = () => {
+        console.log("holu socket conectado");
+        socket.onerror = function (event) {
+          console.error("WebSocket error observed", event);
+        };
+      };
       socket.onmessage = (inMsg) => {
-        setInterval(llamarFuncion, 2000);
-
+        setMessageC(messageC + 1);
         console.log("mesg ", inMsg);
         const data = JSON.parse(inMsg.data);
         if (data.state === 0) {
           let msgs = [...messages];
           console.log("msgs", msgs);
           console.log("messages", messages);
-
           msgs.push(data);
           setMessages(msgs);
           if (socket) {
@@ -51,13 +45,12 @@ function App() {
                 message: data.message,
               })
             );
-
             const c = {
               betterHalf: data.senderId,
             };
             if (!chat) setChat(c);
           } else {
-            console.log("socket not found");
+            console.log("socket not found ");
           }
         } else if (data.state === 1) {
           setHeader(data.message);
@@ -69,20 +62,19 @@ function App() {
           if (!chat) setChat(c);
         }
       };
-
-      socket.onerror = function (event) {
-        console.error("WebSocket error observed", event);
-      };
-    };
-    return socket;
-  };
-
-  useEffect(() => {
-    setSocket(setUpWs());
+    } else {
+      console.log("no hay socket");
+    }
 
     return () => {
-      console.log("closing component");
-      if (socket) socket.close();
+      if (socket && chat && chat.mySocketId) {
+        let payload = { state: 4, message: "I'm leaving" };
+        if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
+        if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
+        socket.send(JSON.stringify(payload));
+      } else {
+        debugger;
+      }
     };
   }, []);
 
