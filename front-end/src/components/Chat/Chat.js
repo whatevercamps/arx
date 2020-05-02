@@ -1,5 +1,5 @@
-import React from "react";
-import "../App.css";
+import React, { useState } from "react";
+import "./Chat.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faClock,
@@ -12,7 +12,16 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Chat = () => {
+import ChatMessage from "../ChatMessage";
+
+const Chat = (props) => {
+  console.log("mensajes", props.messages);
+  const [message, setMessage] = useState("");
+  const onMessageSent = (evt) => {
+    evt.preventDefault();
+    props.sendMessage(message);
+  };
+
   return (
     <div className='Chat'>
       <div className='row'>
@@ -33,18 +42,30 @@ const Chat = () => {
               </div>
             </div>
             <hr></hr>
-            <div className='row chat-space'></div>
-            <div className='row send'>
-              <div className='col-11 message'>
-                <input type='text'></input>
-              </div>
-              <div className='col-1 send-icon'>
-                <button className='paper'>
-                  {" "}
-                  <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
-                </button>
-              </div>
+            <div className='row chat-space'>
+              {props.messages.map((message) => (
+                <ChatMessage message={message} />
+              ))}
             </div>
+            <form onSubmit={onMessageSent}>
+              <div className='row send'>
+                <div className='col-11 message'>
+                  <input
+                    type='text'
+                    value={message}
+                    onChange={(evt) => {
+                      setMessage(evt.target.value);
+                    }}
+                  />
+                </div>
+                <div className='col-1 send-icon'>
+                  <button type='submit' className='paper'>
+                    {" "}
+                    <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
+                  </button>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
         <div className='col-3'>
