@@ -15,11 +15,12 @@ import {
 import ChatMessage from "../ChatMessage";
 
 const Chat = (props) => {
-  console.log("mensajes", props.messages);
   const [message, setMessage] = useState("");
   const onMessageSent = (evt) => {
     evt.preventDefault();
+
     props.sendMessage(message);
+    setMessage("");
   };
 
   return (

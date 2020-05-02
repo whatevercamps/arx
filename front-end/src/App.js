@@ -5,7 +5,6 @@ import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import Login from "./components/Login/Login";
 import Chat from "./components/Chat/Chat";
-
 const socket = new WebSocket("ws://localhost:3001");
 
 function App() {
@@ -27,15 +26,13 @@ function App() {
         };
       };
       socket.onmessage = (inMsg) => {
-        setMessageC(messageC + 1);
-        console.log("mesg ", inMsg);
+        setMessageC((d) => d + 1);
         const data = JSON.parse(inMsg.data);
         if (data.state === 0) {
-          let msgs = [...messages];
-          console.log("msgs", msgs);
-          console.log("messages", messages);
-          msgs.push(data);
-          setMessages(msgs);
+          setMessages((d) => {
+            d.push(data);
+            return [...new Set(d)];
+          });
           if (socket) {
             socket.send(
               JSON.stringify({
@@ -53,8 +50,10 @@ function App() {
             console.log("socket not found ");
           }
         } else if (data.state === 1) {
+          console.log("mesg 1", inMsg);
           setHeader(data.message);
         } else if (data.state === 2) {
+          console.log("mesg 2", inMsg);
           const c = {
             betterHalf: data.senderId,
             mySocketId: data.receiverId,
@@ -66,16 +65,16 @@ function App() {
       console.log("no hay socket");
     }
 
-    return () => {
-      if (socket && chat && chat.mySocketId) {
-        let payload = { state: 4, message: "I'm leaving" };
-        if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
-        if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
-        socket.send(JSON.stringify(payload));
-      } else {
-        debugger;
-      }
-    };
+    // return () => {
+    //   if (socket && chat && chat.mySocketId) {
+    //     let payload = { state: 4, message: "I'm leaving" };
+    //     if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
+    //     if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
+    //     socket.send(JSON.stringify(payload));
+    //   } else {
+    //     debugger;
+    //   }
+    // };
   }, []);
 
   const sendMessage = (msg) => {
@@ -85,9 +84,13 @@ function App() {
       if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
 
       socket.send(JSON.stringify(payload));
-      let msgs = [...messages];
-      msgs.push({ isMine: true, message: msg, time: Date.now() });
-      setMessages(msgs);
+      setMessages(
+        (d) => (
+          d.push({ isMine: true, message: msg, time: Date.now() }),
+          [...new Set(d)]
+        )
+      );
+      console.log("mesg mandado", JSON.stringify(payload));
     } else {
       console.log("socket not found");
     }
