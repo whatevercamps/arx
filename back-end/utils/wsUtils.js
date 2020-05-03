@@ -21,7 +21,7 @@ const wsUtils = () => {
       const id = req.headers["sec-websocket-key"];
 
       ws.on("pong", function heartbeat() {
-        console.log("Pong from " + id);
+        // console.log("Pong from " + id);
         connections.find((c) => c.socketId === id)["active"] = true;
       });
 
@@ -33,7 +33,7 @@ const wsUtils = () => {
       }, 1000);
 
       ws.on("message", function incoming(dataMessage) {
-        console.log("received: %s", dataMessage, Date.now());
+        console.log("received: ", dataMessage, Date.now());
         console.log(dataMessage);
         console.log("fin del console");
         const jsonMessage = JSON.parse(dataMessage);
@@ -47,17 +47,18 @@ const wsUtils = () => {
               message: "Your better half is waiting for your message",
             })
           );
-          const receiver = connections.find((c) => {
-            console.log("c", c.socketId, c.state);
 
-            return c.state === 1 && c.socketId !== id && c.active === true;
+          const receiver = connections.find((c) => {
+            return (
+              (c.state === 1 || jsonMessage.receiverId) &&
+              c.active === true &&
+              ((jsonMessage.receiverId &&
+                c.socketId === jsonMessage.receiverId) ||
+                (!jsonMessage.receiverId && c.socketId !== id))
+            );
           });
 
-          console.log(
-            "rec",
-            receiver && receiver.socketId,
-            connections.map((c) => c.socketId)
-          );
+          console.log("rec", receiver && receiver.socketId, "fin rec");
 
           if (receiver) {
             receiver.client.send(
@@ -101,7 +102,7 @@ const wsUtils = () => {
         ws.send(
           JSON.stringify({
             state: 0,
-            senderId: sleeper,
+            senderId: sleeper.socketId,
             receiverId: id,
             message: sleeper.lastMessage,
           })

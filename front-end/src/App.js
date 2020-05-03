@@ -28,6 +28,8 @@ function App() {
       socket.onmessage = (inMsg) => {
         setMessageC((d) => d + 1);
         const data = JSON.parse(inMsg.data);
+        console.log("llego el puto mensaje", data);
+
         if (data.state === 0) {
           setMessages((d) => {
             d.push(data);
@@ -42,10 +44,11 @@ function App() {
                 message: data.message,
               })
             );
-            const c = {
+            let c = {
               betterHalf: data.senderId,
             };
-            if (!chat) setChat(c);
+            if (data.receiverId) c["mySocketId"] = data.receiverId;
+            setChat(c);
           } else {
             console.log("socket not found ");
           }
@@ -58,7 +61,7 @@ function App() {
             betterHalf: data.senderId,
             mySocketId: data.receiverId,
           };
-          if (!chat) setChat(c);
+          setChat(c);
         }
       };
     } else {
