@@ -1,6 +1,7 @@
 const WebSocket = require("ws");
 
 let connections = [];
+let conversations = [];
 
 const wsUtils = () => {
   const wsu = {};
@@ -13,15 +14,19 @@ const wsUtils = () => {
         return { s: c.socketId, state: c.state, active: c.active };
       })
     );
+
+    console.log("conversations now *****");
+
+    console.log(conversations);
   }, 6000);
 
   wsu.setWs = (server) => {
     const wss = new WebSocket.Server({ server });
     wss.on("connection", function connection(ws, req) {
+      //el id de quien manda el mensaje
       const id = req.headers["sec-websocket-key"];
 
       ws.on("pong", function heartbeat() {
-        // console.log("Pong from " + id);
         connections.find((c) => c.socketId === id)["active"] = true;
       });
 
@@ -36,11 +41,14 @@ const wsUtils = () => {
         console.log("received: ", dataMessage, Date.now());
         console.log(dataMessage);
         console.log("fin del console");
+        //jsonmessage es el mensaje convertido a json
         const jsonMessage = JSON.parse(dataMessage);
-        //el client mando un mensaje
+
+        //el client mandó un mensaje para otro client
         if (jsonMessage.state === 0) {
           console.log("llego al estado 0");
 
+          //manda un mensaje de confirmación al client que mando el mensaje de estado 0
           ws.send(
             JSON.stringify({
               state: 1,
@@ -48,6 +56,7 @@ const wsUtils = () => {
             })
           );
 
+          //el server busca el destinatario (puede uno nuevo o puede ser con el que ya venia hablando)
           const receiver = connections.find((c) => {
             return (
               (c.state === 1 || jsonMessage.receiverId) &&
@@ -61,6 +70,7 @@ const wsUtils = () => {
           console.log("rec", receiver && receiver.socketId, "fin rec");
 
           if (receiver) {
+            //le mando el mensaje a ese destinatario
             receiver.client.send(
               JSON.stringify({
                 state: 0,
@@ -71,13 +81,31 @@ const wsUtils = () => {
             );
             receiver["state"] = 0;
           } else {
+            //guardo el mensaje para esperar a que haya un client que me lo pueda recibir
             const myself = connections.find((c) => c.socketId === id);
             myself["lastMessage"] = jsonMessage.message;
+          }
+        }
+
+        //el client manda un mensaje de configuración al servido
+        else if (jsonMessage.state === 1) {
+          //mando corazón
+          if (jsonMessage.heart === true) {
+            let conversation = conversations.find((c) => {
+              return c.user1 === id || c.user2 === id;
+            });
+
+            if (conversation) conversation["likes"] += 1;
           }
         }
         //el client confirmo recepcion de mensaje
         else if (jsonMessage.state === 2) {
           console.log("llego al estado 2");
+          conversations.push({
+            user1: id,
+            user2: jsonMessage.receiverId,
+            likes: 0,
+          });
           const receiver = connections.find(
             (c) => c.socketId === jsonMessage.receiverId
           );

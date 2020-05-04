@@ -102,7 +102,7 @@ function App() {
     <div className='App'>
       <Navbar />
       {!chat ? (
-        <Home header={header} initChatIntent={sendMessage} />
+        <Login header={header} initChatIntent={sendMessage} />
       ) : (
         <Chat
           chat={chat}
