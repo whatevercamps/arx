@@ -80,6 +80,32 @@ function App() {
     };
   }, []);
 
+  const onHeart = () => {
+    if (socket) {
+      socket.send(
+        JSON.stringify({
+          state: 1,
+          receiverId: chat.betterHalf,
+          heart: true,
+        })
+      );
+    }
+  };
+
+  const onCancel = () => {
+    setMessages([]);
+    setChat(null);
+    setHeader("Welcome to Arx, start chatting and meeting new people!");
+    if (socket) {
+      socket.send(
+        JSON.stringify({
+          state: 5,
+          message: "le dieron dislike",
+        })
+      );
+    }
+  };
+
   const sendMessage = (msg) => {
     if (socket) {
       let payload = { state: 0, message: msg };
@@ -102,13 +128,15 @@ function App() {
     <div className='App'>
       <Navbar />
       {!chat ? (
-        <Login header={header} initChatIntent={sendMessage} />
+        <Home header={header} initChatIntent={sendMessage} />
       ) : (
         <Chat
           chat={chat}
           socket={socket}
           messages={messages}
           sendMessage={sendMessage}
+          onHeart={onHeart}
+          onCancel={onCancel}
         />
       )}
       <Footer />

@@ -23,6 +23,14 @@ const Chat = (props) => {
     setMessage("");
   };
 
+  const onHeart = () => {
+    props.onHeart();
+  };
+
+  const onCancel = () => {
+    props.onCancel();
+  };
+
   return (
     <div className='Chat'>
       <div className='row'>
@@ -74,30 +82,47 @@ const Chat = (props) => {
             <ul>
               <li>
                 {" "}
-                <FontAwesomeIcon icon={faHeart} id='heart'></FontAwesomeIcon>
+                <button onClick={onHeart}>
+                  {" "}
+                  <FontAwesomeIcon icon={faHeart} id='heart'></FontAwesomeIcon>
+                </button>
               </li>
               <li>
                 {" "}
-                <FontAwesomeIcon icon={faStar} id='star'></FontAwesomeIcon>
+                <button onClick={onCancel}>
+                  <FontAwesomeIcon icon={faStar} id='star'></FontAwesomeIcon>
+                </button>
               </li>
               <li>
                 {" "}
-                <FontAwesomeIcon icon={faSmile} id='smile'></FontAwesomeIcon>
+                <button>
+                  {" "}
+                  <FontAwesomeIcon icon={faSmile} id='smile'></FontAwesomeIcon>
+                </button>
               </li>
               <li>
                 {" "}
-                <FontAwesomeIcon icon={faFilm} id='film'></FontAwesomeIcon>
+                <button>
+                  {" "}
+                  <FontAwesomeIcon icon={faFilm} id='film'></FontAwesomeIcon>
+                </button>
               </li>
               <li>
                 {" "}
-                <FontAwesomeIcon icon={faMagic} id='magic'></FontAwesomeIcon>
+                <button>
+                  {" "}
+                  <FontAwesomeIcon icon={faMagic} id='magic'></FontAwesomeIcon>
+                </button>
               </li>
               <li>
                 {" "}
-                <FontAwesomeIcon
-                  icon={faTimesCircle}
-                  id='cancel'
-                ></FontAwesomeIcon>
+                <button onClick={onCancel}>
+                  {" "}
+                  <FontAwesomeIcon
+                    icon={faTimesCircle}
+                    id='cancel'
+                  ></FontAwesomeIcon>
+                </button>
               </li>
             </ul>
           </div>

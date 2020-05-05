@@ -87,3 +87,9 @@
   background: white;
   border-bottom-left-radius: 10px;
 }
+
+.Chat .actions button {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+}

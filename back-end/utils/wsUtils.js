@@ -86,8 +86,7 @@ const wsUtils = () => {
             myself["lastMessage"] = jsonMessage.message;
           }
         }
-
-        //el client manda un mensaje de configuración al servido
+        //el client manda un mensaje de configuración al servicio
         else if (jsonMessage.state === 1) {
           //mando corazón
           if (jsonMessage.heart === true) {
@@ -97,6 +96,8 @@ const wsUtils = () => {
 
             if (conversation) conversation["likes"] += 1;
           }
+          console.log("Dieron click al corazón");
+          console.log(jsonMessage);
         }
         //el client confirmo recepcion de mensaje
         else if (jsonMessage.state === 2) {
@@ -115,6 +116,26 @@ const wsUtils = () => {
           connections = connections.filter(
             (c) => c.socketId !== jsonMessage.senderId
           );
+        } else if (jsonMessage.state === 5) {
+          const sender = connections.find((c) => c.state === 0);
+          const receiver = connections.find((c) => c != sender);
+          if (sender && receiver) {
+            sender["state"] = 1;
+            receiver["state"] = 1;
+            console.log("le dieron dislike");
+            ws.send(
+              JSON.stringify({
+                state: 5,
+                message: "La conversación ha terminado",
+                receiverId: receiver.socketId,
+                senderId: sender.socketId,
+              })
+            );
+            if (conversations) {
+              conversations = [];
+            }
+            console.log("paila chat");
+          }
         }
       });
 
