@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "./Chat.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
@@ -15,6 +15,8 @@ import {
 import ChatMessage from "../ChatMessage";
 
 const Chat = (props) => {
+  const refForScroll = useRef();
+
   const [message, setMessage] = useState("");
   const onMessageSent = (evt) => {
     evt.preventDefault();
@@ -31,6 +33,11 @@ const Chat = (props) => {
     props.onCancel();
   };
 
+  useEffect(() => {
+    const element = refForScroll.current;
+    element.scrollTop = element.scrollHeight;
+  }, [props.messages]);
+
   return (
     <div className='Chat'>
       <div className='row'>
@@ -46,14 +53,14 @@ const Chat = (props) => {
                   <FontAwesomeIcon icon={faClock} id='clock'></FontAwesomeIcon>
                 </div>
                 <div className='col-5'>
-                  <p>2:45</p>
+                  <p>{props.timeLeft || "5:00"}</p>
                 </div>
               </div>
             </div>
             <hr></hr>
-            <div className='row chat-space'>
+            <div ref={refForScroll} className='chat-space'>
               {props.messages.map((message) => (
-                <ChatMessage message={message} />
+                <ChatMessage message={message.split("%=%splitmessage%=%")} />
               ))}
             </div>
             <form onSubmit={onMessageSent}>

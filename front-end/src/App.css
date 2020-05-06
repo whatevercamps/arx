@@ -91,6 +91,7 @@ body {
 .Chat .chat-content .chat-space {
   height: 400px;
   max-height: 400px;
+  overflow-y: scroll;
 }
 
 .Chat .chat-content .send input {

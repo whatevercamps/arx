@@ -3,6 +3,8 @@ const WebSocket = require("ws");
 let connections = [];
 let conversations = [];
 
+const MAX_TIME = 5 * 60 * 1000;
+
 const wsUtils = () => {
   const wsu = {};
 
@@ -14,11 +16,16 @@ const wsUtils = () => {
         return { s: c.socketId, state: c.state, active: c.active };
       })
     );
-
     console.log("conversations now *****");
-
     console.log(conversations);
   }, 6000);
+
+  const checkTime = (i) => {
+    if (i < 10) {
+      i = "0" + i;
+    } // add zero in front of numbers < 10
+    return i;
+  };
 
   wsu.setWs = (server) => {
     const wss = new WebSocket.Server({ server });
@@ -28,6 +35,22 @@ const wsUtils = () => {
 
       ws.on("pong", function heartbeat() {
         connections.find((c) => c.socketId === id)["active"] = true;
+
+        const conversation = conversations.find(
+          (c) => c.user1 === id || c.user2 === id
+        );
+
+        if (conversation) {
+          let millsLeft = conversation.startTime + MAX_TIME - Date.now();
+          const payload = {
+            state: 6,
+            timeLeft:
+              checkTime(new Date(millsLeft).getMinutes()) +
+              ":" +
+              checkTime(new Date(millsLeft).getSeconds()),
+          };
+          ws.send(JSON.stringify(payload));
+        }
       });
 
       console.log("new connection", id);
@@ -106,11 +129,15 @@ const wsUtils = () => {
             user1: id,
             user2: jsonMessage.receiverId,
             likes: 0,
+            startTime: Date.now(),
           });
           const receiver = connections.find(
             (c) => c.socketId === jsonMessage.receiverId
           );
-          if (receiver) receiver.client.send(dataMessage);
+          if (receiver) {
+            receiver.client.send(dataMessage);
+            receiver.state = 0;
+          }
         } else if (jsonMessage.state === 3) {
           console.log("llego al estado 3");
           connections = connections.filter(

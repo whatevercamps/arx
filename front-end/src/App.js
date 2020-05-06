@@ -14,6 +14,7 @@ function App() {
   );
   const [messages, setMessages] = useState([]);
   const [chat, setChat] = useState();
+  const [timeLeft, setTimeLeft] = useState(null);
 
   const [messageC, setMessageC] = useState(0);
 
@@ -28,11 +29,15 @@ function App() {
       socket.onmessage = (inMsg) => {
         setMessageC((d) => d + 1);
         const data = JSON.parse(inMsg.data);
-        console.log("llego el puto mensaje", data);
+        if (data.state === 0) console.log("llego el puto mensaje", data);
 
         if (data.state === 0) {
           setMessages((d) => {
-            d.push(data);
+            d.push(
+              [false, data.message, Math.floor(Date.now() / 1000)].join(
+                "%=%splitmessage%=%"
+              )
+            );
             return [...new Set(d)];
           });
           if (socket) {
@@ -62,6 +67,9 @@ function App() {
             mySocketId: data.receiverId,
           };
           setChat(c);
+        } else if (data.state === 6) {
+          //revisar el merge aqui, para no borrar este caso :')
+          setTimeLeft(data.timeLeft);
         }
       };
     } else {
@@ -115,7 +123,11 @@ function App() {
       socket.send(JSON.stringify(payload));
       setMessages(
         (d) => (
-          d.push({ isMine: true, message: msg, time: Date.now() }),
+          d.push(
+            [true, msg, Math.floor(Date.now() / 1000)].join(
+              "%=%splitmessage%=%"
+            )
+          ),
           [...new Set(d)]
         )
       );
@@ -131,6 +143,7 @@ function App() {
         <Home header={header} initChatIntent={sendMessage} />
       ) : (
         <Chat
+          timeLeft={timeLeft}
           chat={chat}
           socket={socket}
           messages={messages}
