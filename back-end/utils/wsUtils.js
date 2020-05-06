@@ -41,7 +41,10 @@ const wsUtils = () => {
         );
 
         if (conversation) {
-          let millsLeft = conversation.startTime + MAX_TIME - Date.now();
+          let millsLeft = Math.max(
+            0,
+            conversation.startTime + MAX_TIME - Date.now()
+          );
           const payload = {
             state: 6,
             timeLeft:
