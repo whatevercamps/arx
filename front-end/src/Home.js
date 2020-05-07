@@ -16,7 +16,7 @@ const Home = (props) => {
     <div className='Home'>
       <div className='send-message'>
         <div>
-          <h1>
+          <h1 id='home-title'>
             {props.header ||
               "Welcome to Arx, start chatting and meeting new people!"}
           </h1>
