@@ -3,7 +3,49 @@ const WebSocket = require("ws");
 let connections = [];
 let conversations = [];
 
-const MAX_TIME = 5 * 60 * 1000;
+const MAX_TIME = 10 * 1000;
+
+const endConversation = (user1id, user2id) => {
+  console.log("terminando clientes", user1id, user2id);
+  const sender = connections.find(
+    (c) => c.state === 0 && c.socketId === user1id
+  );
+  const receiver = connections.find(
+    (c) => c.state === 0 && c.socketId === user2id
+  );
+  if (sender && receiver) {
+    sender["state"] = 1;
+    receiver["state"] = 1;
+    console.log("le dieron dislike");
+    sender.client.send(
+      JSON.stringify({
+        state: 5,
+        timeLeft: 0,
+        message: "La conversación ha terminado",
+      })
+    );
+
+    receiver.client &&
+      receiver.client.send(
+        JSON.stringify({
+          state: 5,
+          timeLeft: 0,
+          message: "La conversación ha terminado",
+        })
+      );
+
+    if (conversations) {
+      conversations = conversations.filter(
+        (c) =>
+          c.user1 !== sender.socketId &&
+          c.user2 !== receiver.socketId &&
+          c.user2 !== sender.socketId &&
+          c.user1 !== receiver.socketId
+      );
+    }
+    console.log("paila chat");
+  }
+};
 
 const wsUtils = () => {
   const wsu = {};
@@ -45,14 +87,23 @@ const wsUtils = () => {
             0,
             conversation.startTime + MAX_TIME - Date.now()
           );
+
           const payload = {
-            state: 6,
+            state: 5,
             timeLeft:
               checkTime(new Date(millsLeft).getMinutes()) +
               ":" +
               checkTime(new Date(millsLeft).getSeconds()),
           };
           ws.send(JSON.stringify(payload));
+
+          if (millsLeft <= 0) {
+            const killedId =
+              conversation.user1 === id
+                ? conversation.user2
+                : conversation.user1;
+            endConversation(id, killedId);
+          }
         }
       });
 
@@ -66,7 +117,7 @@ const wsUtils = () => {
       ws.on("message", function incoming(dataMessage) {
         console.log("received: ", dataMessage, Date.now());
         console.log(dataMessage);
-        console.log("fin del console");
+        console.log("fin del console ");
         //jsonmessage es el mensaje convertido a json
         const jsonMessage = JSON.parse(dataMessage);
 
@@ -147,25 +198,7 @@ const wsUtils = () => {
             (c) => c.socketId !== jsonMessage.senderId
           );
         } else if (jsonMessage.state === 5) {
-          const sender = connections.find((c) => c.state === 0);
-          const receiver = connections.find((c) => c != sender);
-          if (sender && receiver) {
-            sender["state"] = 1;
-            receiver["state"] = 1;
-            console.log("le dieron dislike");
-            ws.send(
-              JSON.stringify({
-                state: 5,
-                message: "La conversación ha terminado",
-                receiverId: receiver.socketId,
-                senderId: sender.socketId,
-              })
-            );
-            if (conversations) {
-              conversations = [];
-            }
-            console.log("paila chat");
-          }
+          endConversation(id, jsonMessage.receiverId);
         }
       });
 

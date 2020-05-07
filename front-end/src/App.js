@@ -10,7 +10,7 @@ const socket = new WebSocket("ws://localhost:3001");
 function App() {
   const [user, setUser] = useState({ facebookId: "1170177643325233" });
   const [header, setHeader] = useState(
-    "Welcome to Arx, start chatting and meeting new people!"
+    "Welcome to Arx, start chatting and meeting new people!!!"
   );
   const [messages, setMessages] = useState([]);
   const [chat, setChat] = useState();
@@ -67,9 +67,16 @@ function App() {
             mySocketId: data.receiverId,
           };
           setChat(c);
-        } else if (data.state === 6) {
+        } else if (data.state === 5) {
           //revisar el merge aqui, para no borrar este caso :')
-          setTimeLeft(data.timeLeft);
+          if (data.timeLeft === 0) {
+            console.log("final");
+            setMessages([]);
+            setChat(null);
+            setHeader("Welcome to Arx, start chatting and meeting new people!");
+          } else {
+            setTimeLeft(data.timeLeft);
+          }
         }
       };
     } else {
@@ -101,13 +108,11 @@ function App() {
   };
 
   const onCancel = () => {
-    setMessages([]);
-    setChat(null);
-    setHeader("Welcome to Arx, start chatting and meeting new people!");
     if (socket) {
       socket.send(
         JSON.stringify({
           state: 5,
+          receiverId: chat.betterHalf,
           message: "le dieron dislike",
         })
       );
