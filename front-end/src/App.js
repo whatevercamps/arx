@@ -7,6 +7,7 @@ import Footer from "./layout/Footer";
 import Login from "./components/Login/Login";
 import Chat from "./components/Chat/Chat";
 import Register from "./components/Register/Register";
+import "./App.css";
 
 const socket = new WebSocket("ws://localhost:3001");
 

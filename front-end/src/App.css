@@ -258,7 +258,7 @@ p,
 
 /* Register Styles */
 
-/* .Register .register-content {
+.Register .register-content {
   background-color: #fff;
   border-radius: 20px;
   padding: 20px;
@@ -329,7 +329,7 @@ p {
 
 .Register .register-content form #insta {
   margin-right: 10px;
-} */
+}
 
 /* Footer Styles */
 
