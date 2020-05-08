@@ -1,3 +1,43 @@
+/* Fonts */
+
+@font-face {
+  font-family: "Fashion Fetish";
+  src: local("Fashion Fetish"), url(./../../fonts/FashionFetishRegular.ttf);
+}
+
+@font-face {
+  font-family: "Fashion Fetish Bold";
+  src: local("Fashion Fetish Bold"), url(./../../fonts/FashionFetishBold.ttf);
+}
+
+@font-face {
+  font-family: "Fashion Fetish Light";
+  src: local("Fashion Fetish Light"), url(./../../fonts/FashionFetishLight.ttf);
+}
+
+@font-face {
+  font-family: "Fashion Fetish Italic";
+  src: local("Fashion Fetish Italic"),
+    url(./../../fonts/FashionFetishItalic.ttf);
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src: local("Avenir Next"), url(./../../fonts/AvenirNextLTPro-Regular.otf);
+}
+
+@font-face {
+  font-family: "Avenir Next Bold";
+  src: local("Avenir Next Bold"), url(./../../fonts/AvenirNextLTPro-Bold.otf);
+}
+
+@font-face {
+  font-family: "Avenir Next Italic";
+  src: local("Avenir Next Italic"), url(./../../fonts/AvenirNextLTPro-It.otf);
+}
+
+/* Chat styles */
+
 .chat-space {
   display: flex;
   flex-direction: column;
@@ -16,6 +56,7 @@
   margin-top: 5px;
   margin-bottom: 5px;
   display: inline-block;
+  font-family: "Avenir Next";
 }
 
 .chat-space .yours {
