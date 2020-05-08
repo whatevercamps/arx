@@ -5,6 +5,8 @@ import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import Login from "./components/Login/Login";
 import Chat from "./components/Chat/Chat";
+import Register from "./components/Register/Register";
+
 const socket = new WebSocket("ws://localhost:3001");
 
 function App() {
@@ -184,6 +186,7 @@ function App() {
           onCancel={onCancel}
         />
       )}
+      {/* <Register /> */}
       <Footer />
     </div>
   );

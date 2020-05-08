@@ -1,3 +1,42 @@
+/* Fonts */
+
+@font-face {
+  font-family: "Fashion Fetish";
+  src: local("Fashion Fetish"), url(./fonts/FashionFetishRegular.ttf);
+}
+
+@font-face {
+  font-family: "Fashion Fetish Bold";
+  src: local("Fashion Fetish Bold"), url(./fonts/FashionFetishBold.ttf);
+}
+
+@font-face {
+  font-family: "Fashion Fetish Light";
+  src: local("Fashion Fetish Light"), url(./fonts/FashionFetishLight.ttf);
+}
+
+@font-face {
+  font-family: "Fashion Fetish Italic";
+  src: local("Fashion Fetish Italic"), url(./fonts/FashionFetishItalic.ttf);
+}
+
+@font-face {
+  font-family: "Avenir Next";
+  src: local("Avenir Next"), url(./fonts/AvenirNextLTPro-Regular.otf);
+}
+
+@font-face {
+  font-family: "Avenir Next Bold";
+  src: local("Avenir Next Bold"), url(./fonts/AvenirNextLTPro-Bold.otf);
+}
+
+@font-face {
+  font-family: "Avenir Next Italic";
+  src: local("Avenir Next Italic"), url(./fonts/AvenirNextLTPro-It.otf);
+}
+
+/* STYLES */
+
 body {
   margin: 0;
 }
@@ -26,10 +65,16 @@ body {
   box-sizing: border-box;
   padding: 2px 10px 2px 10px;
   margin: 30px;
+  font-family: "Avenir Next";
+}
+
+.Home .send-message input:focus {
+  box-shadow: 0 0 2pt 2pt #fff;
 }
 
 .Home .send-message h1 {
   color: #fff;
+  font-family: "Fashion Fetish";
 }
 
 .Home .send-message {
@@ -105,6 +150,10 @@ body {
   padding: 2px 10px 2px 10px;
 }
 
+.Chat .chat-content .send input:focus {
+  box-shadow: 0 0 2pt 2pt rgba(149, 27, 129, 1);
+}
+
 .Chat .chat-content .send {
   padding-left: 15px;
   padding-right: 15px;
@@ -137,6 +186,10 @@ p,
 .Chat .chat-content .chat .send .message {
   padding-right: 10px;
   padding-left: 0px;
+}
+
+.Chat .chat-content .chat .send input {
+  font-family: "Avenir Next";
 }
 
 .Chat .chat-content .chat .send .send-icon {
@@ -199,10 +252,90 @@ p,
   padding: 0px 16px 10px 16px;
 }
 
+.Chat .chat-content .chat-header h2 {
+  font-family: "Fashion Fetish";
+}
+
+/* Register Styles */
+
+/* .Register .register-content {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 20px;
+  max-width: 600px;
+  margin: auto;
+  -webkit-box-shadow: 42px 46px 20px -42px rgba(0, 0, 0, 0.71);
+  -moz-box-shadow: 42px 46px 20px -42px rgba(0, 0, 0, 0.71);
+  box-shadow: 42px 46px 20px -42px rgba(0, 0, 0, 0.71);
+}
+
+.Register .register-content h2,
+h3 {
+  font-family: "Fashion Fetish";
+}
+
+.Register .register-content form label {
+  font-family: "Avenir Next Bold";
+}
+
+.Register .register-content form .category {
+  text-align: center;
+  margin: 0;
+}
+
+.Register .register-content form .category .col-4:hover {
+  background-color: #ccc;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.Register .register-content form input,
+button,
+p {
+  font-family: "Avenir Next";
+}
+
+.Register .register-content p {
+  padding-top: 5px;
+}
+
+.Register .register-content form label {
+  width: 100%;
+}
+
+.Register .register-content form #instagram {
+  border-radius: 15px;
+  color: #982f8c;
+  background-color: transparent;
+  border: 1px solid #982f8c;
+  padding: 6px 15px 6px 15px;
+}
+
+.Register .register-content form button {
+  border-radius: 20px;
+  color: #fff;
+  background-color: #982f8c;
+  border: none;
+  padding: 6px 15px 6px 15px;
+}
+
+.Register .register-content form .gender div label {
+  font-family: "Avenir Next";
+}
+
+.Register .register-content form .row {
+  justify-content: end;
+}
+
+.Register .register-content form #insta {
+  margin-right: 10px;
+} */
+
 /* Footer Styles */
 
 .Footer p {
   color: #fff;
+  font-family: "Fashion Fetish Light";
 }
 
 .Footer {
