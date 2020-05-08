@@ -40,7 +40,11 @@ const Chat = (props) => {
 
   return (
     <div className='Chat'>
-      {props.finish ? <LikeOrNot {...props} /> : <></>}
+      {props.finish && props.likeIt === false ? (
+        <LikeOrNot {...props} />
+      ) : (
+        <></>
+      )}
       <div className='row'>
         <div className='col-3'></div>
         <div className='col-6 chat-content'>

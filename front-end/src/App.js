@@ -20,7 +20,8 @@ function App() {
   const [chat, setChat] = useState();
   const [timeLeft, setTimeLeft] = useState(null);
 
-  const [likeIt, setLikeIt] = useState(null);
+  const [likeIt, setLikeIt] = useState(false);
+  const [finishAuditer, setFinishAuditer] = useState(false);
   const [finish, setFinish] = useState(false);
 
   const checkTime = (i) => {
@@ -90,22 +91,7 @@ function App() {
             );
           } else {
             if (data.timeLeft < 0) {
-              console.log("like n finish", likeIt, finish);
-              if (likeIt && finish) {
-                console.log("detectó el like");
-                if (socket)
-                  socket.send(
-                    JSON.stringify({
-                      state: 1,
-                      receiverId: chat.betterHalf,
-                      heart: true,
-                    })
-                  );
-                else console.log("no hay socket para enviar like");
-
-                setFinish(false);
-              }
-              if (!finish && !likeIt) setFinish(true);
+              setFinish((f) => (f === true ? f : true));
             }
             const timeStr =
               data.timeLeft >= 0
@@ -121,6 +107,24 @@ function App() {
       console.log("no hay socket");
     }
   }, []);
+
+  useEffect(() => {
+    if (likeIt && finish && !finishAuditer) {
+      console.log("detectó el like");
+      if (socket) {
+        socket.send(
+          JSON.stringify({
+            state: 1,
+            receiverId: chat.betterHalf,
+            heart: true,
+          })
+        );
+        setFinishAuditer(true);
+      } else console.log("no hay socket para enviar like");
+
+      setFinish(false);
+    }
+  }, [likeIt, finish]);
 
   const onHeart = () => {
     setLikeIt(true);
@@ -157,7 +161,7 @@ function App() {
       );
       console.log("mesg mandado", JSON.stringify(payload));
     } else {
-      console.log("socket not found");
+      console.log("socket not found ");
     }
   };
   return (
@@ -179,6 +183,7 @@ function App() {
                 timeLeft={timeLeft}
                 chat={chat}
                 finish={finish}
+                likeIt={likeIt}
                 socket={socket}
                 messages={messages}
                 sendMessage={sendMessage}

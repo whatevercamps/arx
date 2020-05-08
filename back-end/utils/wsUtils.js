@@ -6,13 +6,6 @@ let conversations = [];
 
 const MAX_TIME = 15 * 1000;
 
-const isAMatch = (conversation) => {
-  return conversation.likes[0]["likeIt"] === true &&
-    conversation.likes[1]["likeIt"] === true
-    ? conversation
-    : false;
-};
-
 const endConversation = (user1id, user2id, conversation) => {
   console.log("terminando clientes", user1id, user2id);
 
@@ -109,9 +102,9 @@ const wsUtils = () => {
               conversation.user1 === id
                 ? conversation.user2
                 : conversation.user1;
-            if (conversation.likes.length >= 2) {
+            if (conversation.likes.size >= 2) {
               console.log("termina con Match: ", millsLeft);
-              endConversation(id, killedId, isAMatch(conversation));
+              endConversation(id, killedId, conversation);
             } else if (millsLeft <= -15000) {
               console.log("termina forzado: ", millsLeft);
               endConversation(id, killedId, false);
@@ -184,8 +177,7 @@ const wsUtils = () => {
               return c.user1 === id || c.user2 === id;
             });
 
-            if (conversation)
-              conversation["likes"].push({ id: id, likeIt: jsonMessage.heart });
+            if (conversation) conversation["likes"].add(id);
           }
           console.log("Dieron click al corazón");
           console.log(jsonMessage);
@@ -196,7 +188,7 @@ const wsUtils = () => {
           conversations.push({
             user1: id,
             user2: jsonMessage.receiverId,
-            likes: 0,
+            likes: new Set([]),
             startTime: Date.now(),
           });
           const receiver = connections.find(
