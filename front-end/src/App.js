@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import Home from "./Home";
 import Home from "./Home";
 import Navbar from "./layout/Navbar";
@@ -118,17 +119,6 @@ function App() {
     } else {
       console.log("no hay socket");
     }
-
-    // return () => {
-    //   if (socket && chat && chat.mySocketId) {
-    //     let payload = { state: 4, message: "I'm leaving" };
-    //     if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
-    //     if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
-    //     socket.send(JSON.stringify(payload));
-    //   } else {
-    //     debugger;
-    //   }
-    // };
   }, []);
 
   const onHeart = () => {
@@ -171,23 +161,34 @@ function App() {
   };
   return (
     <div className='App'>
-      <Navbar />
-      {!chat ? (
-        <Home header={header} initChatIntent={sendMessage} />
-      ) : (
-        <Chat
-          timeLeft={timeLeft}
-          chat={chat}
-          finish={finish}
-          socket={socket}
-          messages={messages}
-          sendMessage={sendMessage}
-          onHeart={onHeart}
-          onCancel={onCancel}
-        />
-      )}
-      {/* <Register /> */}
-      <Footer />
+      <Router>
+        <Navbar />
+        <Switch>
+          <Route path='/signin'>
+            <Login />
+          </Route>
+          <Route path='/signup'>
+            <Register />
+          </Route>
+          <Route path='/'>
+            {!chat ? (
+              <Home header={header} initChatIntent={sendMessage} />
+            ) : (
+              <Chat
+                timeLeft={timeLeft}
+                chat={chat}
+                finish={finish}
+                socket={socket}
+                messages={messages}
+                sendMessage={sendMessage}
+                onHeart={onHeart}
+                onCancel={onCancel}
+              />
+            )}
+          </Route>
+        </Switch>
+        <Footer />
+      </Router>
     </div>
   );
 }
