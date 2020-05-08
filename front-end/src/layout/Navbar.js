@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faCommentDots } from "@fortawesome/free-solid-svg-icons";
 
-const Navbar = () => {
+const Navbar = (props) => {
   return (
     <div className='Navbar'>
       <div className='container'>
@@ -52,7 +52,7 @@ const Navbar = () => {
               {" "}
               <FontAwesomeIcon icon={faCommentDots}></FontAwesomeIcon>
             </span>
-            <span>
+            <span onClick={props.handleLogout}>
               {" "}
               <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
             </span>

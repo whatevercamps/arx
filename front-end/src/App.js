@@ -12,7 +12,7 @@ import "./App.css";
 const socket = new WebSocket("ws://localhost:3001");
 
 function App() {
-  const [user, setUser] = useState({ facebookId: "1170177643325233" });
+  const [user, setUser] = useState(null);
   const [header, setHeader] = useState(
     "Welcome to Arx, start chatting and meeting new people!!!"
   );
@@ -30,6 +30,29 @@ function App() {
     } // add zero in front of numbers < 10
     return i;
   };
+
+  //login stuffs jaja
+  useEffect(() => {
+    fetch("http://localhost:3001/auth/login/success", {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Credentials": true,
+      },
+    })
+      .then((response) => {
+        if (response.status === 200) return response.json();
+        throw new Error("failed to authenticate user");
+      })
+      .then((responseJson) => {
+        setUser(responseJson && responseJson.user);
+      })
+      .catch((error) => {
+        console.log("error", error);
+      });
+  }, []);
 
   useEffect(() => {
     if (socket) {
@@ -164,10 +187,15 @@ function App() {
       console.log("socket not found ");
     }
   };
+
+  const handleLogout = () => {
+    setUser(null);
+    window.open("http://localhost:3001/auth/logout", "_self");
+  };
   return (
     <div className='App'>
       <Router>
-        <Navbar />
+        <Navbar handleLogout={handleLogout} />
         <Switch>
           <Route path='/signin'>
             <Login />
@@ -176,20 +204,24 @@ function App() {
             <Register />
           </Route>
           <Route path='/'>
-            {!chat ? (
-              <Home header={header} initChatIntent={sendMessage} />
+            {user ? (
+              !chat ? (
+                <Home header={header} initChatIntent={sendMessage} />
+              ) : (
+                <Chat
+                  timeLeft={timeLeft}
+                  chat={chat}
+                  finish={finish}
+                  likeIt={likeIt}
+                  socket={socket}
+                  messages={messages}
+                  sendMessage={sendMessage}
+                  onHeart={onHeart}
+                  onCancel={onCancel}
+                />
+              )
             ) : (
-              <Chat
-                timeLeft={timeLeft}
-                chat={chat}
-                finish={finish}
-                likeIt={likeIt}
-                socket={socket}
-                messages={messages}
-                sendMessage={sendMessage}
-                onHeart={onHeart}
-                onCancel={onCancel}
-              />
+              <Login />
             )}
           </Route>
         </Switch>

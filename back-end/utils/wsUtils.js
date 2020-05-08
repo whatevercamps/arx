@@ -60,18 +60,18 @@ const endConversation = (user1id, user2id, conversation) => {
 const wsUtils = () => {
   const wsu = {};
 
-  setInterval(() => {
-    console.log("now ***** ", Date.now());
-    console.log("clients");
+  // setInterval(() => {
+  //   console.log("now ***** ", Date.now());
+  //   console.log("clients");
 
-    console.log(
-      connections.map((c) => {
-        return { s: c.socketId, state: c.state, active: c.active };
-      })
-    );
-    console.log("conversations");
-    console.log(conversations);
-  }, 5000);
+  //   console.log(
+  //     connections.map((c) => {
+  //       return { s: c.socketId, state: c.state, active: c.active };
+  //     })
+  //   );
+  //   console.log("conversations");
+  //   console.log(conversations);
+  // }, 5000);
 
   wsu.setWs = (server) => {
     const wss = new WebSocket.Server({ server });
@@ -97,7 +97,7 @@ const wsUtils = () => {
           };
           ws.send(JSON.stringify(payload));
           if (millsLeft <= 0) {
-            console.log("etapa de terminacion", millsLeft);
+            // console.log("etapa de terminacion", millsLeft);
             const killedId =
               conversation.user1 === id
                 ? conversation.user2

@@ -42,7 +42,7 @@ module.exports = function (passport) {
       {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "http://localhost:3000/randomcallback",
+        callbackURL: "http://localhost:3001/auth/facebook/callback",
         profileFields: ["id", "displayName", "email"],
       },
       function (accessToken, refreshToken, profile, cb) {
@@ -69,6 +69,8 @@ module.exports = function (passport) {
   );
 
   passport.serializeUser(function (user, done) {
+    console.log("serializing user", user);
+
     done(null, user);
   });
 
