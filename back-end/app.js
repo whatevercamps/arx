@@ -12,6 +12,7 @@ const passportMiddleware = require("./utils/passport");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
+var connectionsRounter = require("./routes/connections");
 
 var app = express();
 
@@ -29,6 +30,7 @@ app.set("superSecret", process.env.SECRET || "youreismysecretbaby");
 
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
+app.use("/connections", connectionsRounter);
 app.use("/auth", authRouter);
 
 module.exports = app;

@@ -16,7 +16,15 @@ function App() {
   const [chat, setChat] = useState();
   const [timeLeft, setTimeLeft] = useState(null);
 
-  const [messageC, setMessageC] = useState(0);
+  const [likeIt, setLikeIt] = useState(null);
+  const [finish, setFinish] = useState(false);
+
+  const checkTime = (i) => {
+    if (i < 10) {
+      i = "0" + i;
+    } // add zero in front of numbers < 10
+    return i;
+  };
 
   useEffect(() => {
     if (socket) {
@@ -27,7 +35,6 @@ function App() {
         };
       };
       socket.onmessage = (inMsg) => {
-        setMessageC((d) => d + 1);
         const data = JSON.parse(inMsg.data);
         if (data.state === 0) console.log("llego el puto mensaje", data);
 
@@ -68,14 +75,41 @@ function App() {
           };
           setChat(c);
         } else if (data.state === 5) {
-          //revisar el merge aqui, para no borrar este caso :')
-          if (data.timeLeft === 0) {
-            console.log("final");
+          // console.log("tiempo", data);
+
+          if (data.timeLeft === "its_gone") {
             setMessages([]);
             setChat(null);
-            setHeader("Welcome to Arx, start chatting and meeting new people!");
+            setFinish(false);
+            setHeader(
+              "Welcome to Arx, start chatting and meeting new people! "
+            );
           } else {
-            setTimeLeft(data.timeLeft);
+            if (data.timeLeft < 0) {
+              console.log("like n finish", likeIt, finish);
+              if (likeIt && finish) {
+                console.log("detectó el like");
+                if (socket)
+                  socket.send(
+                    JSON.stringify({
+                      state: 1,
+                      receiverId: chat.betterHalf,
+                      heart: true,
+                    })
+                  );
+                else console.log("no hay socket para enviar like");
+
+                setFinish(false);
+              }
+              if (!finish && !likeIt) setFinish(true);
+            }
+            const timeStr =
+              data.timeLeft >= 0
+                ? checkTime(new Date(data.timeLeft).getMinutes()) +
+                  ":" +
+                  checkTime(new Date(data.timeLeft).getSeconds())
+                : "00:" + checkTime(Math.floor(15 + data.timeLeft / 1000));
+            setTimeLeft(timeStr);
           }
         }
       };
@@ -83,28 +117,20 @@ function App() {
       console.log("no hay socket");
     }
 
-    return () => {
-      if (socket && chat && chat.mySocketId) {
-        let payload = { state: 4, message: "I'm leaving" };
-        if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
-        if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
-        socket.send(JSON.stringify(payload));
-      } else {
-        debugger;
-      }
-    };
+    // return () => {
+    //   if (socket && chat && chat.mySocketId) {
+    //     let payload = { state: 4, message: "I'm leaving" };
+    //     if (chat && chat.betterHalf) payload["receiverId"] = chat.betterHalf;
+    //     if (chat && chat.mySocketId) payload["senderId"] = chat.mySocketId;
+    //     socket.send(JSON.stringify(payload));
+    //   } else {
+    //     debugger;
+    //   }
+    // };
   }, []);
 
   const onHeart = () => {
-    if (socket) {
-      socket.send(
-        JSON.stringify({
-          state: 1,
-          receiverId: chat.betterHalf,
-          heart: true,
-        })
-      );
-    }
+    setLikeIt(true);
   };
 
   const onCancel = () => {
@@ -150,6 +176,7 @@ function App() {
         <Chat
           timeLeft={timeLeft}
           chat={chat}
+          finish={finish}
           socket={socket}
           messages={messages}
           sendMessage={sendMessage}

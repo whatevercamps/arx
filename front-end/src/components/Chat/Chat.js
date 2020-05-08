@@ -13,7 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import ChatMessage from "../ChatMessage";
-
+import LikeOrNot from "../LikeOrNot";
 const Chat = (props) => {
   const refForScroll = useRef();
 
@@ -40,6 +40,7 @@ const Chat = (props) => {
 
   return (
     <div className='Chat'>
+      {props.finish ? <LikeOrNot {...props} /> : <></>}
       <div className='row'>
         <div className='col-3'></div>
         <div className='col-6 chat-content'>

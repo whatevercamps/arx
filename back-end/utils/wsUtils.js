@@ -1,12 +1,21 @@
 const WebSocket = require("ws");
+const mu = require("./mongoUtils")();
 
 let connections = [];
 let conversations = [];
 
-const MAX_TIME = 10 * 1000;
+const MAX_TIME = 15 * 1000;
 
-const endConversation = (user1id, user2id) => {
+const isAMatch = (conversation) => {
+  return conversation.likes[0]["likeIt"] === true &&
+    conversation.likes[1]["likeIt"] === true
+    ? conversation
+    : false;
+};
+
+const endConversation = (user1id, user2id, conversation) => {
   console.log("terminando clientes", user1id, user2id);
+
   const sender = connections.find(
     (c) => c.state === 0 && c.socketId === user1id
   );
@@ -16,11 +25,11 @@ const endConversation = (user1id, user2id) => {
   if (sender && receiver) {
     sender["state"] = 1;
     receiver["state"] = 1;
-    console.log("le dieron dislike");
+
     sender.client.send(
       JSON.stringify({
         state: 5,
-        timeLeft: 0,
+        timeLeft: "its_gone",
         message: "La conversación ha terminado",
       })
     );
@@ -29,20 +38,28 @@ const endConversation = (user1id, user2id) => {
       receiver.client.send(
         JSON.stringify({
           state: 5,
-          timeLeft: 0,
+          timeLeft: "its_gone",
           message: "La conversación ha terminado",
         })
       );
-
-    if (conversations) {
-      conversations = conversations.filter(
-        (c) =>
-          c.user1 !== sender.socketId &&
-          c.user2 !== receiver.socketId &&
-          c.user2 !== sender.socketId &&
-          c.user1 !== receiver.socketId
-      );
+    if (conversation) {
+      mu.connect()
+        .then((client) => {
+          conversation["messages"] = [];
+          return mu.createConversation(client, conversation);
+        })
+        .catch((err) => {
+          console.log("error saving conversation", err);
+        });
     }
+
+    conversations = conversations.filter(
+      (c) =>
+        c.user1 !== sender.socketId &&
+        c.user2 !== receiver.socketId &&
+        c.user2 !== sender.socketId &&
+        c.user1 !== receiver.socketId
+    );
     console.log("paila chat");
   }
 };
@@ -51,23 +68,17 @@ const wsUtils = () => {
   const wsu = {};
 
   setInterval(() => {
-    console.log("clients now *****");
+    console.log("now ***** ", Date.now());
+    console.log("clients");
 
     console.log(
       connections.map((c) => {
         return { s: c.socketId, state: c.state, active: c.active };
       })
     );
-    console.log("conversations now *****");
+    console.log("conversations");
     console.log(conversations);
-  }, 6000);
-
-  const checkTime = (i) => {
-    if (i < 10) {
-      i = "0" + i;
-    } // add zero in front of numbers < 10
-    return i;
-  };
+  }, 5000);
 
   wsu.setWs = (server) => {
     const wss = new WebSocket.Server({ server });
@@ -84,25 +95,27 @@ const wsUtils = () => {
 
         if (conversation) {
           let millsLeft = Math.max(
-            0,
+            -15000,
             conversation.startTime + MAX_TIME - Date.now()
           );
-
           const payload = {
             state: 5,
-            timeLeft:
-              checkTime(new Date(millsLeft).getMinutes()) +
-              ":" +
-              checkTime(new Date(millsLeft).getSeconds()),
+            timeLeft: millsLeft,
           };
           ws.send(JSON.stringify(payload));
-
           if (millsLeft <= 0) {
+            console.log("etapa de terminacion", millsLeft);
             const killedId =
               conversation.user1 === id
                 ? conversation.user2
                 : conversation.user1;
-            endConversation(id, killedId);
+            if (conversation.likes.length >= 2) {
+              console.log("termina con Match: ", millsLeft);
+              endConversation(id, killedId, isAMatch(conversation));
+            } else if (millsLeft <= -15000) {
+              console.log("termina forzado: ", millsLeft);
+              endConversation(id, killedId, false);
+            }
           }
         }
       });
@@ -171,7 +184,8 @@ const wsUtils = () => {
               return c.user1 === id || c.user2 === id;
             });
 
-            if (conversation) conversation["likes"] += 1;
+            if (conversation)
+              conversation["likes"].push({ id: id, likeIt: jsonMessage.heart });
           }
           console.log("Dieron click al corazón");
           console.log(jsonMessage);
@@ -198,7 +212,7 @@ const wsUtils = () => {
             (c) => c.socketId !== jsonMessage.senderId
           );
         } else if (jsonMessage.state === 5) {
-          endConversation(id, jsonMessage.receiverId);
+          endConversation(id, jsonMessage.receiverId, false);
         }
       });
 
