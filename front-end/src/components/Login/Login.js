@@ -40,7 +40,10 @@ export default function Login() {
             </div>{" "}
             <div className='container-login100-form-btn'>
               {" "}
-              <button className='login100-form-btn'> Sign In </button>{" "}
+              <button className='login100-form-btn' type='submit'>
+                {" "}
+                Sign In{" "}
+              </button>{" "}
             </div>{" "}
             <div className='text-center p-t-20 p-b-10'>
               {" "}
@@ -55,7 +58,10 @@ export default function Login() {
                 {" "}
                 <i className='fab fa-facebook-f'></i>{" "}
               </a>{" "}
-              <a className='login100-social-item'>
+              <a
+                className='login100-social-item'
+                href='http://localhost:3001/auth/facebook'
+              >
                 {" "}
                 <i
                   className='fab fa-google'

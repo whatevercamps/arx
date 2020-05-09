@@ -24,19 +24,21 @@ function MatchList(props) {
           {props.conversations &&
             props.conversations.length &&
             props.conversations.map((chat) => (
-              <div className='row'>
+              <div className='row match-item'>
                 <div className='col-2'>
                   <i
-                    style={{ fontSize: "20px" }}
+                    style={{ fontSize: "35px" }}
                     class='fas fa-user-circle'
                   ></i>
                 </div>
                 <div className='col-10'>
                   <div className='row'>
                     <div className='col-8'>
-                      {props.user.name === chat.user1name
-                        ? chat.user2name
-                        : chat.user1name}
+                      {props.user.name === chat.user1name ? (
+                        <p>{chat.user2name}</p>
+                      ) : (
+                        <p>{chat.user1name}</p>
+                      )}
                     </div>
                     <div className='col-4'>
                       <small>12:44</small>

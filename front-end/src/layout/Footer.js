@@ -19,18 +19,33 @@ const Footer = () => {
             </p>
           </div>
           <div className='col-6 social'>
-            <span>
-              {" "}
-              <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
-            </span>
-            <span>
-              {" "}
-              <FontAwesomeIcon icon={faFacebook}></FontAwesomeIcon>
-            </span>
-            <span>
-              {" "}
-              <FontAwesomeIcon icon={faTwitter}></FontAwesomeIcon>
-            </span>
+            <a
+              href='https://www.instagram.com/arxapp/'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <span>
+                <FontAwesomeIcon icon={faInstagram}></FontAwesomeIcon>
+              </span>
+            </a>
+            <a
+              href='https://www.facebook.com/ArxColombia'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <span>
+                <FontAwesomeIcon icon={faFacebook}></FontAwesomeIcon>
+              </span>
+            </a>
+            <a
+              href='https://twitter.com/Arx_App'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              <span>
+                <FontAwesomeIcon icon={faTwitter}></FontAwesomeIcon>
+              </span>
+            </a>
           </div>
         </div>
       </div>

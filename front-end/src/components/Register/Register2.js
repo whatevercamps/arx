@@ -54,33 +54,33 @@ const Register2 = ({ changePage1, changePage3 }) => {
               <div class='custom-control custom-checkbox custom-control-inline'>
                 <input
                   type='checkbox'
-                  id='customRadioInline1'
-                  name='customRadioInline1'
+                  id='customCheckInline1'
+                  name='customCheckInline1'
                   class='custom-control-input'
                 />
-                <label class='custom-control-label' for='customRadioInline1'>
+                <label class='custom-control-label' for='customCheckInline1'>
                   Women{" "}
                 </label>
               </div>
               <div class='custom-control custom-checkbox custom-control-inline'>
                 <input
                   type='checkbox'
-                  id='customRadioInline2'
-                  name='customRadioInline1'
+                  id='customCheckInline2'
+                  name='customCheckInline2'
                   class='custom-control-input'
                 />
-                <label class='custom-control-label' for='customRadioInline2'>
+                <label class='custom-control-label' for='customCheckInline2'>
                   Men{" "}
                 </label>
               </div>
               <div class='custom-control custom-checkbox custom-control-inline'>
                 <input
                   type='checkbox'
-                  id='customRadioInline2'
-                  name='customRadioInline1'
+                  id='customCheckInline3'
+                  name='customCheckInline3'
                   class='custom-control-input'
                 />
-                <label class='custom-control-label' for='customRadioInline2'>
+                <label class='custom-control-label' for='customCheckInline3'>
                   Everyone{" "}
                 </label>
               </div>

@@ -331,17 +331,39 @@ p {
   margin-right: 10px;
 }
 
+/* MatchList Styles */
+
+.MatchList {
+  background-color: #fff;
+  height: 100%;
+  padding: 20px;
+}
+
+.MatchList h2 {
+  font-family: "Fashion Fetish";
+}
+
+.MatchList p {
+  font-family: "Avenir Next";
+}
+
+.MatchList .match-item:hover {
+  background-color: #ccc;
+}
+
 /* Footer Styles */
 
 .Footer p {
   color: #fff;
   font-family: "Fashion Fetish Light";
+  font-size: 14px;
 }
 
 .Footer {
   position: absolute;
   bottom: 0;
   width: 100%;
+  z-index: 4;
 }
 
 .Footer .container {
@@ -353,14 +375,11 @@ p {
   padding: 5px;
 }
 
+.Footer span a {
+  cursor: pointer;
+}
+
 .Footer .social {
   text-align: end;
   font-size: 20px;
-}
-
-/* MatchList Styles */
-
-.MatchList {
-  background-color: #fff;
-  height: 100%;
 }

@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle, faCommentDots } from "@fortawesome/free-solid-svg-icons";
 
-const Register3 = ({ changePage2, changePage4 }) => {
+const Register3 = ({ changePage2 }) => {
   return (
     <div className='Register'>
       <div className='container'>
@@ -10,10 +10,8 @@ const Register3 = ({ changePage2, changePage4 }) => {
         <div className='col-6 register-content'>
           <h2>Complete your profile</h2>
           <p>
-            And last but not least, select your tastes in the different
-            categories
+            And last but not least, select your tastes in different categories
           </p>
-          <h3>Movies</h3>
           <form action=''>
             <div className='form-group'>
               <label>
@@ -29,34 +27,34 @@ const Register3 = ({ changePage2, changePage4 }) => {
               <div className='row category'>
                 <div className='col-4'>
                   <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-                  <p>Drama</p>
+                  <p>La casa de Papel</p>
                 </div>
                 <div className='col-4'>
                   {" "}
                   <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-                  <p>Comedy</p>
+                  <p>J Balvin</p>
                 </div>
                 <div className='col-4'>
                   {" "}
                   <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-                  <p>Horror</p>
+                  <p>Mr. Robot</p>
                 </div>
               </div>
               <div className='row category'>
                 <div className='col-4'>
                   {" "}
                   <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-                  <p>Action</p>
+                  <p>Interstellar</p>
                 </div>
                 <div className='col-4'>
                   {" "}
                   <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-                  <p>Documentary</p>
+                  <p>La divina comedia</p>
                 </div>
                 <div className='col-4'>
                   {" "}
                   <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-                  <p>SciFi</p>
+                  <p>Dark</p>
                 </div>
               </div>
             </div>
@@ -69,7 +67,7 @@ const Register3 = ({ changePage2, changePage4 }) => {
               <div className='col-8'></div>
               <div className='col-2'>
                 {" "}
-                <button onClick={changePage4}> Next</button>
+                <button type='submit'> Finish</button>
               </div>
             </div>
           </form>
