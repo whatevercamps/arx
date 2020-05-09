@@ -59,6 +59,7 @@ li {
 .Login input {
   outline: none;
   border: none;
+  font-family: "Avenir Next";
 }
 
 .Login textarea {
@@ -119,6 +120,7 @@ input:focus {
   font-size: 16px;
   line-height: 1.4;
   color: #999999;
+  font-family: "Avenir Next";
 }
 
 .Login .txt2 {
@@ -174,6 +176,7 @@ input:focus {
   background: #fff;
   border-radius: 10px;
   overflow: hidden;
+  margin-bottom: 100px;
 
   box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
   -moz-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
@@ -189,9 +192,18 @@ input:focus {
   width: 100%;
 }
 
+.Login .login100-form #signup-link {
+  text-decoration: underline;
+}
+
+.Login .login100-form #sigup-link:hover {
+  text-decoration: underline;
+  color: #4b2354;
+}
+
 .Login .login100-form-title {
   display: block;
-  /* font-family: SourceSansPro-Bold; */
+  font-family: "Fashion Fetish";
   font-size: 30px;
   color: #4b2354;
   line-height: 1.2;
@@ -216,9 +228,9 @@ input:focus {
 
   display: block;
   width: 100%;
-  height: 62px;
+  height: 50px;
   background: transparent;
-  padding: 0 20px 0 23px;
+  padding: 0 10px 0 10px;
 }
 
 /*------------------------------------------------------------------
@@ -277,7 +289,7 @@ input:focus {
   padding: 0 20px;
   min-width: 160px;
   height: 50px;
-  background-color: #05c0a6;
+  background-color: rgba(149, 27, 129, 1);
   border-radius: 25px;
 
   /* font-family: SourceSansPro-SemiBold; */
@@ -291,20 +303,20 @@ input:focus {
   -moz-transition: all 0.4s;
   transition: all 0.4s;
 
-  box-shadow: 0 10px 30px 0px rgba(5, 192, 166, 0.2);
-  -moz-box-shadow: 0 10px 30px 0px rgba(5, 192, 166, 0.2);
-  -webkit-box-shadow: 0 10px 30px 0px rgba(5, 192, 166, 0.2);
-  -o-box-shadow: 0 10px 30px 0px rgba(5, 192, 166, 0.2);
-  -ms-box-shadow: 0 10px 30px 0px rgba(5, 192, 166, 0.2);
+  box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -moz-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -webkit-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -o-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -ms-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
 }
 
 .Login .login100-form-btn:hover {
-  background-color: #009580;
-  box-shadow: 0 10px 30px 0px rgba(0, 149, 128, 0.8);
-  -moz-box-shadow: 0 10px 30px 0px rgba(0, 149, 128, 0.8);
-  -webkit-box-shadow: 0 10px 30px 0px rgba(0, 149, 128, 0.8);
-  -o-box-shadow: 0 10px 30px 0px rgba(0, 149, 128, 0.8);
-  -ms-box-shadow: 0 10px 30px 0px rgba(0, 149, 128, 0.8);
+  background-color: #982f8c;
+  box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -moz-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -webkit-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -o-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -ms-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
 }
 
 /*------------------------------------------------------------------
