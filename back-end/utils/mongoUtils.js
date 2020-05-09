@@ -133,8 +133,23 @@ const MongoUtils = () => {
   };
 
   //
-  // Conversation operations
+  // Conversation functions
   //
+
+  mu.getConversations = (client, userid) => {
+    const query = {
+      $or: [{ user1dbId: userid }, { user2dbId: userid }],
+    };
+    return handler(client, "conversations")
+      .find(query)
+      .toArray()
+      .catch(function (e) {
+        throw e; //
+      })
+      .finally(() => {
+        client.close();
+      });
+  };
 
   mu.createConversation = (client, connection) => {
     console.log("creating conversation");
@@ -149,6 +164,26 @@ const MongoUtils = () => {
 
         client.close();
       });
+  };
+
+  mu.listenForChanges = (client, notify) => {
+    console.log("listening for changes");
+
+    const cursor = handler(client, "conversations").watch();
+
+    cursor.on("change", (conversation) => {
+      const user1id = conversation.fullDocument.user1dbId;
+      const user2id = conversation.fullDocument.user2dbId;
+
+      if (user1id && user2id) {
+        mu.connect()
+          .then((client2) => mu.getConversations(client2, user1id))
+          .then((conversations) => notify(user1id, conversations));
+        mu.connect()
+          .then((client2) => mu.getConversations(client2, user2id))
+          .then((conversations) => notify(user2id, conversations));
+      }
+    });
   };
 
   mu.addMessages = (client, user1id, user2id, messages) => {

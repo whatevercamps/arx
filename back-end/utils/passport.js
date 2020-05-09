@@ -55,8 +55,8 @@ module.exports = function (passport) {
           mu.connect()
             .then((client) => mu.findOrCreateUser(client, user))
             .then((resp) => {
-              console.log("resp", resp);
-              return cb(null, resp);
+              if (resp && resp.value) return cb(null, resp.value);
+              else return cb(new Error("User not found"));
             })
             .catch((err) => {
               return cb(err, null);
@@ -70,7 +70,6 @@ module.exports = function (passport) {
 
   passport.serializeUser(function (user, done) {
     console.log("serializing user", user);
-
     done(null, user);
   });
 

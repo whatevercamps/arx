@@ -7,7 +7,15 @@ const mu = MongoUtils();
 
 /* GET users listing. */
 router.get("/", function (req, res) {
-  res.send("respond with a resource");
+  mu.connect().then((client) =>
+    mu
+      .getConversations(client, req.query.userid || "another fake id")
+      .then((conversations) => {
+        console.log("got conversations", conversations);
+        res.status(200).json({ success: true, conversations: conversations });
+      })
+      .catch((err) => res.status(500).json({ success: false, error: err }))
+  );
 });
 
 router.post("/addMesagges", function (req, res) {

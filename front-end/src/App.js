@@ -7,6 +7,7 @@ import Footer from "./layout/Footer";
 import Login from "./components/Login/Login";
 import Chat from "./components/Chat/Chat";
 import Register from "./components/Register/Register";
+import Matches from "./components/Matches";
 import "./App.css";
 
 const socket = new WebSocket("ws://localhost:3001");
@@ -24,6 +25,8 @@ function App() {
   const [finishAuditer, setFinishAuditer] = useState(false);
   const [finish, setFinish] = useState(false);
 
+  const [conversations, setConversations] = useState([]);
+
   const checkTime = (i) => {
     if (i < 10) {
       i = "0" + i;
@@ -33,6 +36,9 @@ function App() {
 
   //login stuffs jaja
   useEffect(() => {
+    //fetch to get matche
+
+    //fetch to validate auth
     fetch("http://localhost:3001/auth/login/success", {
       method: "GET",
       credentials: "include",
@@ -47,12 +53,44 @@ function App() {
         throw new Error("failed to authenticate user");
       })
       .then((responseJson) => {
+        console.log("respuesta al login fetch", responseJson);
         setUser(responseJson && responseJson.user);
       })
       .catch((error) => {
-        console.log("error", error);
+        console.log("error ", error);
       });
   }, []);
+
+  useEffect(() => {
+    console.log("cambio user", user);
+    if (user && user._id) {
+      if (socket) socket.send(JSON.stringify({ state: 4, message: user._id }));
+      else {
+        //recargar sitio
+      }
+
+      fetch(`http://localhost:3001/conversations?userid=${user._id}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+      })
+        .then((res) => {
+          if (res.status === 200) return res.json();
+          throw new Error("failed to authenticate user");
+        })
+        .then((data) => {
+          console.log("respuesta al fetch de matchs", data);
+          setConversations(data && data.conversations);
+        })
+        .catch((error) => {
+          console.log("error ", error);
+        });
+    }
+  }, [user]);
 
   useEffect(() => {
     if (socket) {
@@ -103,18 +141,14 @@ function App() {
           };
           setChat(c);
         } else if (data.state === 5) {
-          // console.log("tiempo", data);
-
           if (data.timeLeft === "its_gone") {
             setMessages([]);
             setChat(null);
             setFinish(false);
-            setHeader(
-              "Welcome to Arx, start chatting and meeting new people! "
-            );
+            setHeader("Welcome to Arx, start chatting and meeting new people!");
           } else {
             if (data.timeLeft < 0) {
-              setFinish((f) => (f === true ? f : true));
+              setFinish(true);
             }
             const timeStr =
               data.timeLeft >= 0
@@ -124,6 +158,13 @@ function App() {
                 : "00:" + checkTime(Math.floor(15 + data.timeLeft / 1000));
             setTimeLeft(timeStr);
           }
+        } else if (data.state === 6) {
+          console.log("cambio daata conversations", data);
+          if (data.data) {
+            console.log("entro al if y cambio convs");
+
+            setConversations(data.data);
+          }
         }
       };
     } else {
@@ -132,7 +173,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (likeIt && finish && !finishAuditer) {
+    if (likeIt && finish && !finishAuditer && user && user._id && user.name) {
       console.log("detectó el like");
       if (socket) {
         socket.send(
@@ -140,6 +181,8 @@ function App() {
             state: 1,
             receiverId: chat.betterHalf,
             heart: true,
+            dbId: user._id,
+            userName: user.name,
           })
         );
         setFinishAuditer(true);
@@ -203,7 +246,7 @@ function App() {
           <Route path='/signup'>
             <Register />
           </Route>
-          <Route path='/'>
+          <Route path='/meet'>
             {user ? (
               !chat ? (
                 <Home header={header} initChatIntent={sendMessage} />
@@ -224,6 +267,14 @@ function App() {
               <Login />
             )}
           </Route>
+          <Route path='/'>
+            {user ? (
+              <Matches conversations={conversations} user={user} />
+            ) : (
+              <Login />
+            )}
+          </Route>
+          <Route path='/random'>{/* landing page */}</Route>
         </Switch>
         <Footer />
       </Router>

@@ -50,10 +50,11 @@ app.use(
 
 app.use("/meet", indexRouter);
 app.use("/users", usersRouter);
-app.use("/connections", connectionsRounter);
+app.use("/conversations", connectionsRounter);
 app.use("/auth", authRouter);
 
 const authCheck = (req, res, next) => {
+  console.log("authcheck", req.user);
   if (!req.user) {
     res.status(401).json({
       authenticated: false,

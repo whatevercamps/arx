@@ -60,18 +60,33 @@ const endConversation = (user1id, user2id, conversation) => {
 const wsUtils = () => {
   const wsu = {};
 
-  // setInterval(() => {
-  //   console.log("now ***** ", Date.now());
-  //   console.log("clients");
+  setInterval(() => {
+    console.log("now ***** ", Date.now());
+    console.log("clients");
 
-  //   console.log(
-  //     connections.map((c) => {
-  //       return { s: c.socketId, state: c.state, active: c.active };
-  //     })
-  //   );
-  //   console.log("conversations");
-  //   console.log(conversations);
-  // }, 5000);
+    console.log(
+      connections.map((c) => {
+        return {
+          dbId: c.dbId,
+          s: c.socketId,
+          state: c.state,
+          active: c.active,
+        };
+      })
+    );
+    console.log("conversations");
+    console.log(conversations);
+  }, 10000);
+
+  wsu.notify = (userid, data) => {
+    const conn = connections.find(
+      (c) => c.dbId === userid && c.active === true
+    );
+    console.log("client a notificar ", userid, conn && conn.socketId);
+
+    if (conn) conn.client.send(JSON.stringify({ state: 6, data: data }));
+    else console.log("no se pudo notificar", userid);
+  };
 
   wsu.setWs = (server) => {
     const wss = new WebSocket.Server({ server });
@@ -79,8 +94,11 @@ const wsUtils = () => {
       //el id de quien manda el mensaje
       const id = req.headers["sec-websocket-key"];
 
+      //ws.send(JSON.stringify({ state: 4, message: "i need your db id" }));
+
       ws.on("pong", function heartbeat() {
-        connections.find((c) => c.socketId === id)["active"] = true;
+        const conn = connections.find((c) => c.socketId === id);
+        if (conn) conn["active"] = true;
 
         const conversation = conversations.find(
           (c) => c.user1 === id || c.user2 === id
@@ -116,7 +134,8 @@ const wsUtils = () => {
       console.log("new connection", id);
 
       setInterval(() => {
-        connections.find((c) => c.socketId === id)["active"] = false;
+        const conn = connections.find((c) => c.socketId === id);
+        if (conn) conn["active"] = false;
         ws.ping(() => {});
       }, 1000);
 
@@ -166,7 +185,7 @@ const wsUtils = () => {
           } else {
             //guardo el mensaje para esperar a que haya un client que me lo pueda recibir
             const myself = connections.find((c) => c.socketId === id);
-            myself["lastMessage"] = jsonMessage.message;
+            if (myself) myself["lastMessage"] = jsonMessage.message;
           }
         }
         //el client manda un mensaje de configuración al servicio
@@ -177,7 +196,15 @@ const wsUtils = () => {
               return c.user1 === id || c.user2 === id;
             });
 
-            if (conversation) conversation["likes"].add(id);
+            if (conversation) {
+              conversation["likes"].add(id);
+              const indexName =
+                conversation.user1 === id
+                  ? ["user1dbId", "user1name"]
+                  : ["user2dbId", "user2name"];
+              conversation[indexName[0]] = jsonMessage.dbId;
+              conversation[indexName[1]] = jsonMessage.userName;
+            }
           }
           console.log("Dieron click al corazón");
           console.log(jsonMessage);
@@ -203,44 +230,45 @@ const wsUtils = () => {
           connections = connections.filter(
             (c) => c.socketId !== jsonMessage.senderId
           );
+        } else if (jsonMessage.state === 4) {
+          //al momento de la conexion si otro client estaba esperando se convierte en receiver
+          const sleeper = connections.find(
+            (c) =>
+              c.state === 1 &&
+              c.lastMessage !== undefined &&
+              c.lastMessage !== null &&
+              c.active === true
+          );
+          if (sleeper) {
+            ws.send(
+              JSON.stringify({
+                state: 0,
+                senderId: sleeper.socketId,
+                receiverId: id,
+                message: sleeper.lastMessage,
+              })
+            );
+            sleeper["state"] = 0;
+          }
+          //el client se agrego a la pool
+          connections.push({
+            socketId: id,
+            client: ws,
+            state: sleeper ? 0 : 1,
+            active: true,
+            dbId: jsonMessage.message,
+          });
+          console.log(
+            "on push",
+            !sleeper,
+            connections.map((c) => {
+              return { s: c.socketId, state: c.state };
+            })
+          );
         } else if (jsonMessage.state === 5) {
           endConversation(id, jsonMessage.receiverId, false);
         }
       });
-
-      //al momento de la conexion si otro client estaba esperando se convierte en receiver
-      const sleeper = connections.find(
-        (c) =>
-          c.state === 1 &&
-          c.lastMessage !== undefined &&
-          c.lastMessage !== null &&
-          c.active === true
-      );
-      if (sleeper) {
-        ws.send(
-          JSON.stringify({
-            state: 0,
-            senderId: sleeper.socketId,
-            receiverId: id,
-            message: sleeper.lastMessage,
-          })
-        );
-        sleeper["state"] = 0;
-      }
-      //el client se agrego a la pool
-      connections.push({
-        socketId: id,
-        client: ws,
-        state: sleeper ? 0 : 1,
-        active: true,
-      });
-      console.log(
-        "on push",
-        !sleeper,
-        connections.map((c) => {
-          return { s: c.socketId, state: c.state };
-        })
-      );
     });
 
     wss.on("close", function close(rea) {

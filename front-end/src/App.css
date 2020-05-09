@@ -55,10 +55,10 @@ body {
 }
 
 .Home .send-message input {
-  border: 2px solid #fff;
-  border-radius: 10px;
+  border: 2px solid #fff !important;
+  border-radius: 10px !important;
   background-color: transparent;
-  color: #fff;
+  color: #fff !important;
   width: 100%;
   max-width: 400px;
   font-size: 30px;
@@ -69,7 +69,7 @@ body {
 }
 
 .Home .send-message input:focus {
-  box-shadow: 0 0 2pt 2pt #fff;
+  outline: none;
 }
 
 .Home .send-message h1 {
@@ -356,4 +356,11 @@ p {
 .Footer .social {
   text-align: end;
   font-size: 20px;
+}
+
+/* MatchList Styles */
+
+.MatchList {
+  background-color: #fff;
+  height: 100%;
 }
