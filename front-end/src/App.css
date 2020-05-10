@@ -347,10 +347,73 @@ p {
   font-family: "Avenir Next";
 }
 
+.MatchList form input {
+  font-family: "Avenir Next";
+  width: 100%;
+}
+
+.MatchList form,
+label {
+  width: 100%;
+}
+
+.MatchList form .form-group {
+  margin-bottom: 0;
+}
+
+.MatchList hr {
+  margin: 5px;
+}
+
 .MatchList .match-item:hover {
   background-color: #ccc;
 }
 
+/* Profile styles */
+
+.Profile .profile-content {
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 15px;
+  max-width: 400px;
+  margin: auto;
+  -webkit-box-shadow: 42px 46px 20px -42px rgba(0, 0, 0, 0.71);
+  -moz-box-shadow: 42px 46px 20px -42px rgba(0, 0, 0, 0.71);
+  box-shadow: 42px 46px 20px -42px rgba(0, 0, 0, 0.71);
+  width: 85%;
+}
+
+.Profile .profile-content h3 {
+  padding: 8px;
+}
+
+.Profile .profile-content hr {
+  margin: 0;
+}
+
+.Profile .profile-content .tastes {
+  padding-top: 5px;
+}
+
+.Profile .profile-content .edit-profile {
+  padding-top: 5px;
+}
+
+.Profile .profile-content .edit-profile .edit-button {
+  background-color: #632c89;
+  color: #fff;
+  border-radius: 100%;
+  padding: 8px 10px 8px 10px;
+}
+
+.Profile .profile-content button {
+  background-color: transparent;
+  border: none;
+}
+
+.Profile .profile-content small {
+  font-family: "Avenir Next Bold";
+}
 /* Footer Styles */
 
 .Footer p {

@@ -17,8 +17,8 @@ function MatchList(props) {
             </label>
           </div>
         </form>
-        <hr />
       </div>
+      <hr />
       <div className='row'>
         <div className='col-12'>
           {props.conversations &&
