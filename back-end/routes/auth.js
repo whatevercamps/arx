@@ -3,16 +3,26 @@ var router = express.Router();
 const passport = require("passport");
 const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
 /* GET home page. */
-
+const mu = require("../utils/mongoUtils")();
 router.get("/login/success", (req, res) => {
   console.log("success? ", req.user);
   if (req.user) {
-    res.json({
-      success: true,
-      message: "user has successfully authenticated",
-      user: req.user,
-      cookies: req.cookies,
-    });
+    mu.connect()
+      .then((client) => mu.getUsers(client, req.user))
+      .then((resp) => {
+        console.log("success!*** ", resp);
+        if (resp && resp.length)
+          res.json({
+            success: true,
+            message: "user has successfully authenticated",
+            user: resp[0],
+            cookies: req.cookies,
+          });
+        else throw new Error("no user found");
+      })
+      .catch((err) => {
+        throw new Error("server error", err);
+      });
   } else {
     res.status(401).json({
       success: false,

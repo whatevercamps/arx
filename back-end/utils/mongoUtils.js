@@ -27,8 +27,8 @@ const MongoUtils = () => {
   // USER FUNCTIONS
   //
 
-  mu.getUsers = (client) => {
-    let query = {};
+  mu.getUsers = (client, userid) => {
+    let query = { _id: new ObjectID(userid) };
 
     return handler(client)
       .find(query)
@@ -50,8 +50,8 @@ const MongoUtils = () => {
           $setOnInsert: query,
         },
         {
-          new: true, // return new doc if one is upserted
           upsert: true, // insert the document if it does not exist
+          new: true, // return new doc if one is upserted
         }
       )
       .catch(function (e) {

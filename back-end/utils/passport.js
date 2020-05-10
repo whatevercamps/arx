@@ -55,7 +55,15 @@ module.exports = function (passport) {
           mu.connect()
             .then((client) => mu.findOrCreateUser(client, user))
             .then((resp) => {
-              if (resp && resp.value) return cb(null, resp.value);
+              console.log("user founded in line 58", resp);
+              if (resp && resp.value && resp.value._id)
+                return cb(null, resp.value._id);
+              else if (
+                resp &&
+                resp.lastErrorObject &&
+                resp.lastErrorObject.upserted
+              )
+                return cb(null, resp.lastErrorObject.upserted);
               else return cb(new Error("User not found"));
             })
             .catch((err) => {

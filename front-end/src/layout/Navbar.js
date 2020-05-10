@@ -67,12 +67,10 @@ const Navbar = (props) => {
                 <FontAwesomeIcon icon={faCommentDots}></FontAwesomeIcon>
               </span>
             </a>
-            <a href='/profile'>
-              <span onClick={props.handleLogout}>
-                {" "}
-                <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-              </span>
-            </a>
+            <span onClick={props.handleLogout}>
+              {" "}
+              <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
+            </span>
           </div>
         </div>
       </div>
