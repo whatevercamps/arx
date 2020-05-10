@@ -35,7 +35,7 @@ function MatchList(props) {
                   <div className='row'>
                     <div className='col-8'>
                       {props.user.name === chat.user1name ? (
-                        <p>{chat.user2name}</p>
+                        <p data-testid='name-display'>{chat.user2name}</p>
                       ) : (
                         <p>{chat.user1name}</p>
                       )}
