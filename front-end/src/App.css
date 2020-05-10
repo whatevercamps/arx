@@ -331,12 +331,18 @@ p {
   margin-right: 10px;
 }
 
+/* Matches Styles */
+
+.Matches {
+  background-color: #ccc;
+}
+
 /* MatchList Styles */
 
 .MatchList {
   background-color: #fff;
   height: 100%;
-  padding: 20px;
+  padding: 15px;
 }
 
 .MatchList h2 {
@@ -363,6 +369,31 @@ label {
 
 .MatchList hr {
   margin: 5px;
+}
+
+.MatchList .match-item {
+  padding: 8px;
+  margin: -10px;
+}
+
+.MatchList .match-item .name p {
+  font-family: "Avenir Next";
+  font-weight: bold;
+  font-size: 16px;
+  color: #000;
+  margin-bottom: 0;
+}
+
+.MatchList .match-item .message p {
+  font-family: "Avenir Next";
+  color: #707070;
+  font-size: 14px;
+  margin-bottom: 0;
+}
+
+.MatchList .match-item hr {
+  width: 100%;
+  margin: 0;
 }
 
 .MatchList .match-item:hover {

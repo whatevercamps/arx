@@ -33,25 +33,26 @@ function MatchList(props) {
                 </div>
                 <div className='col-10'>
                   <div className='row'>
-                    <div className='col-8'>
-                      {props.user.name === chat.user1name ? (
+                    <div className='col-9 name'>
+                      {props.user.name === <p>{chat.user1name}</p> ? (
                         <p data-testid='name-display'>{chat.user2name}</p>
                       ) : (
                         <p>{chat.user1name}</p>
                       )}
                     </div>
-                    <div className='col-4'>
+                    <div className='col-3'>
                       <small>12:44</small>
                     </div>
                   </div>
                   <div className='row'>
-                    <div className='col-12'>
-                      {chat.messages &&
-                        chat.messages.length &&
-                        chat.messages[chat.messages.length - 1]}
+                    <div className='col-12 message'>
+                      {chat.messages && chat.messages.length && (
+                        <p>{chat.messages[chat.messages.length - 1]}</p>
+                      )}
                     </div>
                   </div>
                 </div>
+                <hr />
               </div>
             ))}
         </div>
