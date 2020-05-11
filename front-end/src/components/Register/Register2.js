@@ -1,8 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faInstagram } from "@fortawesome/free-brands-svg-icons";
+import AgeRanger from "../AgeRanger";
 
 const Register2 = ({ changePage1, changePage3 }) => {
+  const [ages, setAges] = useState([18, 90]);
   return (
     <div className='Register'>
       <div className='container'>
@@ -12,8 +14,12 @@ const Register2 = ({ changePage1, changePage3 }) => {
           <p>
             Now lets add information that your better half would like to know
           </p>
-          <form action=''>
-            <div className='form-group gender'>
+          <form
+            action=''
+            className='row'
+            style={{ marginLeft: "5%", marginRight: "5%" }}
+          >
+            <div className='form-group gender col-md-6'>
               <label>Looking for</label>
               <div class='custom-control custom-checkbox custom-control-inline'>
                 <input
@@ -45,44 +51,18 @@ const Register2 = ({ changePage1, changePage3 }) => {
                   class='custom-control-input'
                 />
                 <label class='custom-control-label' for='customCheckInline3'>
-                  Everyone{" "}
+                  Both{" "}
                 </label>
               </div>
             </div>
-
-            <div className='form-group'>
+            <div className='form-group col-md-6'>
               <label>
-                About you
-                <input type='textarea' className='form-control' />
+                Age
+                <AgeRanger ages={ages} setAges={setAges} />
               </label>
-            </div>
-            <div className='form-group'>
-              <label>
-                School
-                <input
-                  type='text'
-                  className='form-control'
-                  placeholder='Universidad de los Andes'
-                />
-              </label>
-            </div>
-            <div className='form-group'>
-              <label>Instagram Photos</label>
-              <button id='instagram'>
-                {" "}
-                <FontAwesomeIcon
-                  icon={faInstagram}
-                  id='insta'
-                ></FontAwesomeIcon>
-                Connect Instagram
-              </button>
             </div>
             <div className='row'>
-              {" "}
-              <div className='col-2'>
-                <button onClick={changePage1}> Back</button>
-              </div>
-              <div className='col-8'></div>
+              <div className='col-10'></div>
               <div className='col-2'>
                 {" "}
                 <button onClick={changePage3}> Next</button>

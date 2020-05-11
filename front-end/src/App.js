@@ -10,7 +10,6 @@ import Register from "./components/Register/Register";
 import RegisterInit from "./components/Register/RegisterInit";
 import Matches from "./components/Matches";
 import "./App.css";
-import Register1 from "./components/Register/Register1";
 
 const socket = new WebSocket("ws://localhost:3001");
 
@@ -336,7 +335,7 @@ function App() {
                   />
                 )
               ) : (
-                <Register1 />
+                <Register />
               )
             ) : (
               <Login setUser={setUser} />
@@ -355,7 +354,7 @@ function App() {
                   currentConversationMessages={currentConversationMessages}
                 />
               ) : (
-                <Register1 />
+                <Register />
               )
             ) : (
               <Login setUser={setUser} />
