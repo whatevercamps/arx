@@ -12,7 +12,7 @@ function Matches(props) {
   }, [props]);
 
   return (
-    <div>
+    <div className='Matches'>
       <div className='row'>
         <div className='col-3'>
           <MatchList {...props} />

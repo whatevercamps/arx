@@ -65,8 +65,9 @@
 
 .chat-space .yours .message {
   margin-right: 25%;
-  background-color: #eee;
+  background-color: #606060;
   position: relative;
+  color: #fff;
 }
 
 .chat-space .yours .message.last:before {
@@ -77,7 +78,7 @@
   left: -7px;
   height: 20px;
   width: 20px;
-  background: #eee;
+  background: #606060;
   border-bottom-right-radius: 15px;
 }
 .chat-space .yours .message.last:after {
@@ -88,7 +89,7 @@
   left: -10px;
   width: 10px;
   height: 20px;
-  background: white;
+  background: #606060;
   border-bottom-right-radius: 10px;
 }
 
@@ -99,7 +100,7 @@
 .chat-space .mine .message {
   color: white;
   margin-left: 25%;
-  background: linear-gradient(to bottom, #00d0ea 0%, #0085d1 100%);
+  background: #a076b5;
   background-attachment: fixed;
   position: relative;
 }
@@ -112,7 +113,7 @@
   right: -8px;
   height: 20px;
   width: 20px;
-  background: linear-gradient(to bottom, #00d0ea 0%, #0085d1 100%);
+  background: #a076b5;
   background-attachment: fixed;
   border-bottom-left-radius: 15px;
 }
