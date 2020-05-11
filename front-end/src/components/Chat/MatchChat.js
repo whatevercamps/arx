@@ -45,26 +45,13 @@ const MatchChat = (props) => {
       ) : (
         <></>
       )}
-      <div className='row'>
+      <div className='row matchChat'>
         <div className='col-12 chat-content'>
           <div className='chat'>
             <div className='row chat-header'>
-              <div className={props.timeLeft ? "col-8" : "col-12"}>
+              <div className='col-12 current-header'>
                 <h3>David Bautista</h3>
               </div>
-              {props.timeLeft && (
-                <div className='row col-4 time'>
-                  <div className='col-7'>
-                    <FontAwesomeIcon
-                      icon={faClock}
-                      id='clock'
-                    ></FontAwesomeIcon>
-                  </div>
-                  <div className='col-5'>
-                    <p>{props.timeLeft}</p>
-                  </div>
-                </div>
-              )}
             </div>
             <hr></hr>
             <div ref={refForScroll} className='chat-space'>
@@ -72,25 +59,27 @@ const MatchChat = (props) => {
                 <ChatMessage message={message.split("%=%splitmessage%=%")} />
               ))}
             </div>
-            <form onSubmit={onMessageSent}>
-              <div className='row send'>
-                <div className='col-11 message'>
-                  <input
-                    type='text'
-                    value={message}
-                    onChange={(evt) => {
-                      setMessage(evt.target.value);
-                    }}
-                  />
+            <div className='send-space'>
+              <form onSubmit={onMessageSent}>
+                <div className='row send'>
+                  <div className='col-11 message'>
+                    <input
+                      type='text'
+                      value={message}
+                      onChange={(evt) => {
+                        setMessage(evt.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className='col-1 send-icon'>
+                    <button type='submit' className='paper'>
+                      {" "}
+                      <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
+                    </button>
+                  </div>
                 </div>
-                <div className='col-1 send-icon'>
-                  <button type='submit' className='paper'>
-                    {" "}
-                    <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
-                  </button>
-                </div>
-              </div>
-            </form>
+              </form>
+            </div>
           </div>
         </div>
       </div>

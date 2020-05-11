@@ -58,10 +58,10 @@ function Matches(props) {
   return (
     <div className='Matches'>
       <div className='row'>
-        <div className='col-3'>
+        <div className='col-3 matchList'>
           <MatchList {...props} setCurrentChat={setCurrentConversation} />
         </div>
-        <div className='col-5'>
+        <div className='col-5 currentChat'>
           {currentChat && currentChat.messages ? (
             <MatchChat
               messages={currentChat.messages}

@@ -337,12 +337,32 @@ p {
   background-color: #ccc;
 }
 
+.Matches .matchList {
+  padding-right: 0;
+}
+
+.Matches .currentChat {
+  padding-left: 0;
+}
+
 /* MatchList Styles */
 
 .MatchList {
   background-color: #fff;
   height: 100%;
-  padding: 15px;
+  padding: 0px 15px 15px 15px;
+  border-right: 1px solid #ccc;
+}
+
+.MatchList .match-header {
+  background-color: #f1f1f1;
+}
+
+.MatchList .match-header .header {
+  width: 100%;
+  border-bottom: 1px solid #ccc;
+  border-width: 100%;
+  padding: 15px 15px 5px 15px;
 }
 
 .MatchList h2 {
@@ -357,13 +377,17 @@ p {
   font-family: "Avenir Next";
   width: 100%;
   border-radius: 10px;
-  background-color: #e1e1e1;
+  background-color: #fff;
   color: #000;
 }
 
 .MatchList form,
 label {
   width: 100%;
+}
+
+.MatchList form {
+  padding: 15px;
 }
 
 .MatchList form .form-group {
@@ -376,7 +400,7 @@ label {
 
 .MatchList .match-item {
   padding: 8px;
-  padding-top: 0;
+  padding-top: 5px;
 }
 
 .MatchList .match-item .name p {
@@ -489,6 +513,11 @@ label {
 
 /* MatchChat styling */
 
+.MatchChat {
+  background-color: #fff;
+  height: 100%;
+}
+
 .MatchChat hr {
   margin: 0;
 }
@@ -502,8 +531,40 @@ label {
   padding-left: 0px;
 }
 
+.MatchChat .chat-content .chat-header {
+  margin: 0;
+}
+
+.MatchChat .chat-content .chat-header .current-header {
+  background-color: #f1f1f1;
+  padding: 10px;
+}
+
+.MatchChat .chat-content .chat-header .current-header h3 {
+  padding-top: 5px;
+}
+
 .MatchChat .chat-content .chat .send input {
   font-family: "Avenir Next";
+  border-radius: 10px;
+  width: 100%;
+  border: 2px solid rgba(149, 27, 129, 1);
+  padding: 2px;
+}
+
+.MatchChat .chat-content .chat .send {
+  margin: 0;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border-top: 1px solid #ccc;
+}
+
+.MatchChat .chat-content .chat {
+  height: 100%;
+}
+
+.MatchChat .chat-content .chat form .send {
+  width: 100%;
 }
 
 .MatchChat .chat-content .chat .send .send-icon {
@@ -516,6 +577,16 @@ label {
   background-color: rgba(149, 27, 129, 1);
   color: #fff;
   border-radius: 50%;
-  padding: 6px;
+  padding: 6px 8px 6px 8px;
   border: none;
+}
+
+.MatchChat .matchChat {
+  height: 100%;
+}
+
+.MatchChat .chat-content .chat-space {
+  height: 460px;
+  max-height: 460px;
+  overflow-y: scroll;
 }

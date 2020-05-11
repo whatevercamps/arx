@@ -4,21 +4,16 @@ import PropTypes from "prop-types";
 function MatchList(props) {
   return (
     <div className='MatchList'>
-      <div className='row no-gutters'>
+      <div className='row match-header'>
+        <div className='header'>
+          <h2>Chats</h2>
+        </div>
         <form>
           <div className='form-group'>
-            <label>
-              <h2>Chats</h2>
-              <input
-                type='text'
-                placeholder='Search'
-                className='form-control'
-              />
-            </label>
+            <input type='text' placeholder='Search' className='form-control' />
           </div>
         </form>
       </div>
-      <hr />
       <div className='row'>
         <div className='col-12'>
           {props.conversations &&
