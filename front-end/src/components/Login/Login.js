@@ -1,15 +1,73 @@
-import React from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import "./Login.css";
 import "./Utils.css";
 
-export default function Login() {
+export default function Login(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const history = useHistory();
+  const handleSubmit = (evt) => {
+    evt.preventDefault();
+    if (email && email.trim() != "" && password.trim().length > 8) {
+      const payload = {
+        email: email,
+        password: password,
+      };
+      console.log("registrando", payload);
+
+      fetch("http://localhost:3001/auth/getTokenWithEmail", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify(payload),
+      })
+        .then((res) => {
+          if (res.status && res.status === 200) return res.json();
+        })
+        .then((data) => {
+          if (data && data.success) {
+            fetch("http://localhost:3001/auth/emailValidate", {
+              method: "GET",
+              credentials: "include",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Credentials": true,
+              },
+            })
+              .then((res) => {
+                if (res.status && res.status === 200) return res.json();
+              })
+              .then((data) => {
+                if (data && data.success && data.user) {
+                  props.setUser(data.user);
+                } else {
+                  console.log("error validating data", data);
+                }
+              })
+              .catch((err) => {
+                console.log("err validating", err);
+              });
+          } else console.log("error", data);
+        })
+        .catch((err) => {
+          console.log("errrror", err);
+        });
+    }
+  };
+
   return (
     <div className='Login'>
       <div className='container-login100'>
         {" "}
         <div className='wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30'>
           {" "}
-          <form className='login100-form validate-form'>
+          <form className='login100-form validate-form' onSubmit={handleSubmit}>
             {" "}
             <span className='login100-form-title p-b-37'> Sign In </span>{" "}
             <div
@@ -21,7 +79,8 @@ export default function Login() {
                 className='input100'
                 type='text'
                 name='username'
-                placeholder='username or email'
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder='email'
               />{" "}
               <span className='focus-input100'></span>{" "}
             </div>{" "}
@@ -33,6 +92,7 @@ export default function Login() {
               <input
                 className='input100'
                 type='password'
+                onChange={(e) => setPassword(e.target.value)}
                 name='pass'
                 placeholder='password'
               />{" "}

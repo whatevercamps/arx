@@ -1,6 +1,8 @@
 import React from "react";
 
 const Register1 = ({ changePage2 }) => {
+  const endFirstStep = () => {};
+
   return (
     <div className='Register'>
       <div className='container'>
@@ -14,41 +16,17 @@ const Register1 = ({ changePage2 }) => {
                 Name
                 <input
                   type='text'
-                  disabled
                   placeholder='David Bautista'
                   className='form-control'
                 />
               </label>
             </div>
-            <div className='form-group'>
-              <label>
-                Email
-                <input
-                  type='email'
-                  disabled
-                  placeholder='dj.bautista10@gmail.com'
-                  className='form-control'
-                />
-              </label>
-            </div>
-            <div className='form-group'>
-              <label>
-                Phone
-                <input
-                  type='text'
-                  className='form-control'
-                  placeholder='3421253478'
-                />
-              </label>
-            </div>
-            <div className='form-group'>
-              <label>
+            <div className='form-group row'>
+              <label className='col-md-4'>
                 Age
                 <input type='number' className='form-control' />
               </label>
-            </div>
-            <div className='form-group'>
-              <label>
+              <label className='col-md-8'>
                 City
                 <input
                   type='text'
@@ -56,6 +34,42 @@ const Register1 = ({ changePage2 }) => {
                   placeholder='Bogotá'
                 />
               </label>
+            </div>
+            <div className='form-group gender'>
+              <label>Gender</label>
+              <div class='custom-control custom-radio custom-control-inline'>
+                <input
+                  type='radio'
+                  id='customRadioInline1'
+                  name='customRadioInline1'
+                  class='custom-control-input'
+                />
+                <label class='custom-control-label' for='customRadioInline1'>
+                  Male{" "}
+                </label>
+              </div>
+              <div class='custom-control custom-radio custom-control-inline'>
+                <input
+                  type='radio'
+                  id='customRadioInline2'
+                  name='customRadioInline1'
+                  class='custom-control-input'
+                />
+                <label class='custom-control-label' for='customRadioInline2'>
+                  Female{" "}
+                </label>
+              </div>
+              <div class='custom-control custom-radio custom-control-inline'>
+                <input
+                  type='radio'
+                  id='customRadioInline2'
+                  name='customRadioInline1'
+                  class='custom-control-input'
+                />
+                <label class='custom-control-label' for='customRadioInline2'>
+                  Other{" "}
+                </label>
+              </div>
             </div>
             <div className='row'>
               {" "}

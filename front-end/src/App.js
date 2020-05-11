@@ -10,6 +10,7 @@ import Register from "./components/Register/Register";
 import RegisterInit from "./components/Register/RegisterInit";
 import Matches from "./components/Matches";
 import "./App.css";
+import Register1 from "./components/Register/Register1";
 
 const socket = new WebSocket("ws://localhost:3001");
 
@@ -87,33 +88,55 @@ function App() {
   //login stuffs jaja
   useEffect(() => {
     //fetch to get matche
-
-    //fetch to validate auth
-    fetch("http://localhost:3001/auth/login/success", {
-      method: "GET",
-      credentials: "include",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-        "Access-Control-Allow-Credentials": true,
-      },
-    })
-      .then((response) => {
-        if (response.status === 200) return response.json();
-        throw new Error("failed to authenticate user");
+    if (!user)
+      //fetch to validate auth
+      fetch("http://localhost:3001/auth/login/success", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
       })
-      .then((responseJson) => {
-        console.log("respuesta al login fetch", responseJson);
-        setUser(responseJson && responseJson.user);
-      })
-      .catch((error) => {
-        console.log("error ", error);
-      });
+        .then((response) => {
+          if (response.status === 200) return response.json();
+          throw new Error("failed to authenticate user");
+        })
+        .then((responseJson) => {
+          console.log("respuesta al login fetch", responseJson);
+          setUser(responseJson && responseJson.user);
+        })
+        .catch((error) => {
+          console.log("error ", error);
+          fetch("http://localhost:3001/auth/emailValidate", {
+            method: "GET",
+            credentials: "include",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+              "Access-Control-Allow-Credentials": true,
+            },
+          })
+            .then((res) => {
+              if (res.status && res.status === 200) return res.json();
+            })
+            .then((data) => {
+              if (data && data.success && data.user) {
+                setUser(data.user);
+              } else {
+                console.log("error validating data", data);
+              }
+            })
+            .catch((err) => {
+              console.log("err validating", err);
+            });
+        });
   }, []);
 
   useEffect(() => {
     console.log("cambio user", user);
-    if (user && user._id) {
+    if (user && user._id && user.name) {
       if (socket) socket.send(JSON.stringify({ state: 4, message: user._id }));
       else {
         //recargar sitio
@@ -289,45 +312,53 @@ function App() {
         <Navbar handleLogout={handleLogout} />
         <Switch>
           <Route path='/signin'>
-            <Login />
+            <Login setUser={setUser} />
           </Route>
           <Route path='/signup'>
             <RegisterInit />
           </Route>
           <Route path='/meet'>
             {user ? (
-              !chat ? (
-                <Home header={header} initChatIntent={sendMessage} />
+              user.name ? (
+                !chat ? (
+                  <Home header={header} initChatIntent={sendMessage} />
+                ) : (
+                  <Chat
+                    timeLeft={timeLeft}
+                    chat={chat}
+                    finish={finish}
+                    likeIt={likeIt}
+                    socket={socket}
+                    messages={messages}
+                    sendMessage={sendMessage}
+                    onHeart={onHeart}
+                    onCancel={onCancel}
+                  />
+                )
               ) : (
-                <Chat
-                  timeLeft={timeLeft}
-                  chat={chat}
-                  finish={finish}
-                  likeIt={likeIt}
-                  socket={socket}
-                  messages={messages}
-                  sendMessage={sendMessage}
-                  onHeart={onHeart}
-                  onCancel={onCancel}
-                />
+                <Register1 />
               )
             ) : (
-              <Login />
+              <Login setUser={setUser} />
             )}
           </Route>
           <Route path='/'>
             {user ? (
-              <Matches
-                conversations={conversations.conversations}
-                user={user}
-                currentChat={
-                  conversations.conversations[currentConversationIndex]
-                }
-                setCurrentConversation={setCurrentConversationIndex}
-                currentConversationMessages={currentConversationMessages}
-              />
+              user.name ? (
+                <Matches
+                  conversations={conversations.conversations}
+                  user={user}
+                  currentChat={
+                    conversations.conversations[currentConversationIndex]
+                  }
+                  setCurrentConversation={setCurrentConversationIndex}
+                  currentConversationMessages={currentConversationMessages}
+                />
+              ) : (
+                <Register1 />
+              )
             ) : (
-              <Login />
+              <Login setUser={setUser} />
             )}
           </Route>
           <Route path='/random'>{/* landing page */}</Route>

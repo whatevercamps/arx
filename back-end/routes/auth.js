@@ -114,10 +114,8 @@ router.post("/getTokenWithEmail", (req, res) => {
                 msg: "Your token expires in 1 hour",
                 token: token,
               });
-            return res
-              .status(200)
-              .cookie("jwt", token, { httpOnly: true, secure: false })
-              .redirect("/");
+            res.cookie("jwt", token, { httpOnly: true, secure: false });
+            return res.status(200).json({ success: true });
           } else {
             return res.json({
               success: false,
@@ -153,7 +151,7 @@ router.get(
   }),
   (req, res) => {
     let user = req.user;
-    console.log(user);
+    console.log("user from token, ", user);
     if (user) delete user["password"];
     res.status(200).json({
       success: true,
@@ -176,7 +174,7 @@ router.get(
 router.get(
   "/facebook/callback",
   passport.authenticate("facebook", {
-    failureRedirect: "/login",
+    failureRedirect: "/signin",
     successRedirect: CLIENT_HOME_PAGE_URL,
   }),
   function (req, res) {

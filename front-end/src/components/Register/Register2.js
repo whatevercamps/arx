@@ -14,42 +14,6 @@ const Register2 = ({ changePage1, changePage3 }) => {
           </p>
           <form action=''>
             <div className='form-group gender'>
-              <label>Gender</label>
-              <div class='custom-control custom-radio custom-control-inline'>
-                <input
-                  type='radio'
-                  id='customRadioInline1'
-                  name='customRadioInline1'
-                  class='custom-control-input'
-                />
-                <label class='custom-control-label' for='customRadioInline1'>
-                  Male{" "}
-                </label>
-              </div>
-              <div class='custom-control custom-radio custom-control-inline'>
-                <input
-                  type='radio'
-                  id='customRadioInline2'
-                  name='customRadioInline1'
-                  class='custom-control-input'
-                />
-                <label class='custom-control-label' for='customRadioInline2'>
-                  Female{" "}
-                </label>
-              </div>
-              <div class='custom-control custom-radio custom-control-inline'>
-                <input
-                  type='radio'
-                  id='customRadioInline2'
-                  name='customRadioInline1'
-                  class='custom-control-input'
-                />
-                <label class='custom-control-label' for='customRadioInline2'>
-                  Other{" "}
-                </label>
-              </div>
-            </div>
-            <div className='form-group gender'>
               <label>Looking for</label>
               <div class='custom-control custom-checkbox custom-control-inline'>
                 <input

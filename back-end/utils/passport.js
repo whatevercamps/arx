@@ -21,6 +21,7 @@ module.exports = function (passport) {
 
   passport.use(
     new JwtStrategy(opts, (jwt_payload, done) => {
+      console.log("user from token in passport ", jwt_payload);
       mu.connect()
         .then((client) => mu.getUsers(client, jwt_payload._id))
         .then((users) => {
