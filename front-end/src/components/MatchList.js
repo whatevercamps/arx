@@ -23,8 +23,11 @@ function MatchList(props) {
         <div className='col-12'>
           {props.conversations &&
             props.conversations.length &&
-            props.conversations.map((chat) => (
-              <div className='row match-item'>
+            props.conversations.map((chat, index) => (
+              <div
+                className='row match-item'
+                onClick={() => props.setCurrentChat(index)}
+              >
                 <div className='col-2'>
                   <i
                     style={{ fontSize: "35px" }}

@@ -50,17 +50,22 @@ const Chat = (props) => {
         <div className='col-6 chat-content'>
           <div className='chat'>
             <div className='row chat-header'>
-              <div className='col-8'>
-                <h2>David Bautista</h2>
+              <div className={props.timeLeft ? "col-8" : "col-12"}>
+                <h3>David Bautista</h3>
               </div>
-              <div className='row col-4 time'>
-                <div className='col-7'>
-                  <FontAwesomeIcon icon={faClock} id='clock'></FontAwesomeIcon>
+              {props.timeLeft && (
+                <div className='row col-4 time'>
+                  <div className='col-7'>
+                    <FontAwesomeIcon
+                      icon={faClock}
+                      id='clock'
+                    ></FontAwesomeIcon>
+                  </div>
+                  <div className='col-5'>
+                    <p>{props.timeLeft}</p>
+                  </div>
                 </div>
-                <div className='col-5'>
-                  <p>{props.timeLeft || "5:00"}</p>
-                </div>
-              </div>
+              )}
             </div>
             <hr></hr>
             <div ref={refForScroll} className='chat-space'>
@@ -90,54 +95,65 @@ const Chat = (props) => {
           </div>
         </div>
         <div className='col-3'>
-          <div className='actions'>
-            <ul>
-              <li>
-                {" "}
-                <button onClick={onHeart}>
+          {props.matchChat === false && (
+            <div className='actions'>
+              <ul>
+                <li>
                   {" "}
-                  <FontAwesomeIcon icon={faHeart} id='heart'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button onClick={onCancel}>
-                  <FontAwesomeIcon icon={faStar} id='star'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button>
+                  <button onClick={onHeart}>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faHeart}
+                      id='heart'
+                    ></FontAwesomeIcon>
+                  </button>
+                </li>
+                <li>
                   {" "}
-                  <FontAwesomeIcon icon={faSmile} id='smile'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button>
+                  <button onClick={onCancel}>
+                    <FontAwesomeIcon icon={faStar} id='star'></FontAwesomeIcon>
+                  </button>
+                </li>
+                <li>
                   {" "}
-                  <FontAwesomeIcon icon={faFilm} id='film'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button>
+                  <button>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faSmile}
+                      id='smile'
+                    ></FontAwesomeIcon>
+                  </button>
+                </li>
+                <li>
                   {" "}
-                  <FontAwesomeIcon icon={faMagic} id='magic'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button onClick={onCancel}>
+                  <button>
+                    {" "}
+                    <FontAwesomeIcon icon={faFilm} id='film'></FontAwesomeIcon>
+                  </button>
+                </li>
+                <li>
                   {" "}
-                  <FontAwesomeIcon
-                    icon={faTimesCircle}
-                    id='cancel'
-                  ></FontAwesomeIcon>
-                </button>
-              </li>
-            </ul>
-          </div>
+                  <button>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faMagic}
+                      id='magic'
+                    ></FontAwesomeIcon>
+                  </button>
+                </li>
+                <li>
+                  {" "}
+                  <button onClick={onCancel}>
+                    {" "}
+                    <FontAwesomeIcon
+                      icon={faTimesCircle}
+                      id='cancel'
+                    ></FontAwesomeIcon>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </div>
     </div>
