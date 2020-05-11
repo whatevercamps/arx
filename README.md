@@ -42,4 +42,6 @@ The npm run build, generates a folder called build in the front-end which repres
 
 # Overview 🌄
 
+![ArxDemoGif](https://i.imgur.com/2nYGg5F.gif)
+
 Made by [Juan Felipe Torres](https://github.com/jftorresp) and [David Bautista](https://github.com/whatevercamps), licenced under MIT 👌
