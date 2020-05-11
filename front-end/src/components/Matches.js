@@ -55,6 +55,7 @@ function Matches(props) {
         <div className='col-5 currentChat'>
           {props.currentChat && props.currentChat.messages ? (
             <MatchChat
+              user={props.user}
               messages={props.currentChat.messages}
               sendMessage={sendMessage}
             />

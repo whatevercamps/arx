@@ -32,10 +32,12 @@ function MatchList(props) {
                 <div className='col-10'>
                   <div className='row'>
                     <div className='col-9 name'>
-                      {props.user.name === <p>{chat.user1name}</p> ? (
-                        <p data-testid='name-display'>{chat.user2name}</p>
+                      {props.user.name === chat.user1name ? (
+                        <p data-testid='name-display'>
+                          {chat.user2name.split(" ")[0]}
+                        </p>
                       ) : (
-                        <p>{chat.user1name}</p>
+                        <p>{chat.user1name.split(" ")[0]}</p>
                       )}
                     </div>
                     <div className='col-3'>

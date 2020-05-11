@@ -56,7 +56,10 @@ const MatchChat = (props) => {
             <hr></hr>
             <div ref={refForScroll} className='chat-space'>
               {props.messages.map((message) => (
-                <ChatMessage message={message.split("%=%splitmessage%=%")} />
+                <ChatMessage
+                  user={props.user}
+                  message={message.split("%=%splitmessage%=%")}
+                />
               ))}
             </div>
             <div className='send-space'>
