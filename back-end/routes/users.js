@@ -45,16 +45,24 @@ router.post("/update", function (req, res) {
   if (req.body.email) user["email"] = req.body.email;
   if (req.body.info) user["info"] = req.body.info;
   if (req.body.city) user["city"] = req.body.city;
+  if (req.body.age) user["age"] = req.body.age;
   if (req.body.phone) user["phone"] = req.body.phone;
+  if (req.body.about) user["about"] = req.body.about;
+  if (req.body.gender) user["gender"] = req.body.gender;
+
+  console.log("user", user);
 
   mu.connect()
     .then((client) => mu.updateUser(client, req.query.userid, user))
     .then((resp) => {
-      res.status(200).json({
-        success: true,
-        msg: "User updated successfully",
-        data: resp,
-      });
+      console.log("response", resp);
+      if (resp && resp.value)
+        res.status(200).json({
+          success: true,
+          msg: "User updated successfully",
+          data: resp.value,
+        });
+      else throw new Error("response not found", resp);
     })
     .catch((err) => {
       return res.status(500).json({

@@ -93,7 +93,11 @@ const MongoUtils = () => {
   mu.updateUser = (client, userId, user) => {
     console.log("user", user);
     return handler(client)
-      .findOneAndUpdate({ _id: new ObjectID(userId) }, { $set: user })
+      .findOneAndUpdate(
+        { _id: new ObjectID(userId) },
+        { $set: user },
+        { returnNewDocument: true, new: true }
+      )
       .catch(function (e) {
         console.log("catch in model", e);
         throw e; //

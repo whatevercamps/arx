@@ -49,13 +49,6 @@ const Register2 = ({ changePage1, changePage3 }) => {
                 </label>
               </div>
             </div>
-
-            <div className='form-group'>
-              <label>
-                About you
-                <input type='textarea' className='form-control' />
-              </label>
-            </div>
             <div className='form-group'>
               <label>
                 School
