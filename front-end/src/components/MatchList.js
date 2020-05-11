@@ -50,7 +50,12 @@ function MatchList(props) {
                   <div className='row'>
                     <div className='col-12 message'>
                       {chat.messages && chat.messages.length && (
-                        <p>{chat.messages[chat.messages.length - 1]}</p>
+                        <p>
+                          {chat.messages[chat.messages.length - 1] &&
+                            chat.messages[chat.messages.length - 1].split(
+                              "%=%splitmessage%=%"
+                            )[1]}
+                        </p>
                       )}
                     </div>
                   </div>
