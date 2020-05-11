@@ -1,7 +1,42 @@
-import React from "react";
+import React, { useState } from "react";
 
-const Register1 = ({ changePage2 }) => {
-  const endFirstStep = () => {};
+const Register1 = (props) => {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState(0);
+  const [city, setCity] = useState("");
+  const [gender, setGender] = useState("");
+  const [about, setAbout] = useState("");
+
+  const endFirstStep = (evt) => {
+    evt.preventDefault();
+    const payload = {
+      name: name,
+      age: age,
+      gender: gender,
+      city: city,
+      about: about,
+    };
+    console.log("user", props.user);
+    if (props.user)
+      fetch(`http://localhost:3001/users/update?userid=${props.user._id}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+
+        body: JSON.stringify(payload),
+      })
+        .then((res) => {
+          if (res.status && res.status === 200) return res.json();
+        })
+        .then((data) => {
+          console.log("data", data);
+          props.changePage2();
+        });
+  };
 
   return (
     <div className='Register'>
@@ -10,7 +45,7 @@ const Register1 = ({ changePage2 }) => {
         <div className='col-6 register-content'>
           <h2>Complete your profile</h2>
           <p>Complete your profile adding some information in the next steps</p>
-          <form action=''>
+          <form onSubmit={endFirstStep}>
             <div className='form-group'>
               <label>
                 Name
@@ -18,13 +53,18 @@ const Register1 = ({ changePage2 }) => {
                   type='text'
                   placeholder='David Bautista'
                   className='form-control'
+                  onChange={(e) => setName(e.target.value)}
                 />
               </label>
             </div>
             <div className='form-group row'>
               <label className='col-md-4'>
                 Age
-                <input type='number' className='form-control' />
+                <input
+                  type='number'
+                  className='form-control'
+                  onChange={(e) => setAge(e.target.value)}
+                />
               </label>
               <label className='col-md-8'>
                 City
@@ -32,6 +72,17 @@ const Register1 = ({ changePage2 }) => {
                   type='text'
                   className='form-control'
                   placeholder='Bogotá'
+                  onChange={(e) => setCity(e.target.value)}
+                />
+              </label>
+            </div>
+            <div className='form-group'>
+              <label>
+                About you
+                <input
+                  type='textarea'
+                  className='form-control'
+                  onChange={(e) => setAbout(e.target.value)}
                 />
               </label>
             </div>
@@ -43,6 +94,7 @@ const Register1 = ({ changePage2 }) => {
                   id='customRadioInline1'
                   name='customRadioInline1'
                   class='custom-control-input'
+                  onChange={(e) => setGender(e.target.value)}
                 />
                 <label class='custom-control-label' for='customRadioInline1'>
                   Male{" "}
@@ -52,7 +104,7 @@ const Register1 = ({ changePage2 }) => {
                 <input
                   type='radio'
                   id='customRadioInline2'
-                  name='customRadioInline1'
+                  name='customRadioInline2'
                   class='custom-control-input'
                 />
                 <label class='custom-control-label' for='customRadioInline2'>
@@ -62,11 +114,11 @@ const Register1 = ({ changePage2 }) => {
               <div class='custom-control custom-radio custom-control-inline'>
                 <input
                   type='radio'
-                  id='customRadioInline2'
-                  name='customRadioInline1'
+                  id='customRadioInline3'
+                  name='customRadioInline3'
                   class='custom-control-input'
                 />
-                <label class='custom-control-label' for='customRadioInline2'>
+                <label class='custom-control-label' for='customRadioInline3'>
                   Other{" "}
                 </label>
               </div>
@@ -76,7 +128,7 @@ const Register1 = ({ changePage2 }) => {
               <div className='col-10'></div>
               <div className='col-2'>
                 {" "}
-                <button onClick={changePage2}>Next</button>
+                <button type='submit'>Next</button>
               </div>
             </div>
           </form>

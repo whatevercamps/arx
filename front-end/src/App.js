@@ -335,7 +335,7 @@ function App() {
                   />
                 )
               ) : (
-                <Register />
+                <Register user={user} />
               )
             ) : (
               <Login setUser={setUser} />
@@ -354,7 +354,7 @@ function App() {
                   currentConversationMessages={currentConversationMessages}
                 />
               ) : (
-                <Register />
+                <Register user={user} />
               )
             ) : (
               <Login setUser={setUser} />
