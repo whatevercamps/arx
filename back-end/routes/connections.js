@@ -18,7 +18,7 @@ router.get("/", function (req, res) {
   );
 });
 
-router.post("/addMesagges", function (req, res) {
+router.post("/addMessages", function (req, res) {
   mu.connect()
     .then((client) =>
       mu.addMessages(
@@ -29,6 +29,7 @@ router.post("/addMesagges", function (req, res) {
       )
     )
     .then((resp) => {
+      console.log("resp", resp);
       res.status(200).json({
         success: true,
         msg: "Messages added successfully",
@@ -36,6 +37,7 @@ router.post("/addMesagges", function (req, res) {
       });
     })
     .catch((err) => {
+      console.log("error", err);
       return res.status(500).json({
         success: false,
         msg: "Failure adding messages",

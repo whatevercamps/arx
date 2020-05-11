@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MatchList from "./MatchList";
 import Profile from "./Profile";
-import Chat from "./Chat/Chat";
+import MatchChat from "./Chat/MatchChat";
 
 function Matches(props) {
   const [currentChat, setCurrentChat] = useState(null);
@@ -22,6 +22,39 @@ function Matches(props) {
       setCurrentChat(props.conversations[index]);
   };
 
+  const sendMessage = (message) => {
+    if (
+      message.trim().trim().length &&
+      currentChat &&
+      currentChat.user1dbId &&
+      currentChat.user2dbId &&
+      props.user &&
+      props.user._id
+    ) {
+      const payload = {
+        user1id: currentChat.user1dbId,
+        user2id: currentChat.user2dbId,
+        messages: [`${props.user._id}%=%splitmessage%=%${message}`],
+      };
+      fetch("http://localhost:3001/conversations/addMessages", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "Access-Control-Allow-Credentials": true,
+        },
+        body: JSON.stringify(payload),
+      }).then((res) => {
+        console.log("resp", res);
+
+        if (res.status === 200) {
+          console.log("mensaje enviado");
+        }
+      });
+    }
+  };
+
   return (
     <div className='Matches'>
       <div className='row'>
@@ -30,7 +63,10 @@ function Matches(props) {
         </div>
         <div className='col-5'>
           {currentChat && currentChat.messages ? (
-            <Chat messages={currentChat.messages} />
+            <MatchChat
+              messages={currentChat.messages}
+              sendMessage={sendMessage}
+            />
           ) : (
             <></>
           )}

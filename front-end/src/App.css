@@ -486,3 +486,36 @@ label {
   text-align: end;
   font-size: 20px;
 }
+
+/* MatchChat styling */
+
+.MatchChat hr {
+  margin: 0;
+}
+
+.MatchChat .chat-content .chat .send > div {
+  text-align: end;
+}
+
+.MatchChat .chat-content .chat .send .message {
+  padding-right: 10px;
+  padding-left: 0px;
+}
+
+.MatchChat .chat-content .chat .send input {
+  font-family: "Avenir Next";
+}
+
+.MatchChat .chat-content .chat .send .send-icon {
+  padding-left: 0;
+  padding-right: 0px;
+}
+
+.MatchChat .chat-content .chat .send .send-icon .paper {
+  font-size: 15px;
+  background-color: rgba(149, 27, 129, 1);
+  color: #fff;
+  border-radius: 50%;
+  padding: 6px;
+  border: none;
+}

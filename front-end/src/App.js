@@ -84,7 +84,7 @@ function App() {
         })
         .then((data) => {
           console.log("respuesta al fetch de matchs", data);
-          setConversations(data && data.conversations);
+          if (data && data.conversations) setConversations(data.conversations);
         })
         .catch((error) => {
           console.log("error ", error);

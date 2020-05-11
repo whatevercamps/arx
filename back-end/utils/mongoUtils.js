@@ -151,6 +151,18 @@ const MongoUtils = () => {
       });
   };
 
+  mu.getConversation = (client, query) => {
+    return handler(client, "conversations")
+      .find(query)
+      .toArray()
+      .catch(function (e) {
+        throw e; //
+      })
+      .finally(() => {
+        client.close();
+      });
+  };
+
   mu.createConversation = (client, connection) => {
     console.log("creating conversation");
 
@@ -166,37 +178,47 @@ const MongoUtils = () => {
       });
   };
 
-  mu.listenForChanges = (client, notify) => {
+  mu.listenForChanges = (client, notifyAll) => {
     console.log("listening for changes");
 
     const cursor = handler(client, "conversations").watch();
 
     cursor.on("change", (conversation) => {
-      const user1id = conversation.fullDocument.user1dbId;
-      const user2id = conversation.fullDocument.user2dbId;
+      console.log("change", conversation);
 
-      if (user1id && user2id) {
-        mu.connect()
-          .then((client2) => mu.getConversations(client2, user1id))
-          .then((conversations) => notify(user1id, conversations));
-        mu.connect()
-          .then((client2) => mu.getConversations(client2, user2id))
-          .then((conversations) => notify(user2id, conversations));
-      }
+      mu.connect()
+        .then((client2) =>
+          mu.getConversation(client2, conversation.documentKey)
+        )
+        .then((conversations) => {
+          console.log("conversacion cambiada", conversation);
+
+          if (
+            conversations &&
+            conversations.length &&
+            conversations[0].user1dbId &&
+            conversations[0].user2dbId
+          )
+            notifyAll(
+              [conversations[0].user1dbId, conversations[0].user2dbId],
+              conversations[0]
+            );
+        });
     });
   };
 
   mu.addMessages = (client, user1id, user2id, messages) => {
-    return handler(client)
-      .findOneAndUpdate(
-        {
-          $or: [
-            { user1id: new ObjectID(user1id), user2id: new ObjectID(user2id) },
-            { user2id: new ObjectID(user2id), user1id: new ObjectID(user1id) },
-          ],
-        },
-        { $push: { messages: { $each: messages } } }
-      )
+    const query = {
+      $or: [
+        { user1dbId: user1id, user2dbId: user2id },
+        { user1dbId: user2id, user2dbId: user1id },
+      ],
+    };
+    const update = { $push: { messages: { $each: messages } } };
+    console.debug("query", JSON.stringify(query));
+    console.debug("update", JSON.stringify(update));
+    return handler(client, "conversations")
+      .findOneAndUpdate(query, update)
       .catch(function (e) {
         console.log("catch in model", e);
         throw e; //

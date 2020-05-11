@@ -60,23 +60,23 @@ const endConversation = (user1id, user2id, conversation) => {
 const wsUtils = () => {
   const wsu = {};
 
-  setInterval(() => {
-    console.log("now ***** ", Date.now());
-    console.log("clients");
+  // setInterval(() => {
+  //   console.log("now ***** ", Date.now());
+  //   console.log("clients");
 
-    console.log(
-      connections.map((c) => {
-        return {
-          dbId: c.dbId,
-          s: c.socketId,
-          state: c.state,
-          active: c.active,
-        };
-      })
-    );
-    console.log("conversations");
-    console.log(conversations);
-  }, 10000);
+  //   console.log(
+  //     connections.map((c) => {
+  //       return {
+  //         dbId: c.dbId,
+  //         s: c.socketId,
+  //         state: c.state,
+  //         active: c.active,
+  //       };
+  //     })
+  //   );
+  //   console.log("conversations");
+  //   console.log(conversations);
+  // }, 10000);
 
   wsu.notify = (userid, data) => {
     const conn = connections.find(
@@ -86,6 +86,20 @@ const wsUtils = () => {
 
     if (conn) conn.client.send(JSON.stringify({ state: 6, data: data }));
     else console.log("no se pudo notificar", userid);
+  };
+
+  wsu.notifyAll = (users_ids, data) => {
+    console.log("usuarios a notificar", users_ids);
+
+    const conns = connections.filter(
+      (c) => c.active === true && users_ids.find((uid) => uid === c.socketId)
+    );
+
+    console.log("connections encontradas", conns);
+    conns.forEach((conn) => {
+      console.log("client a notificar ", conn && conn.socketId);
+      conn.client.send(JSON.stringify({ state: 6, data: data }));
+    });
   };
 
   wsu.setWs = (server) => {
