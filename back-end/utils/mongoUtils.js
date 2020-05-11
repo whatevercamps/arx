@@ -27,6 +27,22 @@ const MongoUtils = () => {
   // USER FUNCTIONS
   //
 
+  mu.getUsersByEmail = (client, email) => {
+    let query = { email: email };
+    console.log("query", query);
+
+    return handler(client)
+      .find(query)
+      .toArray()
+      .catch(function (e) {
+        console.log("catch in model", e);
+        throw e; //
+      })
+      .finally(() => {
+        client.close();
+      });
+  };
+
   mu.getUsers = (client, userid) => {
     let query = { _id: new ObjectID(userid) };
 
@@ -42,12 +58,12 @@ const MongoUtils = () => {
       });
   };
 
-  mu.findOrCreateUser = (client, query) => {
+  mu.findOrCreateUser = (client, query, doc) => {
     return handler(client)
       .findOneAndUpdate(
         query,
         {
-          $setOnInsert: query,
+          $setOnInsert: doc || query,
         },
         {
           upsert: true, // insert the document if it does not exist
