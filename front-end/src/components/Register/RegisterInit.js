@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import "./Register.css";
 import "./Utils1.css";
 
@@ -29,6 +30,9 @@ export default function RegisterInit() {
           "Access-Control-Allow-Credentials": true,
         },
         body: JSON.stringify(payload),
+      }).then((resp) => {
+        console.log("resp line 33", resp);
+        if (resp.status !== 200) window.location("/");
       });
     }
   };

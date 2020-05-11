@@ -43,6 +43,8 @@ router.get("/login/failed", (req, res) => {
 });
 
 router.get("/logout", (req, res) => {
+  console.log("logout intent");
+
   req.logout();
   res.redirect(CLIENT_HOME_PAGE_URL);
 });

@@ -12,7 +12,7 @@ import {
   faTimesCircle,
 } from "@fortawesome/free-solid-svg-icons";
 
-import ChatMessage from "../ChatMessage";
+import ChatMessage from "../ChatMatchMessage";
 import LikeOrNot from "../LikeOrNot";
 const MatchChat = (props) => {
   const refForScroll = useRef();

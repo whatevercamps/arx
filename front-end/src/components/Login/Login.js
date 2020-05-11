@@ -46,6 +46,7 @@ export default function Login(props) {
               .then((data) => {
                 if (data && data.success && data.user) {
                   props.setUser(data.user);
+                  window.location("/");
                 } else {
                   console.log("error validating data", data);
                 }

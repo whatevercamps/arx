@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const Register1 = (props) => {
   const [name, setName] = useState("");
@@ -6,6 +6,16 @@ const Register1 = (props) => {
   const [city, setCity] = useState("");
   const [gender, setGender] = useState("");
   const [about, setAbout] = useState("");
+
+  useEffect(() => {
+    if (props.user) {
+      setName(props.user.name || "");
+      setAge(props.user.age);
+      setCity(props.user.city || "");
+      setGender(props.user.gender || []);
+      setAbout(props.user.about || "");
+    }
+  }, [props.user]);
 
   const endFirstStep = (evt) => {
     evt.preventDefault();
@@ -34,6 +44,7 @@ const Register1 = (props) => {
         })
         .then((data) => {
           console.log("data", data);
+          props.changeUserData(payload);
           props.changePage2();
         });
   };
@@ -53,6 +64,7 @@ const Register1 = (props) => {
                   type='text'
                   placeholder='David Bautista'
                   className='form-control'
+                  value={name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </label>
@@ -60,16 +72,26 @@ const Register1 = (props) => {
             <div className='form-group row'>
               <label className='col-md-4'>
                 Age
-                <input
-                  type='number'
-                  className='form-control'
-                  onChange={(e) => setAge(e.target.value)}
-                />
+                {age ? (
+                  <input
+                    type='number'
+                    value={age}
+                    className='form-control'
+                    onChange={(e) => setAge(1 * e.target.value)}
+                  />
+                ) : (
+                  <input
+                    type='number'
+                    className='form-control'
+                    onChange={(e) => setAge(1 * e.target.value)}
+                  />
+                )}
               </label>
               <label className='col-md-8'>
                 City
                 <input
                   type='text'
+                  value={city}
                   className='form-control'
                   placeholder='Bogotá'
                   onChange={(e) => setCity(e.target.value)}
@@ -81,6 +103,7 @@ const Register1 = (props) => {
                 About you
                 <input
                   type='textarea'
+                  value={about}
                   className='form-control'
                   onChange={(e) => setAbout(e.target.value)}
                 />
@@ -88,38 +111,46 @@ const Register1 = (props) => {
             </div>
             <div className='form-group gender'>
               <label>Gender</label>
-              <div class='custom-control custom-radio custom-control-inline'>
+              <div className='custom-control custom-radio custom-control-inline'>
                 <input
                   type='radio'
                   id='customRadioInline1'
                   name='customRadioInline1'
-                  class='custom-control-input'
-                  onChange={(e) => setGender(e.target.value)}
+                  className='custom-control-input'
                 />
-                <label class='custom-control-label' for='customRadioInline1'>
+                <label
+                  className='custom-control-label'
+                  for='customRadioInline1'
+                >
                   Male{" "}
                 </label>
               </div>
-              <div class='custom-control custom-radio custom-control-inline'>
+              <div className='custom-control custom-radio custom-control-inline'>
                 <input
                   type='radio'
                   id='customRadioInline2'
                   name='customRadioInline2'
-                  class='custom-control-input'
+                  className='custom-control-input'
                 />
-                <label class='custom-control-label' for='customRadioInline2'>
+                <label
+                  className='custom-control-label'
+                  for='customRadioInline2'
+                >
                   Female{" "}
                 </label>
               </div>
-              <div class='custom-control custom-radio custom-control-inline'>
+              <div className='custom-control custom-radio custom-control-inline'>
                 <input
                   type='radio'
                   id='customRadioInline3'
                   name='customRadioInline3'
-                  class='custom-control-input'
+                  className='custom-control-input'
                 />
-                <label class='custom-control-label' for='customRadioInline3'>
-                  Other{" "}
+                <label
+                  className='custom-control-label'
+                  for='customRadioInline3'
+                >
+                  Non Binary{" "}
                 </label>
               </div>
             </div>

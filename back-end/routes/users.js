@@ -40,15 +40,17 @@ router.post("/", function (req, res) {
 
 router.post("/update", function (req, res) {
   let user = {};
+
   if (req.body.name) user["name"] = req.body.name;
   if (req.body.phone) user["phone"] = req.body.phone;
-  if (req.body.email) user["email"] = req.body.email;
-  if (req.body.info) user["info"] = req.body.info;
   if (req.body.city) user["city"] = req.body.city;
-  if (req.body.age) user["age"] = req.body.age;
+  if (req.body.age) user["age"] = req.body.age * 1;
   if (req.body.phone) user["phone"] = req.body.phone;
   if (req.body.about) user["about"] = req.body.about;
   if (req.body.gender) user["gender"] = req.body.gender;
+  if (req.body.lkfAgeMin) user["lkfAgeMin"] = req.body.lkfAgeMin;
+  if (req.body.lkfAgeMax) user["lkfAgeMax"] = req.body.lkfAgeMax;
+  if (req.body.lkfGender) user["lkfGender"] = req.body.lkfGender;
 
   console.log("user", user);
 

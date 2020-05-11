@@ -60,23 +60,23 @@ const endConversation = (user1id, user2id, conversation) => {
 const wsUtils = () => {
   const wsu = {};
 
-  // setInterval(() => {
-  //   console.log("now ***** ", Date.now());
-  //   console.log("clients");
+  setInterval(() => {
+    console.log("now ***** ", Date.now());
+    console.log("clients");
 
-  //   console.log(
-  //     connections.map((c) => {
-  //       return {
-  //         dbId: c.dbId,
-  //         s: c.socketId,
-  //         state: c.state,
-  //         active: c.active,
-  //       };
-  //     })
-  //   );
-  //   console.log("conversations");
-  //   console.log(conversations);
-  // }, 10000);
+    console.log(
+      connections.map((c) => {
+        return {
+          dbId: c.dbId,
+          s: c.socketId,
+          state: c.state,
+          active: c.active,
+        };
+      })
+    );
+    console.log("conversations");
+    console.log(conversations);
+  }, 3000);
 
   wsu.notify = (userid, data) => {
     const conn = connections.find(

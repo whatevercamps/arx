@@ -1,17 +1,17 @@
 {
   "users": [
     {
-      "city": "bogotá",
-      "phone": 3488935,
-      "name": "ksjad aksd",
       "email": "daskl@mail.com",
-      "profile_pic": "s3 url",
+      "password": "asdjkadkl",
       "info": {
+              "city": "bogotá",
+                    "phone": 3488935,
         "gender": [
           "M",
           "F",
           "NB"
         ],
+        "name": "ksjad aksd",
         "age": 123,
         "description": "asjkdjasdjkaskjdkajda",
         "school": "dfsd",

@@ -59,6 +59,14 @@ function App() {
   };
   const [conversations, dispatch] = useReducer(reducer, initialState);
 
+  const changeUserData = (payload) => {
+    let us = { ...user };
+    for (let attr in payload) {
+      us[attr] = payload[attr];
+    }
+    setUser(us);
+  };
+
   useEffect(() => {
     console.log(
       "cambiooooo",
@@ -318,7 +326,12 @@ function App() {
           </Route>
           <Route path='/meet'>
             {user ? (
-              user.name ? (
+              user.name &&
+              user.gender &&
+              user.age &&
+              user.lkfAgeMin &&
+              user.lkfAgeMax &&
+              user.lkfGender ? (
                 !chat ? (
                   <Home header={header} initChatIntent={sendMessage} />
                 ) : (
@@ -335,7 +348,7 @@ function App() {
                   />
                 )
               ) : (
-                <Register user={user} />
+                <Register user={user} changeUserData={changeUserData} />
               )
             ) : (
               <Login setUser={setUser} />
@@ -343,18 +356,40 @@ function App() {
           </Route>
           <Route path='/'>
             {user ? (
-              user.name ? (
-                <Matches
-                  conversations={conversations.conversations}
-                  user={user}
-                  currentChat={
-                    conversations.conversations[currentConversationIndex]
-                  }
-                  setCurrentConversation={setCurrentConversationIndex}
-                  currentConversationMessages={currentConversationMessages}
-                />
+              user.name &&
+              user.gender &&
+              user.age &&
+              user.lkfAgeMin &&
+              user.lkfAgeMax &&
+              user.lkfGender ? (
+                conversations.conversations &&
+                conversations.conversations.length ? (
+                  <Matches
+                    conversations={conversations.conversations}
+                    user={user}
+                    currentChat={
+                      conversations.conversations[currentConversationIndex]
+                    }
+                    setCurrentConversation={setCurrentConversationIndex}
+                    currentConversationMessages={currentConversationMessages}
+                  />
+                ) : !chat ? (
+                  <Home header={header} initChatIntent={sendMessage} />
+                ) : (
+                  <Chat
+                    timeLeft={timeLeft}
+                    chat={chat}
+                    finish={finish}
+                    likeIt={likeIt}
+                    socket={socket}
+                    messages={messages}
+                    sendMessage={sendMessage}
+                    onHeart={onHeart}
+                    onCancel={onCancel}
+                  />
+                )
               ) : (
-                <Register user={user} />
+                <Register user={user} changeUserData={changeUserData} />
               )
             ) : (
               <Login setUser={setUser} />

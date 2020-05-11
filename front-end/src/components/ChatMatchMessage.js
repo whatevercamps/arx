@@ -5,7 +5,9 @@ function ChatMessage(props) {
     props.message && (
       <div
         className={
-          props.message[0] === "true" ? "mine messages" : "yours messages"
+          props.message[0] === props.user._id
+            ? "mine messages"
+            : "yours messages"
         }
       >
         <div className='message'>{props.message[1]}</div>
