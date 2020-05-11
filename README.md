@@ -12,7 +12,7 @@ Arx is a speed dating website that consists of dating based on a single chat for
 
 # Server 🖥
 
-You can see the server running by following this link 👉 http://arx-speeddating.herokuapp.com/🏻 
+You can see the server running by following this link 👉 http://arx-speeddating.herokuapp.com/
 
 # Technologies 🤓 
 
