@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import Home from "./Home";
 import Home from "./Home";
@@ -25,7 +25,56 @@ function App() {
   const [finishAuditer, setFinishAuditer] = useState(false);
   const [finish, setFinish] = useState(false);
 
-  const [conversations, setConversations] = useState([]);
+  const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
+  const initialState = {
+    conversations: [],
+  };
+  const [
+    currentConversationMessages,
+    setCurrentConversationMessages,
+  ] = useState([]);
+
+  const [pruebaState, setPruebaState] = useState(false);
+  const reducer = (state, action) => {
+    console.log("state en reducer", state);
+    switch (action.type) {
+      case "changeConv":
+        return {
+          ...state,
+          conversations: state.conversations.map((cc) =>
+            (cc.user1dbId === action.payload.user1dbId &&
+              cc.user2dbId === action.payload.user2dbId) ||
+            (cc.user1dbId === action.payload.user2dbId &&
+              cc.user2dbId === action.payload.user1dbId)
+              ? action.payload
+              : cc
+          ),
+        };
+      case "changeAll":
+        return { ...state, conversations: action.payload };
+      default:
+        return state;
+    }
+  };
+  const [conversations, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    console.log(
+      "cambiooooo",
+      conversations,
+      conversations.length,
+      currentConversationIndex
+    );
+    if (
+      conversations &&
+      conversations.length &&
+      currentConversationIndex !== undefined &&
+      currentConversationIndex !== null
+    )
+      setCurrentConversationMessages(
+        conversations[currentConversationIndex].messages || []
+      );
+  }, [conversations]);
 
   const checkTime = (i) => {
     if (i < 10) {
@@ -84,7 +133,8 @@ function App() {
         })
         .then((data) => {
           console.log("respuesta al fetch de matchs", data);
-          if (data && data.conversations) setConversations(data.conversations);
+          if (data && data.conversations)
+            dispatch({ type: "changeAll", payload: data.conversations });
         })
         .catch((error) => {
           console.log("error ", error);
@@ -160,11 +210,8 @@ function App() {
           }
         } else if (data.state === 6) {
           console.log("cambio daata conversations", data);
-          if (data.data) {
-            console.log("entro al if y cambio convs");
-
-            setConversations(data.data);
-          }
+          const conversation = data.data;
+          dispatch({ type: "changeConv", payload: conversation });
         }
       };
     } else {
@@ -269,7 +316,15 @@ function App() {
           </Route>
           <Route path='/'>
             {user ? (
-              <Matches conversations={conversations} user={user} />
+              <Matches
+                conversations={conversations.conversations}
+                user={user}
+                currentChat={
+                  conversations.conversations[currentConversationIndex]
+                }
+                setCurrentConversation={setCurrentConversationIndex}
+                currentConversationMessages={currentConversationMessages}
+              />
             ) : (
               <Login />
             )}

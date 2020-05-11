@@ -91,9 +91,11 @@ const wsUtils = () => {
   wsu.notifyAll = (users_ids, data) => {
     console.log("usuarios a notificar", users_ids);
 
-    const conns = connections.filter(
-      (c) => c.active === true && users_ids.find((uid) => uid === c.socketId)
-    );
+    const conns = connections.filter((c) => {
+      const is = c.active === true && users_ids.find((uid) => uid === c.dbId);
+      console.log("con ana***", c, is);
+      return is;
+    });
 
     console.log("connections encontradas", conns);
     conns.forEach((conn) => {
