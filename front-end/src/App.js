@@ -7,6 +7,7 @@ import Footer from "./layout/Footer";
 import Login from "./components/Login/Login";
 import Chat from "./components/Chat/Chat";
 import Register from "./components/Register/Register";
+import RegisterInit from "./components/Register/RegisterInit";
 import Matches from "./components/Matches";
 import "./App.css";
 
@@ -291,7 +292,7 @@ function App() {
             <Login />
           </Route>
           <Route path='/signup'>
-            <Register />
+            <RegisterInit />
           </Route>
           <Route path='/meet'>
             {user ? (

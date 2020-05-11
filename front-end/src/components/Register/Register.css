@@ -1,0 +1,448 @@
+.RegisterInit * {
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+}
+
+.RegisterInit body,
+html {
+  height: 100%;
+  /* font-family: SourceSansPro-Regular, sans-serif; */
+}
+
+/*---------------------------------------------*/
+.RegisterInit a {
+  /* font-family: SourceSansPro-Regular; */
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+  transition: all 0.4s;
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+}
+
+.RegisterInit a:focus {
+  outline: none !important;
+}
+
+.RegisterInit a:hover {
+  text-decoration: none;
+}
+
+/*---------------------------------------------*/
+.RegisterInit h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0px;
+}
+
+.RegisterInit p {
+  /* font-family: SourceSansPro-Regular; */
+  font-size: 14px;
+  line-height: 1.7;
+  color: #666666;
+  margin: 0px;
+}
+
+.RegisterInit ul,
+li {
+  margin: 0px;
+  list-style-type: none;
+}
+
+/*---------------------------------------------*/
+.RegisterInit input {
+  outline: none;
+  border: none;
+  font-family: "Avenir Next";
+}
+
+.RegisterInit textarea {
+  outline: none;
+  border: none;
+}
+
+.RegisterInit textarea:focus,
+input:focus {
+  border-color: transparent !important;
+}
+
+.RegisterInit input::-webkit-input-placeholder {
+  color: #4b2354;
+}
+.RegisterInit input:-moz-placeholder {
+  color: #4b2354;
+}
+.RegisterInit input::-moz-placeholder {
+  color: #4b2354;
+}
+.RegisterInit input:-ms-input-placeholder {
+  color: #4b2354;
+}
+
+.RegisterInit textarea::-webkit-input-placeholder {
+  color: #4b2354;
+}
+.RegisterInit textarea:-moz-placeholder {
+  color: #4b2354;
+}
+.RegisterInit textarea::-moz-placeholder {
+  color: #4b2354;
+}
+.RegisterInit textarea:-ms-input-placeholder {
+  color: #4b2354;
+}
+
+/*---------------------------------------------*/
+.RegisterInit button {
+  outline: none !important;
+  border: none;
+  background: transparent;
+}
+
+.RegisterInit button:hover {
+  cursor: pointer;
+}
+
+.RegisterInit iframe {
+  border: none !important;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ Utility ]*/
+.RegisterInit .txt1 {
+  /* font-family: SourceSansPro-Regular; */
+  font-size: 16px;
+  line-height: 1.4;
+  color: #999999;
+  font-family: "Avenir Next";
+}
+
+.RegisterInit .txt2 {
+  /* font-family: SourceSansPro-Regular; */
+  font-size: 16px;
+  line-height: 1.4;
+  color: #4b2354;
+}
+
+.RegisterInit .hov1:hover {
+  color: #4b2354;
+  text-decoration: underline;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ login ]*/
+
+.RegisterInit .container-login100 {
+  width: 100%;
+  min-height: 100vh;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 15px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  z-index: 1;
+  background-color: "#05C0A6";
+}
+
+.RegisterInit .container-login100::before {
+  content: "";
+  display: block;
+  position: absolute;
+  z-index: -1;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+
+  pointer-events: none;
+}
+
+.RegisterInit .wrap-login100 {
+  width: 390px;
+  background: #fff;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 100px;
+
+  box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 3px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+/*==================================================================
+[ Form ]*/
+
+.RegisterInit .login100-form {
+  width: 100%;
+}
+
+.RegisterInit .login100-form #signup-link {
+  text-decoration: underline;
+}
+
+.RegisterInit .login100-form #sigup-link:hover {
+  text-decoration: underline;
+  color: #4b2354;
+}
+
+.RegisterInit .login100-form-title {
+  display: block;
+  font-family: "Fashion Fetish";
+  font-size: 30px;
+  color: #4b2354;
+  line-height: 1.2;
+  text-align: center;
+}
+
+/*------------------------------------------------------------------
+[ Input ]*/
+
+.RegisterInit .wrap-input100 {
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  border-radius: 20px;
+}
+
+.RegisterInit .input100 {
+  /* font-family: SourceSansPro-Bold; */
+  font-size: 16px;
+  color: #4b2354;
+  line-height: 1.2;
+
+  display: block;
+  width: 100%;
+  height: 50px;
+  background: transparent;
+  padding: 0 10px 0 10px;
+}
+
+/*------------------------------------------------------------------
+[ Focus Input ]*/
+
+.RegisterInit .focus-input100 {
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  border-radius: 20px;
+  box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.1);
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+}
+
+.RegisterInit .input100:focus + .focus-input100 {
+  box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 5px 30px 0px rgba(0, 0, 0, 0.2);
+}
+
+/*------------------------------------------------------------------
+[ Button ]*/
+.RegisterInit .container-login100-form-btn {
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.RegisterInit .login100-form-btn {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+  min-width: 160px;
+  height: 50px;
+  background-color: rgba(149, 27, 129, 1);
+  border-radius: 25px;
+
+  /* font-family: SourceSansPro-SemiBold; */
+  font-size: 14px;
+  color: #fff;
+  line-height: 1.2;
+  text-transform: uppercase;
+
+  -webkit-transition: all 0.4s;
+  -o-transition: all 0.4s;
+  -moz-transition: all 0.4s;
+  transition: all 0.4s;
+
+  box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -moz-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -webkit-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -o-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+  -ms-box-shadow: 0 10px 10px 0px rgba(5, 192, 166, 0.2);
+}
+
+.RegisterInit .login100-form-btn:hover {
+  background-color: #982f8c;
+  box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -moz-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -webkit-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -o-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+  -ms-box-shadow: 0 10px 10px 0px rgba(0, 149, 128, 0.8);
+}
+
+/*------------------------------------------------------------------
+[ Alert validate ]*/
+
+.RegisterInit .validate-input {
+  position: relative;
+}
+
+.RegisterInit .alert-validate .focus-input100 {
+  box-shadow: 0 5px 30px 0px rgba(250, 66, 81, 0.1);
+  -moz-box-shadow: 0 5px 30px 0px rgba(250, 66, 81, 0.1);
+  -webkit-box-shadow: 0 5px 30px 0px rgba(250, 66, 81, 0.1);
+  -o-box-shadow: 0 5px 30px 0px rgba(250, 66, 81, 0.1);
+  -ms-box-shadow: 0 5px 30px 0px rgba(250, 66, 81, 0.1);
+}
+
+.RegisterInit .alert-validate::before {
+  content: attr(data-validate);
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  min-height: 62px;
+  background-color: #fff;
+  border-radius: 20px;
+  top: 0px;
+  left: 0px;
+  padding: 0 45px 0 22px;
+  pointer-events: none;
+
+  /* font-family: SourceSansPro-Bold; */
+  font-size: 16px;
+  color: #fa4251;
+  line-height: 1.2;
+}
+
+.RegisterInit .btn-hide-validate {
+  /* font-family: Material-Design-Iconic-Font; */
+  font-size: 15px;
+  color: #fa4251;
+  cursor: pointer;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 62px;
+  top: 0px;
+  right: 23px;
+}
+
+.RegisterInit .rs1-alert-validate.alert-validate::before {
+  background-color: #fff;
+}
+
+.RegisterInit .true-validate::after {
+  content: "\f269";
+  /* font-family: Material-Design-Iconic-Font; */
+  font-size: 15px;
+  color: #57b846;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  height: 62px;
+  top: 0px;
+  right: 23px;
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ Social item ]*/
+
+.RegisterInit .login100-social-item {
+  font-size: 25px;
+  color: #3b5998;
+
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #fff;
+  margin: 5px;
+  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -moz-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -webkit-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -o-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+  -ms-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.RegisterInit .login100-social-item img {
+  width: 26px;
+}
+
+.RegisterInit .login100-social-item:hover {
+  color: #3b5998;
+  box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2);
+  -o-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2);
+  -ms-box-shadow: 0 5px 20px 0px rgba(0, 0, 0, 0.2);
+}
+
+/*//////////////////////////////////////////////////////////////////
+[ Responsive ]*/
+
+@media (max-width: 480px) {
+  .RegisterInit .wrap-login100 {
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
