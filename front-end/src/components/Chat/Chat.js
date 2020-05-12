@@ -51,6 +51,7 @@ const Chat = (props) => {
           <div className='chat'>
             <div className='row chat-header'>
               <div className='col-8'>
+                <!--El nombre esta quemado?-->
                 <h2>David Bautista</h2>
               </div>
               <div className='row col-4 time'>
