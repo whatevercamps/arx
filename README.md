@@ -1,5 +1,7 @@
 # Arx ❤️
 
+![ArxDemoGif](https://i.imgur.com/c4LvXPI.gif)
+
 Arx is a speed dating website that consists of dating based on a single chat for a certain time. Meet new people through conversations, generate chemistry and find your better half
 
 # You need this ✅
@@ -39,9 +41,5 @@ npm run build
 ```
 
 The npm run build, generates a folder called build in the front-end which represents a static version of the front running in port 8080, the npm start means running the front for development purposes.
-
-# Overview 🌄
-
-![ArxDemoGif](https://i.imgur.com/c4LvXPI.gif)
 
 Made by [Juan Felipe Torres](https://github.com/jftorresp) and [David Bautista](https://github.com/whatevercamps), licenced under MIT 👌
