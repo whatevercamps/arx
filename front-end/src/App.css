@@ -331,6 +331,7 @@ p {
 
 .Register .register-content p {
   padding-top: 5px;
+  margin-bottom: 6px;
 }
 
 .Register .register-content form label {
@@ -363,6 +364,11 @@ p {
 
 .Register .register-content form #insta {
   margin-right: 10px;
+}
+
+.Register small {
+  font-family: "Avenir Next";
+  color: red;
 }
 
 /* Matches Styles */
