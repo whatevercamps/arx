@@ -50,7 +50,11 @@ const MatchChat = (props) => {
           <div className='chat'>
             <div className='row chat-header'>
               <div className='col-12 current-header'>
-                <h3>David Bautista</h3>
+                {props.user.name === props.currentChat.user1name ? (
+                  <h3>{props.currentChat.user2name.split(" ")[0]}</h3>
+                ) : (
+                  <h3>{props.currentChat.user1name.split(" ")[0]}</h3>
+                )}
               </div>
             </div>
             <hr></hr>

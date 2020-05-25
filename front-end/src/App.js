@@ -355,6 +355,11 @@ function App() {
                     sendMessage={sendMessage}
                     onHeart={onHeart}
                     onCancel={onCancel}
+                    user={user}
+                    conversations={conversations.conversations}
+                    currentChat={
+                      conversations.conversations[currentConversationIndex]
+                    }
                   />
                 )
               ) : (
@@ -397,6 +402,11 @@ function App() {
                     sendMessage={sendMessage}
                     onHeart={onHeart}
                     onCancel={onCancel}
+                    user={user}
+                    conversations={conversations.conversations}
+                    currentChat={
+                      conversations.conversations[currentConversationIndex]
+                    }
                   />
                 )
               ) : (
@@ -438,6 +448,11 @@ function App() {
                     sendMessage={sendMessage}
                     onHeart={onHeart}
                     onCancel={onCancel}
+                    user={user}
+                    conversations={conversations.conversations}
+                    currentChat={
+                      conversations.conversations[currentConversationIndex]
+                    }
                   />
                 )
               ) : (
