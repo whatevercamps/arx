@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useReducer } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-// import Home from "./Home";
 import Home from "./Home";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
@@ -9,6 +8,7 @@ import Chat from "./components/Chat/Chat";
 import Register from "./components/Register/Register";
 import RegisterInit from "./components/Register/RegisterInit";
 import Matches from "./components/Matches";
+import Profile from "./components/Profile";
 import "./App.css";
 const socketURL = window.location.origin
   .replace(/^http/, "ws")
@@ -330,6 +330,9 @@ function App() {
         <Switch>
           <Route path='/signin'>
             <Login setUser={setUser} />
+          </Route>
+          <Route path='/profile'>
+            <Profile user={user}></Profile>
           </Route>
           <Route path='/signup'>
             <RegisterInit />

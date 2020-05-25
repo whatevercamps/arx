@@ -46,8 +46,8 @@ const Chat = (props) => {
         <></>
       )}
       <div className='row'>
-        <div className='col-3'></div>
-        <div className='col-6 chat-content'>
+        <div className='col-4'></div>
+        <div className='col-3 chat-content'>
           <div className='chat'>
             <div className='row chat-header'>
               <div className='col-8'>
@@ -93,7 +93,7 @@ const Chat = (props) => {
             </form>
           </div>
         </div>
-        <div className='col-3'>
+        <div className='col-4'>
           <div className='actions'>
             <ul>
               <li>
@@ -111,27 +111,6 @@ const Chat = (props) => {
               </li>
               <li>
                 {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faSmile} id='smile'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faFilm} id='film'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faMagic} id='magic'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
                 <button onClick={onCancel}>
                   {" "}
                   <FontAwesomeIcon
@@ -143,6 +122,7 @@ const Chat = (props) => {
             </ul>
           </div>
         </div>
+        <div className='col-3'></div>
       </div>
     </div>
   );

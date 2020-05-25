@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MatchList from "./MatchList";
-import Profile from "./Profile";
 import MatchChat from "./Chat/MatchChat";
 
 function Matches(props) {
@@ -49,23 +48,25 @@ function Matches(props) {
   return (
     <div className='Matches'>
       <div className='row'>
-        <div className='col-3 matchList'>
-          <MatchList {...props} setCurrentChat={props.setCurrentConversation} />
+        <div className='col-4 matchList'>
+          <MatchList
+            {...props}
+            setCurrentChat={props.setCurrentConversation}
+            select={true}
+          />
         </div>
-        <div className='col-5 currentChat'>
+        <div className='col-8 currentChat'>
           {props.currentChat && props.currentChat.messages ? (
             <MatchChat
               {...props}
               user={props.user}
               messages={props.currentChat.messages}
               sendMessage={sendMessage}
+              select={true}
             />
           ) : (
             <></>
           )}
-        </div>
-        <div className='col-4'>
-          <Profile />
         </div>
       </div>
     </div>

@@ -2,13 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 
 function MatchList(props) {
+  const clicked = (index) => {
+    props.setCurrentChat(index);
+  };
   return (
     <div className='MatchList'>
       <div className='row match-header'>
-        <div className='header'>
-          <h2>Chats</h2>
+        <div className='row header'>
+          <div className='col-11'>
+            {" "}
+            <h2>Chats</h2>
+          </div>
+          <div className='col-1'>
+            <a href='/profile' id='prof-but'>
+              <i style={{ fontSize: "30px" }} class='fas fa-user-circle'></i>
+            </a>
+          </div>
         </div>
-        <form>
+        <form className='search-header'>
           <div className='form-group'>
             <input type='text' placeholder='Search' className='form-control' />
           </div>
@@ -19,13 +30,10 @@ function MatchList(props) {
           {props.conversations &&
             props.conversations.length &&
             props.conversations.map((chat, index) => (
-              <div
-                className='row match-item'
-                onClick={() => props.setCurrentChat(index)}
-              >
+              <div className='row match-item' onClick={() => clicked(index)}>
                 <div className='col-2'>
                   <i
-                    style={{ fontSize: "35px" }}
+                    style={{ fontSize: "40px" }}
                     class='fas fa-user-circle'
                   ></i>
                 </div>

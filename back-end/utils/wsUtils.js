@@ -4,7 +4,7 @@ const mu = require("./mongoUtils")();
 let connections = [];
 let conversations = [];
 
-const MAX_TIME = 15 * 1000;
+const MAX_TIME = 20 * 60 * 1000;
 
 const endConversation = (user1id, user2id, conversation) => {
   console.log("terminando clientes", user1id, user2id);
