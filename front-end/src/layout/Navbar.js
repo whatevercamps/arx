@@ -61,16 +61,26 @@ const Navbar = (props) => {
                 <FontAwesomeIcon icon={faStopwatch}></FontAwesomeIcon>
               </span>
             </a>
-            <a href='/matches'>
+            <a
+              href={
+                props.conversations && props.conversations.length
+                  ? "/"
+                  : "/meet"
+              }
+            >
               <span>
                 {" "}
                 <FontAwesomeIcon icon={faCommentDots}></FontAwesomeIcon>
               </span>
             </a>
-            <span onClick={props.handleLogout}>
-              {" "}
-              <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
-            </span>
+            {props.user ? (
+              <span onClick={props.handleLogout} style={{ cursor: "pointer" }}>
+                {" "}
+                <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon> Signout
+              </span>
+            ) : (
+              <></>
+            )}
           </div>
         </div>
       </div>

@@ -7,6 +7,7 @@ export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
     if (email && email.trim() != "" && password.trim().length > 8) {
@@ -16,7 +17,7 @@ export default function Login(props) {
       };
       console.log("registrando", payload);
 
-      fetch("http://localhost:3001/auth/getTokenWithEmail", {
+      fetch("/auth/getTokenWithEmail", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -31,7 +32,7 @@ export default function Login(props) {
         })
         .then((data) => {
           if (data && data.success) {
-            fetch("http://localhost:3001/auth/emailValidate", {
+            fetch("/auth/emailValidate", {
               method: "GET",
               credentials: "include",
               headers: {
@@ -113,16 +114,16 @@ export default function Login(props) {
             <div className='flex-c p-b-20'>
               {" "}
               <a
-                href='http://localhost:3001/auth/facebook'
+                href={`${window.location.origin.replace(
+                  "3000",
+                  "3001"
+                )}/auth/facebook`}
                 className='login100-social-item'
               >
                 {" "}
                 <i className='fab fa-facebook-f'></i>{" "}
               </a>{" "}
-              <a
-                className='login100-social-item'
-                href='http://localhost:3001/auth/facebook'
-              >
+              <a className='login100-social-item' href='/auth/facebook'>
                 {" "}
                 <i
                   className='fab fa-google'

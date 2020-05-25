@@ -10,11 +10,17 @@ import Register from "./components/Register/Register";
 import RegisterInit from "./components/Register/RegisterInit";
 import Matches from "./components/Matches";
 import "./App.css";
+const socketURL = window.location.origin
+  .replace(/^http/, "ws")
+  .replace("3000", "3001");
+console.log("socket url", socketURL);
 
-const socket = new WebSocket("ws://localhost:3001");
+const socket = new WebSocket(socketURL);
 
 function App() {
   const [user, setUser] = useState(null);
+  console.log("connecting socket from", socketURL);
+
   const [header, setHeader] = useState(
     "Welcome to Arx, start chatting and meeting new people!!!"
   );
@@ -97,7 +103,7 @@ function App() {
     //fetch to get matche
     if (!user)
       //fetch to validate auth
-      fetch("http://localhost:3001/auth/login/success", {
+      fetch("/auth/login/success", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -116,7 +122,7 @@ function App() {
         })
         .catch((error) => {
           console.log("error ", error);
-          fetch("http://localhost:3001/auth/emailValidate", {
+          fetch("/auth/emailValidate", {
             method: "GET",
             credentials: "include",
             headers: {
@@ -149,7 +155,7 @@ function App() {
         //recargar sitio
       }
 
-      fetch(`http://localhost:3001/conversations?userid=${user._id}`, {
+      fetch(`/conversations?userid=${user._id}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -311,12 +317,16 @@ function App() {
 
   const handleLogout = () => {
     setUser(null);
-    window.open("http://localhost:3001/auth/logout", "_self");
+    window.open("/auth/logout", "_self");
   };
   return (
     <div className='App'>
       <Router>
-        <Navbar handleLogout={handleLogout} />
+        <Navbar
+          handleLogout={handleLogout}
+          user={user}
+          conversations={conversations.conversations}
+        />
         <Switch>
           <Route path='/signin'>
             <Login setUser={setUser} />
@@ -333,6 +343,48 @@ function App() {
               user.lkfAgeMax &&
               user.lkfGender ? (
                 !chat ? (
+                  <Home header={header} initChatIntent={sendMessage} />
+                ) : (
+                  <Chat
+                    timeLeft={timeLeft}
+                    chat={chat}
+                    finish={finish}
+                    likeIt={likeIt}
+                    socket={socket}
+                    messages={messages}
+                    sendMessage={sendMessage}
+                    onHeart={onHeart}
+                    onCancel={onCancel}
+                  />
+                )
+              ) : (
+                <Register user={user} changeUserData={changeUserData} />
+              )
+            ) : (
+              <Login setUser={setUser} />
+            )}
+          </Route>
+
+          <Route path='/#_=_'>
+            {user ? (
+              user.name &&
+              user.gender &&
+              user.age &&
+              user.lkfAgeMin &&
+              user.lkfAgeMax &&
+              user.lkfGender ? (
+                conversations.conversations &&
+                conversations.conversations.length ? (
+                  <Matches
+                    conversations={conversations.conversations}
+                    user={user}
+                    currentChat={
+                      conversations.conversations[currentConversationIndex]
+                    }
+                    setCurrentConversation={setCurrentConversationIndex}
+                    currentConversationMessages={currentConversationMessages}
+                  />
+                ) : !chat ? (
                   <Home header={header} initChatIntent={sendMessage} />
                 ) : (
                   <Chat

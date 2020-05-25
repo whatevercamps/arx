@@ -27,7 +27,7 @@ function Matches(props) {
         user2id: props.currentChat.user2dbId,
         messages: [`${props.user._id}%=%splitmessage%=%${message}`],
       };
-      fetch("http://localhost:3001/conversations/addMessages", {
+      fetch("/conversations/addMessages", {
         method: "POST",
         credentials: "include",
         headers: {

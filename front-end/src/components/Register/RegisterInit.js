@@ -22,7 +22,7 @@ export default function RegisterInit() {
       };
       console.log("registrando", payload);
 
-      fetch("http://localhost:3001/auth/createUserWithEmail", {
+      fetch("/auth/createUserWithEmail", {
         method: "POST",
         headers: {
           Accept: "application/json",

@@ -18,7 +18,7 @@ const Register2 = (props) => {
       };
       console.log("payload", payload);
       if (props.user)
-        fetch(`http://localhost:3001/users/update?userid=${props.user._id}`, {
+        fetch(`/users/update?userid=${props.user._id}`, {
           method: "POST",
           credentials: "include",
           headers: {

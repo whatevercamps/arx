@@ -28,7 +28,7 @@ const Register1 = (props) => {
     };
     console.log("user", props.user);
     if (props.user)
-      fetch(`http://localhost:3001/users/update?userid=${props.user._id}`, {
+      fetch(`/users/update?userid=${props.user._id}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -62,7 +62,6 @@ const Register1 = (props) => {
                 Name
                 <input
                   type='text'
-                  placeholder='David Bautista'
                   className='form-control'
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -93,7 +92,6 @@ const Register1 = (props) => {
                   type='text'
                   value={city}
                   className='form-control'
-                  placeholder='Bogotá'
                   onChange={(e) => setCity(e.target.value)}
                 />
               </label>
