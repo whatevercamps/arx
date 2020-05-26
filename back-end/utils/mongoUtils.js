@@ -91,12 +91,12 @@ const MongoUtils = () => {
   };
 
   mu.updateUser = (client, userId, user) => {
-    console.log("user", user);
+    console.log("user update in mongo utils", userId, user);
     return handler(client)
       .findOneAndUpdate(
-        { _id: new ObjectID(userId) },
+        { _id: ObjectID(userId) },
         { $set: user },
-        { returnNewDocument: true, new: true }
+        { returnOriginal: false }
       )
       .catch(function (e) {
         console.log("catch in model", e);
@@ -246,6 +246,40 @@ const MongoUtils = () => {
       .finally(() => {
         client.close();
       });
+  };
+
+  mu.createUnconnection = (client, user1id, user2id) => {
+    console.log(`params for saving in ${user1id}`, user1id, user2id);
+
+    const query = { _id: new ObjectID(user1id) };
+    const update = { $push: { unconnections: user2id } };
+    console.debug("query", JSON.stringify(query));
+    console.debug("update", JSON.stringify(update));
+    return (
+      handler(client)
+        .findOneAndUpdate(query, update)
+        // .find(query)
+        // .toArray()
+        .catch(function (e) {
+          console.log("catch in model", e);
+          throw e; //
+        })
+        .finally(() => {
+          client.close();
+        })
+    );
+  };
+
+  mu.canItalk = (client, user1id, user2id) => {
+    console.log("params for canItalk", user1id, user2id);
+    const query = {
+      $and: [
+        { _id: new ObjectID(user1id) },
+        { unconnections: { $ne: user2id } },
+      ],
+    };
+
+    return handler(client).find(query).toArray();
   };
 
   return mu;

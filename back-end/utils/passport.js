@@ -50,7 +50,9 @@ module.exports = function (passport) {
           user["name"] = (prevUser && prevUser.name) || "";
           user["email"] = (prevUser && prevUser.email) || "";
           mu.connect()
-            .then((client) => mu.findOrCreateUser(client, user))
+            .then((client) =>
+              mu.findOrCreateUser(client, { facebookId: prevUser.id }, user)
+            )
             .then((resp) => {
               console.log("user founded in line 58", resp);
               if (resp && resp.value && resp.value._id)

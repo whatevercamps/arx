@@ -58,15 +58,22 @@ router.post("/update", function (req, res) {
     .then((client) => mu.updateUser(client, req.query.userid, user))
     .then((resp) => {
       console.log("response", resp);
-      if (resp && resp.value)
+      if (resp)
         res.status(200).json({
           success: true,
           msg: "User updated successfully",
-          data: resp.value,
+          data: resp,
         });
-      else throw new Error("response not found", resp);
+      else
+        res.status(200).json({
+          success: false,
+          msg: "User not updated",
+          data: resp,
+        });
     })
     .catch((err) => {
+      console.log("error en catch de update", err);
+
       return res.status(500).json({
         success: false,
         msg: "Failure updating user",

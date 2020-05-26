@@ -4,9 +4,14 @@ const mu = require("./mongoUtils")();
 let connections = [];
 let conversations = [];
 
-const MAX_TIME = 15 * 1000;
+const MAX_TIME = 5 * 1000;
 
-const endConversation = (user1id, user2id, conversation) => {
+const endConversation = (
+  user1id,
+  user2id,
+  conversationToSave,
+  conversationToKill
+) => {
   console.log("terminando clientes", user1id, user2id);
 
   const sender = connections.find(
@@ -35,15 +40,57 @@ const endConversation = (user1id, user2id, conversation) => {
           message: "La conversación ha terminado",
         })
       );
-    if (conversation) {
+    if (conversationToSave) {
       mu.connect()
         .then((client) => {
-          conversation["messages"] = [];
-          return mu.createConversation(client, conversation);
+          conversationToSave["messages"] = [];
+          return mu.createConversation(client, conversationToSave);
         })
         .catch((err) => {
           console.log("error saving conversation", err);
         });
+    } else {
+      if (conversationToKill.user1DbId && conversationToKill.user2DbId) {
+        mu.connect()
+          .then((client) => {
+            return mu.createUnconnection(
+              client,
+              conversationToKill.user1DbId,
+              conversationToKill.user2DbId
+            );
+          })
+          .then((resp) => {
+            console.log("resp unn ---->", resp);
+          })
+          .catch((err) => {
+            console.log(
+              "error saving unconnection ",
+              conversationToKill.user1DbId,
+              err
+            );
+          });
+
+        mu.connect()
+          .then((client) => {
+            return mu.createUnconnection(
+              client,
+              conversationToKill.user2DbId,
+              conversationToKill.user1DbId
+            );
+          })
+          .then((resp) => {
+            console.log("resp unn ---->", resp);
+          })
+          .catch((err) => {
+            console.log(
+              "error saving unconnection",
+              conversationToKill.user2DbId,
+              err
+            );
+          });
+      } else {
+        console.log("the conversation has no users db ids");
+      }
     }
 
     conversations = conversations.filter(
@@ -66,17 +113,14 @@ const wsUtils = () => {
 
     console.log(
       connections.map((c) => {
-        return {
-          dbId: c.dbId,
-          s: c.socketId,
-          state: c.state,
-          active: c.active,
-        };
+        let cc = { ...c };
+        cc["client"] = "***";
+        return cc;
       })
     );
     console.log("conversations");
     console.log(conversations);
-  }, 3000);
+  }, 5000);
 
   wsu.notify = (userid, data) => {
     const conn = connections.find(
@@ -122,7 +166,7 @@ const wsUtils = () => {
 
         if (conversation) {
           let millsLeft = Math.max(
-            -15000,
+            -5000,
             conversation.startTime + MAX_TIME - Date.now()
           );
           const payload = {
@@ -138,10 +182,10 @@ const wsUtils = () => {
                 : conversation.user1;
             if (conversation.likes.size >= 2) {
               console.log("termina con Match: ", millsLeft);
-              endConversation(id, killedId, conversation);
-            } else if (millsLeft <= -15000) {
+              endConversation(id, killedId, conversation, false);
+            } else if (millsLeft <= -5000) {
               console.log("termina forzado: ", millsLeft);
-              endConversation(id, killedId, false);
+              endConversation(id, killedId, false, conversation);
             }
           }
         }
@@ -174,20 +218,35 @@ const wsUtils = () => {
             })
           );
 
-          //el server busca el destinatario (puede uno nuevo o puede ser con el que ya venia hablando)
+          const sender = connections.find((c) => c.socketId === id);
+
+          //el server busca el destinatario (puede ser uno nuevo o puede ser con el que ya venia hablando)
           const receiver = connections.find((c) => {
             return (
               (c.state === 1 || jsonMessage.receiverId) &&
               c.active === true &&
               ((jsonMessage.receiverId &&
                 c.socketId === jsonMessage.receiverId) ||
-                (!jsonMessage.receiverId && c.socketId !== id))
+                (!jsonMessage.receiverId && c.socketId !== id)) &&
+              c.userInfo &&
+              (!c.userInfo.unconnections ||
+                !c.userInfo.unconnections.length ||
+                !c.userInfo.unconnections.includes(sender.dbId)) &&
+              //que tenga el lookin for
+              sender.userInfo.lkfAgeMax >= c.age &&
+              sender.userInfo.lkfAgeMin <= c.age &&
+              sender.userInfo.lkfGender.includes(c.gender) &&
+              // que yo sea parte de su lookin for
+              c.lkfAgeMax >= sender.userInfo.age &&
+              c.lkfAgeMin <= sender.userInfo.age &&
+              c.lkfGender.includes(sender.userInfo.gender)
             );
           });
 
-          console.log("rec", receiver && receiver.socketId, "fin rec");
+          console.debug("rec", receiver && receiver.socketId, "fin rec");
+          console.debug("sender", sender && sender.socketId, "fin sender");
 
-          if (receiver) {
+          if (receiver && sender) {
             //le mando el mensaje a ese destinatario
             receiver.client.send(
               JSON.stringify({
@@ -198,10 +257,8 @@ const wsUtils = () => {
               })
             );
             receiver["state"] = 0;
-          } else {
-            //guardo el mensaje para esperar a que haya un client que me lo pueda recibir
-            const myself = connections.find((c) => c.socketId === id);
-            if (myself) myself["lastMessage"] = jsonMessage.message;
+          } else if (sender) {
+            sender["lastMessage"] = jsonMessage.message;
           }
         }
         //el client manda un mensaje de configuración al servicio
@@ -228,18 +285,25 @@ const wsUtils = () => {
         //el client confirmo recepcion de mensaje
         else if (jsonMessage.state === 2) {
           console.log("llego al estado 2");
-          conversations.push({
-            user1: id,
-            user2: jsonMessage.receiverId,
-            likes: new Set([]),
-            startTime: Date.now(),
-          });
           const receiver = connections.find(
-            (c) => c.socketId === jsonMessage.receiverId
+            (c) => c.socketId === jsonMessage.receiverId && c.active === true
           );
-          if (receiver) {
+          const sender = connections.find(
+            (c) => c.socketId === id && c.active === true
+          );
+          if (receiver && receiver.dbId && sender && sender.dbId) {
+            conversations.push({
+              user1DbId: sender.dbId,
+              user2DbId: receiver.dbId,
+              user1: id,
+              user2: jsonMessage.receiverId,
+              likes: new Set([]),
+              startTime: Date.now(),
+            });
             receiver.client.send(dataMessage);
             receiver.state = 0;
+          } else {
+            console.log("the other user is gone");
           }
         } else if (jsonMessage.state === 3) {
           console.log("llego al estado 3");
@@ -247,42 +311,89 @@ const wsUtils = () => {
             (c) => c.socketId !== jsonMessage.senderId
           );
         } else if (jsonMessage.state === 4) {
-          //al momento de la conexion si otro client estaba esperando se convierte en receiver
-          const sleeper = connections.find(
-            (c) =>
-              c.state === 1 &&
-              c.lastMessage !== undefined &&
-              c.lastMessage !== null &&
-              c.active === true
-          );
-          if (sleeper) {
-            ws.send(
-              JSON.stringify({
-                state: 0,
-                senderId: sleeper.socketId,
-                receiverId: id,
-                message: sleeper.lastMessage,
-              })
-            );
-            sleeper["state"] = 0;
-          }
           //el client se agrego a la pool
-          connections.push({
-            socketId: id,
-            client: ws,
-            state: sleeper ? 0 : 1,
-            active: true,
-            dbId: jsonMessage.message,
-          });
-          console.log(
-            "on push",
-            !sleeper,
-            connections.map((c) => {
-              return { s: c.socketId, state: c.state };
-            })
-          );
+          mu.connect()
+            .then((client) => mu.getUsers(client, jsonMessage.message))
+            .then((resp) => {
+              console.log("user found in db", resp);
+
+              if (resp && resp.length) {
+                connections.push({
+                  socketId: id,
+                  client: ws,
+                  state: 1,
+                  active: true,
+                  dbId: jsonMessage.message,
+                  userInfo: resp[0],
+                });
+                console.log(
+                  "on push",
+                  connections.map((c) => {
+                    return { s: c.socketId, state: c.state };
+                  })
+                );
+
+                //al momento de la conexion si otro client estaba esperando se convierte en receiver
+                const sleeper = connections.find(
+                  (c) =>
+                    c.state === 1 &&
+                    c.lastMessage !== undefined &&
+                    c.lastMessage !== null &&
+                    c.active === true &&
+                    //que no sea un bloqueado papuh
+                    c.userInfo &&
+                    (!c.userInfo.unconnections ||
+                      !c.userInfo.length ||
+                      !c.userInfo.unconnections.includes(
+                        jsonMessage.message
+                      )) &&
+                    //que tenga el lookin for
+                    resp.lkfAgeMax >= c.age &&
+                    resp.lkfAgeMin <= c.age &&
+                    resp.lkfGender.includes(c.gender) &&
+                    // que yo sea parte de su lookin for
+                    c.lkfAgeMax >= resp.age &&
+                    c.lkfAgeMin <= resp.age &&
+                    c.lkfGender.includes(resp.gender)
+                );
+
+                const sender = connections.find(
+                  (c) =>
+                    c.active === true &&
+                    c.socketId === id &&
+                    c.userInfo &&
+                    sleeper &&
+                    (!c.userInfo.unconnections ||
+                      !c.userInfo.unconnections.length ||
+                      !c.userInfo.unconnections.includes(sleeper.dbId))
+                );
+
+                console.log(
+                  "sleeper y sender encontrados? ",
+                  sleeper && sleeper.socketId,
+                  sender && sender.socketId
+                );
+
+                if (sleeper && sender) {
+                  ws.send(
+                    JSON.stringify({
+                      state: 0,
+                      senderId: sleeper.socketId,
+                      receiverId: id,
+                      message: sleeper.lastMessage,
+                    })
+                  );
+                  sender["state"] = 0;
+                  sleeper["state"] = 0;
+                }
+              }
+            });
         } else if (jsonMessage.state === 5) {
-          endConversation(id, jsonMessage.receiverId, false);
+          const conversation = conversations.find(
+            (c) => c.user1 === id || c.user2 === id
+          );
+          if (conversation)
+            endConversation(id, jsonMessage.receiverId, false, conversation);
         }
       });
     });
