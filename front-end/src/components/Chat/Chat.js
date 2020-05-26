@@ -46,12 +46,16 @@ const Chat = (props) => {
         <></>
       )}
       <div className='row'>
-        <div className='col-3'></div>
-        <div className='col-6 chat-content'>
+        <div className='col-4'></div>
+        <div className='col-3 chat-content'>
           <div className='chat'>
             <div className='row chat-header'>
               <div className='col-8'>
-                <h2>David Bautista</h2>
+                {props.user.name === props.conversations[0].user1name ? (
+                  <h2>{props.conversations[0].user2name.split(" ")[0]}</h2>
+                ) : (
+                  <h2>{props.conversations[0].user1name.split(" ")[0]}</h2>
+                )}
               </div>
               <div className='row col-4 time'>
                 <div className='col-7'>
@@ -89,7 +93,7 @@ const Chat = (props) => {
             </form>
           </div>
         </div>
-        <div className='col-3'>
+        <div className='col-4'>
           <div className='actions'>
             <ul>
               <li>
@@ -107,27 +111,6 @@ const Chat = (props) => {
               </li>
               <li>
                 {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faSmile} id='smile'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faFilm} id='film'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
-                <button>
-                  {" "}
-                  <FontAwesomeIcon icon={faMagic} id='magic'></FontAwesomeIcon>
-                </button>
-              </li>
-              <li>
-                {" "}
                 <button onClick={onCancel}>
                   {" "}
                   <FontAwesomeIcon
@@ -139,6 +122,7 @@ const Chat = (props) => {
             </ul>
           </div>
         </div>
+        <div className='col-3'></div>
       </div>
     </div>
   );

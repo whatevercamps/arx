@@ -55,6 +55,16 @@ li {
   list-style-type: none;
 }
 
+.Login p {
+  color: red;
+  padding-left: 8px;
+  font-size: 14px;
+}
+
+.Login #member {
+  color: #666666;
+}
+
 /*---------------------------------------------*/
 .Login input {
   outline: none;
@@ -276,6 +286,7 @@ input:focus {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-top: 8px;
 }
 
 .Login .login100-form-btn {

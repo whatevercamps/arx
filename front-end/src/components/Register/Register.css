@@ -45,8 +45,9 @@ h6 {
   /* font-family: SourceSansPro-Regular; */
   font-size: 14px;
   line-height: 1.7;
-  color: #666666;
+  color: red;
   margin: 0px;
+  padding-left: 8px;
 }
 
 .RegisterInit ul,
@@ -276,6 +277,7 @@ input:focus {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+  padding-top: 8px;
 }
 
 .RegisterInit .login100-form-btn {

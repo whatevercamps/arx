@@ -8,6 +8,17 @@ const Register2 = (props) => {
 
   const [gender, setGender] = useState([false, false]);
 
+  const [genderError, setGenderError] = useState("");
+
+  const validate = () => {
+    let genderError = "";
+
+    if (gender[0] === false && gender[1] === false) {
+      genderError = "Please select at least one option";
+      setGenderError(genderError);
+    }
+  };
+
   const endSecondStep = (evt) => {
     evt.preventDefault();
     if (gender && (gender[0] || gender[1])) {
@@ -38,6 +49,7 @@ const Register2 = (props) => {
             props.changePage3();
           });
     }
+    validate();
   };
 
   return (
@@ -49,6 +61,7 @@ const Register2 = (props) => {
           <p>
             Now lets add information that your better half would like to know
           </p>
+          <small>{genderError}</small>
           <form
             onSubmit={endSecondStep}
             className='row'

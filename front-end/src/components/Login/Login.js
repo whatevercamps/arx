@@ -7,6 +7,46 @@ export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const [emptyError, setEmptyError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordLengthError, setPasswordLError] = useState("");
+  const [digitError, setDigitError] = useState("");
+  const [upperError, setUpperError] = useState("");
+  const [lowerError, setLowerError] = useState("");
+
+  const validate = () => {
+    let emptyError = "";
+    let emailError = "";
+    let passwordLError = "";
+    let digitError = "";
+    let upperError = "";
+    let lowerError = "";
+
+    if (!email || !password) {
+      emptyError = "Empty fields, please complete";
+      setEmptyError(emptyError);
+    }
+    if (!email || !email.includes("@")) {
+      emailError = "Please type a valid email";
+      setEmailError(emailError);
+    }
+    if (!password || !password.match(/^.{8,}$/)) {
+      passwordLError = "Password must be al least 8 characters";
+      setPasswordLError(passwordLError);
+    }
+    if (!password || !password.match(/(.*\d.*)/)) {
+      digitError = "Password must contain at least one digit";
+      setDigitError(digitError);
+    }
+    if (!password || !password.match(/(.*[a-z].*)/)) {
+      upperError = "Password must contain at least one uppercase";
+      setUpperError(upperError);
+    }
+    if (!password || !password.match(/(.*[A-Z].*)/)) {
+      lowerError = "Password must contain at least one lowercase";
+      setLowerError(lowerError);
+    }
+  };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
@@ -61,6 +101,7 @@ export default function Login(props) {
           console.log("errrror", err);
         });
     }
+    validate();
   };
 
   return (
@@ -73,21 +114,21 @@ export default function Login(props) {
             {" "}
             <span className='login100-form-title p-b-37'> Sign In </span>{" "}
             <div
-              className='wrap-input100 validate-input m-b-15'
+              className='wrap-input100 validate-input m-b-8'
               data-validate='Enter username or email'
             >
               {" "}
               <input
                 className='input100'
-                type='text'
                 name='username'
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder='email'
               />{" "}
               <span className='focus-input100'></span>{" "}
             </div>{" "}
+            <p>{emailError}</p>
             <div
-              className='wrap-input100 validate-input m-b-15'
+              className='wrap-input100 validate-input m-b-8 m-t-8'
               data-validate='Enter password'
             >
               {" "}
@@ -100,6 +141,11 @@ export default function Login(props) {
               />{" "}
               <span className='focus-input100'></span>{" "}
             </div>{" "}
+            <p>{passwordLengthError}</p>
+            <p>{digitError}</p>
+            <p>{upperError}</p>
+            <p>{lowerError}</p>
+            <p>{emptyError}</p>
             <div className='container-login100-form-btn'>
               {" "}
               <button className='login100-form-btn' type='submit'>
@@ -132,7 +178,7 @@ export default function Login(props) {
               </a>{" "}
             </div>{" "}
             <div className='text-center'>
-              <p>
+              <p id='member'>
                 Not a member?{" "}
                 <a href='/signup' id='signup-link'>
                   Sign up now

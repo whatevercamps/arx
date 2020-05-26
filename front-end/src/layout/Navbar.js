@@ -2,7 +2,7 @@ import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
-  faCommentDots,
+  faComments,
   faStopwatch,
 } from "@fortawesome/free-solid-svg-icons";
 
@@ -70,14 +70,18 @@ const Navbar = (props) => {
             >
               <span>
                 {" "}
-                <FontAwesomeIcon icon={faCommentDots}></FontAwesomeIcon>
+                <FontAwesomeIcon icon={faComments}></FontAwesomeIcon>
+              </span>
+            </a>
+            <a href='/profile'>
+              <span>
+                <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
               </span>
             </a>
             {props.user ? (
-              <span onClick={props.handleLogout} style={{ cursor: "pointer" }}>
-                {" "}
-                <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon> Signout
-              </span>
+              <button onClick={props.handleLogout} id='logout'>
+                Logout{" "}
+              </button>
             ) : (
               <></>
             )}

@@ -23,7 +23,7 @@ export default function LikeOrNot(props) {
         className='modal-dialog modal-dialog-centered modal-sm'
         role='document'
       >
-        <div className='modal-content'>
+        <div className='modal-content text-center'>
           <div className='modal-header'>
             <h5 className='modal-title'>Did you like it?</h5>
           </div>
@@ -32,7 +32,7 @@ export default function LikeOrNot(props) {
               onClick={props.onHeart}
               id='scenesButton'
               type='button'
-              className='btn btn-success'
+              className='btn btn-success yeah'
               data-dismiss='modal'
             >
               Yeah
@@ -41,7 +41,7 @@ export default function LikeOrNot(props) {
               onClick={props.onCancel}
               id='scenesButton'
               type='button'
-              className='btn btn-danger'
+              className='btn btn-danger nope'
               data-dismiss='modal'
             >
               Nope

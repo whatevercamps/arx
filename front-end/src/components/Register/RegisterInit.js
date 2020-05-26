@@ -8,6 +8,56 @@ export default function RegisterInit() {
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
 
+  /* Error hooks */
+  const [emptyError, setEmptyError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordLengthError, setPasswordLError] = useState("");
+  const [digitError, setDigitError] = useState("");
+  const [upperError, setUpperError] = useState("");
+  const [lowerError, setLowerError] = useState("");
+  const [passError, setPassError] = useState("");
+
+  /* Validate form function */
+  const validate = () => {
+    let emptyError = "";
+    let emailError = "";
+    let passwordLError = "";
+    let digitError = "";
+    let upperError = "";
+    let lowerError = "";
+    let passError = "";
+
+    if (!email || !password) {
+      emptyError = "Empty fields, please complete";
+      setEmptyError(emptyError);
+    }
+    if (!email || !email.includes("@")) {
+      emailError = "Please type a valid email";
+      setEmailError(emailError);
+    }
+    if (!password || !password.match(/^.{8,}$/)) {
+      passwordLError = "Password must be al least 8 characters";
+      setPasswordLError(passwordLError);
+    }
+    if (!password || !password.match(/(.*\d.*)/)) {
+      digitError = "Password must contain at least one digit";
+      setDigitError(digitError);
+    }
+    if (!password || !password.match(/(.*[a-z].*)/)) {
+      upperError = "Password must contain at least one uppercase";
+      setUpperError(upperError);
+    }
+    if (!password || !password.match(/(.*[A-Z].*)/)) {
+      lowerError = "Password must contain at least one lowercase";
+      setLowerError(lowerError);
+    }
+
+    if (!password || !password2 || password !== password2) {
+      passError = "Passwords must be equal";
+      setPassError(passError);
+    }
+  };
+
   const handleSubmit = (evt) => {
     evt.preventDefault();
     if (
@@ -35,6 +85,7 @@ export default function RegisterInit() {
         if (resp.status !== 200) window.location("/");
       });
     }
+    validate();
   };
 
   return (
@@ -47,7 +98,7 @@ export default function RegisterInit() {
             {" "}
             <span className='login100-form-title p-b-37'> Sign Up </span>{" "}
             <div
-              className='wrap-input100 validate-input m-b-15'
+              className='wrap-input100 validate-input m-b-8'
               data-validate='Enter username or email'
             >
               {" "}
@@ -61,8 +112,9 @@ export default function RegisterInit() {
               />{" "}
               <span className='focus-input100'></span>{" "}
             </div>{" "}
+            <p>{emailError}</p>
             <div
-              className='wrap-input100 validate-input m-b-15'
+              className='wrap-input100 validate-input m-b-8 m-t-8'
               data-validate='Enter password'
             >
               {" "}
@@ -75,8 +127,12 @@ export default function RegisterInit() {
               />{" "}
               <span className='focus-input100'></span>{" "}
             </div>{" "}
+            <p>{passwordLengthError}</p>
+            <p>{digitError}</p>
+            <p>{upperError}</p>
+            <p>{lowerError}</p>
             <div
-              className='wrap-input100 validate-input m-b-15'
+              className='wrap-input100 validate-input m-b-8 m-t-8'
               data-validate='Enter password'
             >
               {" "}
@@ -89,6 +145,8 @@ export default function RegisterInit() {
               />{" "}
               <span className='focus-input100'></span>{" "}
             </div>{" "}
+            <p>{passError}</p>
+            <p>{emptyError}</p>
             <div className='container-login100-form-btn'>
               {" "}
               <button className='login100-form-btn' type='submit'>

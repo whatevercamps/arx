@@ -7,6 +7,17 @@ const Register1 = (props) => {
   const [gender, setGender] = useState("");
   const [about, setAbout] = useState("");
 
+  const [genderError, setGenderError] = useState("");
+
+  const validate = () => {
+    let genderError = "";
+
+    if (!gender) {
+      genderError = "Please select a gender";
+      setGenderError(genderError);
+    }
+  };
+
   useEffect(() => {
     if (props.user) {
       setName(props.user.name || "");
@@ -47,6 +58,7 @@ const Register1 = (props) => {
           props.changeUserData(payload);
           props.changePage2();
         });
+    validate();
   };
 
   return (
@@ -77,6 +89,8 @@ const Register1 = (props) => {
                     value={age}
                     className='form-control'
                     onChange={(e) => setAge(1 * e.target.value)}
+                    min='18'
+                    max='90'
                   />
                 ) : (
                   <input
@@ -109,49 +123,47 @@ const Register1 = (props) => {
             </div>
             <div className='form-group gender'>
               <label>Gender</label>
-              <div className='custom-control custom-radio custom-control-inline'>
+              <div className='form-check form-check-inline'>
                 <input
                   type='radio'
-                  id='customRadioInline1'
-                  name='customRadioInline1'
-                  className='custom-control-input'
+                  value='Male'
+                  id='radioOption1'
+                  name='radioOptions'
+                  className='form-check-input'
+                  onChange={(e) => setGender(e.target.value)}
                 />
-                <label
-                  className='custom-control-label'
-                  for='customRadioInline1'
-                >
+                <label className='form-check-label' for='radioOption1'>
                   Male{" "}
                 </label>
               </div>
-              <div className='custom-control custom-radio custom-control-inline'>
+              <div className='form-check form-check-inline'>
                 <input
                   type='radio'
-                  id='customRadioInline2'
-                  name='customRadioInline2'
-                  className='custom-control-input'
+                  value='Female'
+                  id='radioOption2'
+                  name='radioOptions'
+                  className='form-check-input'
+                  onChange={(e) => setGender(e.target.value)}
                 />
-                <label
-                  className='custom-control-label'
-                  for='customRadioInline2'
-                >
+                <label className='form-check-label' for='radioOption2'>
                   Female{" "}
                 </label>
               </div>
-              <div className='custom-control custom-radio custom-control-inline'>
+              <div className='form-check form-check-inline'>
                 <input
                   type='radio'
-                  id='customRadioInline3'
-                  name='customRadioInline3'
-                  className='custom-control-input'
+                  value='Non Binary'
+                  id='radioOption3'
+                  name='radioOptions'
+                  className='form-check-input'
+                  onChange={(e) => setGender(e.target.value)}
                 />
-                <label
-                  className='custom-control-label'
-                  for='customRadioInline3'
-                >
+                <label className='form-check-label' for='radioOption3'>
                   Non Binary{" "}
                 </label>
               </div>
             </div>
+            <small>{genderError}</small>
             <div className='row'>
               {" "}
               <div className='col-10'></div>
