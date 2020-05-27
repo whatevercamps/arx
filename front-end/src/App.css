@@ -111,6 +111,10 @@ body {
   margin-right: 6px;
 }
 
+.Navbar #meet-icon:hover {
+  fill: #ccc;
+}
+
 .Navbar span {
   color: #fff;
   padding: 8px;
