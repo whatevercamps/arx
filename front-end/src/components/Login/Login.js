@@ -105,20 +105,21 @@ export default function Login(props) {
   };
 
   return (
-    <div className='Login'>
+    <div className='Login' role='form'>
       <div className='container-login100'>
         {" "}
         <div className='wrap-login100 p-l-20 p-r-20 p-t-30 p-b-30'>
           {" "}
           <form className='login100-form validate-form' onSubmit={handleSubmit}>
             {" "}
-            <span className='login100-form-title p-b-37'> Sign In </span>{" "}
+            <h1 className='login100-form-title p-b-37'> Sign In </h1>{" "}
             <div
               className='wrap-input100 validate-input m-b-8'
               data-validate='Enter username or email'
             >
               {" "}
               <input
+                aria-label='email'
                 className='input100'
                 name='username'
                 onChange={(e) => setEmail(e.target.value)}
@@ -133,6 +134,7 @@ export default function Login(props) {
             >
               {" "}
               <input
+                aria-label='password'
                 className='input100'
                 type='password'
                 onChange={(e) => setPassword(e.target.value)}
@@ -160,6 +162,7 @@ export default function Login(props) {
             <div className='flex-c p-b-20'>
               {" "}
               <a
+                aria-label='login with facebook'
                 href={`${window.location.origin.replace(
                   "3000",
                   "3001"
@@ -169,7 +172,11 @@ export default function Login(props) {
                 {" "}
                 <i className='fab fa-facebook-f'></i>{" "}
               </a>{" "}
-              <a className='login100-social-item' href='/auth/facebook'>
+              <a
+                className='login100-social-item'
+                href='/auth/facebook '
+                aria-label='login with google'
+              >
                 {" "}
                 <i
                   className='fab fa-google'

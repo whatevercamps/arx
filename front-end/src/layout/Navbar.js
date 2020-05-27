@@ -8,11 +8,11 @@ import {
 
 const Navbar = (props) => {
   return (
-    <div className='Navbar'>
+    <div className='Navbar' role='main'>
       <div className='container'>
         <div className='row'>
           <div className='col-6 logo'>
-            <a href='/'>
+            <a href='/' aria-label='home'>
               <svg
                 id='arx-icon'
                 data-name='arx-icon'
@@ -55,13 +55,14 @@ const Navbar = (props) => {
           </div>
 
           <div className='col-6 profile'>
-            <a href='/meet'>
+            <a aria-label='meet' href='/meet'>
               <span>
                 {" "}
                 <FontAwesomeIcon icon={faStopwatch}></FontAwesomeIcon>
               </span>
             </a>
             <a
+              aria-label='meet'
               href={
                 props.conversations && props.conversations.length
                   ? "/"
@@ -73,7 +74,7 @@ const Navbar = (props) => {
                 <FontAwesomeIcon icon={faComments}></FontAwesomeIcon>
               </span>
             </a>
-            <a href='/profile'>
+            <a aria-label='profile' href='/profile'>
               <span>
                 <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
               </span>
