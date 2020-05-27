@@ -9,7 +9,7 @@ import { faCopyright } from "@fortawesome/free-solid-svg-icons";
 
 const Footer = () => {
   return (
-    <div className='Footer'>
+    <footer className='Footer'>
       <div className='container'>
         <div className='row'>
           <div className='col-6 copyright'>
@@ -20,6 +20,7 @@ const Footer = () => {
           </div>
           <div className='col-6 social'>
             <a
+              aria-label='instagram'
               href='https://www.instagram.com/arxapp/'
               target='_blank'
               rel='noopener noreferrer'
@@ -29,6 +30,7 @@ const Footer = () => {
               </span>
             </a>
             <a
+              aria-label='facebook'
               href='https://www.facebook.com/ArxColombia'
               target='_blank'
               rel='noopener noreferrer'
@@ -38,6 +40,7 @@ const Footer = () => {
               </span>
             </a>
             <a
+              aria-label='twitter'
               href='https://twitter.com/Arx_App'
               target='_blank'
               rel='noopener noreferrer'
@@ -49,7 +52,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </div>
+    </footer>
   );
 };
 

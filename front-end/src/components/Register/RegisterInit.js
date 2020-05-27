@@ -146,6 +146,7 @@ export default function RegisterInit() {
             >
               {" "}
               <input
+                aria-label='email'
                 className='input100'
                 type='text'
                 name='username'
@@ -165,6 +166,7 @@ export default function RegisterInit() {
             >
               {" "}
               <input
+                aria-label='password'
                 className='input100'
                 type='password'
                 name='pass'
@@ -186,6 +188,7 @@ export default function RegisterInit() {
             >
               {" "}
               <input
+                aria-label='repeat password'
                 className='input100'
                 type='password'
                 onChange={(e) => {

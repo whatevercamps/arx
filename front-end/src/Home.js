@@ -14,7 +14,7 @@ const Home = (props) => {
 
   return (
     <div className='Home'>
-      <div className='send-message'>
+      <main className='send-message'>
         <div>
           <h1 id='home-title'>
             {props.header ||
@@ -30,7 +30,7 @@ const Home = (props) => {
             ></input>
           </form>
         </div>
-      </div>
+      </main>
     </div>
   );
 };
