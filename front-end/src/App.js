@@ -10,12 +10,11 @@ import RegisterInit from "./components/Register/RegisterInit";
 import Matches from "./components/Matches";
 import Profile from "./components/Profile";
 import "./App.css";
+import Loading from "./components/Loading";
 const socketURL = window.location.origin
   .replace(/^http/, "ws")
   .replace("3000", "3001");
 console.log("socket url", socketURL);
-
-const socket = new WebSocket(socketURL);
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,6 +29,10 @@ function App() {
   const [likeIt, setLikeIt] = useState(false);
   const [finishAuditer, setFinishAuditer] = useState(false);
   const [finish, setFinish] = useState(false);
+
+  const [needLogin, setNeedLogin] = useState(false);
+
+  const [socket, setSocket] = useState(null);
 
   const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
   const initialState = {
@@ -120,6 +123,7 @@ function App() {
           setUser(responseJson && responseJson.user);
         })
         .catch((error) => {
+          setNeedLogin(true);
           console.log("err validating", error);
         });
   }, []);
@@ -127,10 +131,7 @@ function App() {
   useEffect(() => {
     console.log("cambio user", user);
     if (user && user._id && user.name) {
-      if (socket) socket.send(JSON.stringify({ state: 4, message: user._id }));
-      else {
-        //recargar sitio
-      }
+      if (!socket) setSocket(new WebSocket(socketURL));
 
       fetch(`/conversations?userid=${user._id}`, {
         method: "GET",
@@ -153,12 +154,17 @@ function App() {
         .catch((error) => {
           console.log("error ", error);
         });
+    } else if (needLogin === true) {
+      console.log("eliminando socket");
+
+      setSocket(null);
     }
   }, [user]);
 
   useEffect(() => {
-    if (socket) {
+    if (socket && user && user._id) {
       socket.onopen = () => {
+        socket.send(JSON.stringify({ state: 4, message: user._id }));
         console.log("holu socket conectado");
         socket.onerror = function (event) {
           console.error("WebSocket error observed", event);
@@ -230,10 +236,12 @@ function App() {
           dispatch({ type: "changeConv", payload: conversation });
         }
       };
-    } else {
+    } else if (!socket) {
       console.log("no hay socket");
+    } else if (!user || !user._id) {
+      console.log("no hay user");
     }
-  }, []);
+  }, [socket, user]);
 
   useEffect(() => {
     if (likeIt && finish && !finishAuditer && user && user._id && user.name) {
@@ -298,6 +306,7 @@ function App() {
     setUser(null);
     window.open("/auth/logout", "_self");
   };
+
   return (
     <div className='App'>
       <Router>
@@ -343,8 +352,10 @@ function App() {
               ) : (
                 <Register user={user} changeUserData={changeUserData} />
               )
-            ) : (
+            ) : needLogin ? (
               <Login setUser={setUser} user={user} />
+            ) : (
+              <Loading />
             )}
           </Route>
 
@@ -385,8 +396,10 @@ function App() {
               ) : (
                 <Register user={user} changeUserData={changeUserData} />
               )
-            ) : (
+            ) : needLogin ? (
               <Login setUser={setUser} user={user} />
+            ) : (
+              <Loading />
             )}
           </Route>
           <Route path='/'>
@@ -427,8 +440,10 @@ function App() {
               ) : (
                 <Register user={user} changeUserData={changeUserData} />
               )
-            ) : (
+            ) : needLogin ? (
               <Login setUser={setUser} user={user} />
+            ) : (
+              <Loading />
             )}
           </Route>
           <Route path='/random'>{/* landing page */}</Route>

@@ -107,20 +107,21 @@ const endConversation = (
 const wsUtils = () => {
   const wsu = {};
 
-  // setInterval(() => {
-  //   console.log("now ***** ", Date.now());
-  //   console.log("clients");
+  setInterval(() => {
+    console.log("now ***** ", Date.now());
+    console.log("clients");
 
-  //   console.log(
-  //     connections.map((c) => {
-  //       let cc = { ...c };
-  //       cc["client"] = "***";
-  //       return cc;
-  //     })
-  //   );
-  //   console.log("conversations");
-  //   console.log(conversations);
-  // }, 15000);
+    console.log(
+      connections.map((c) => {
+        // let cc = { ...c };
+        // cc["client"] = "***";
+        // cc["userInfo"] = "***";
+        return [c.socketId, c.dbId, c.active, c.state].join("   *-*   ");
+      })
+    );
+    console.log("conversations");
+    console.log(conversations);
+  }, 5000);
 
   wsu.notify = (userid, data) => {
     const conn = connections.find(

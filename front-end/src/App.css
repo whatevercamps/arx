@@ -721,3 +721,80 @@ label {
   font-family: "Avenir Next";
   border: none;
 }
+
+/* Loading Component Styles */
+
+.loader-container {
+  width: 100vw;
+  height: 100vh;
+  text-align: center;
+  overflow: hidden;
+  font-size: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader-container .container {
+  position: relative;
+  display: inline-block;
+  box-sizing: border-box;
+  padding: 30px;
+  width: 25%;
+  height: 140px;
+}
+
+.switchbox {
+  position: relative;
+  height: 80px;
+  -webkit-animation: spin 2s infinite linear;
+  animation: spin 2s infinite linear;
+}
+.switchbox .switch {
+  position: absolute;
+  top: 50%;
+  margin-top: -10px;
+  width: 20px;
+  height: 20px;
+  background: #16a085;
+  border-radius: 20px;
+  -webkit-animation: cross 2s infinite linear;
+  animation: cross 2s infinite linear;
+}
+.switchbox .switch:nth-of-type(2) {
+  -webkit-animation-delay: -1s;
+  animation-delay: -1s;
+}
+
+@-webkit-keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@-webkit-keyframes cross {
+  50% {
+    margin-left: 60px;
+  }
+}
+@keyframes cross {
+  50% {
+    margin-left: 60px;
+  }
+}
+
+/* Scroll hidder */
+* {
+  -ms-overflow-style: none;
+}
+
+*::-webkit-scrollbar {
+  display: none;
+}

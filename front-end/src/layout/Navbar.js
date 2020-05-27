@@ -13,7 +13,7 @@ const Navbar = (props) => {
       <div className='container'>
         <div className='row'>
           <div className='col-6 logo'>
-            <a href='/' aria-label='home'>
+            <Link to='/' aria-label='home'>
               <svg
                 id='arx-icon'
                 data-name='arx-icon'
@@ -52,11 +52,11 @@ const Navbar = (props) => {
                   d='M216,154.51a9.17,9.17,0,0,1-.33-2.14,30.37,30.37,0,0,0-11.93-19.81,34,34,0,0,0-18.15-6.94c-.17,0-.37.06-.49-.13h-6a7.74,7.74,0,0,1-2.14.31c-8.71,1-15.53,5.21-20.79,12.12a73,73,0,0,0-6.38,10.18c-.19.35-.38.7-.58,1.09a3,3,0,0,1-.62-.95A62.81,62.81,0,0,0,139.05,135a28.56,28.56,0,0,0-18.71-8.57,37.54,37.54,0,0,0-16.59,1.92c-11.1,4.22-18.3,11.94-20.9,23.69-.23,1-.31,2.11-.46,3.17,0,.14,0,.32-.15.4v4.68c.15,0,.13.16.13.26.55,8.1,3.15,15.58,6.82,22.74a123.94,123.94,0,0,0,15.15,22.28,317.45,317.45,0,0,0,24.89,26.2C136,238.26,143,244.62,149.94,251l.3.28c-.21.22-.5,0-.68.19h1.14c1.23-1.35,2.4-2.77,3.7-4,9.89-9.61,19.79-19.2,29.11-29.38a198.38,198.38,0,0,0,19.1-23.87,87.8,87.8,0,0,0,10.61-21,53.68,53.68,0,0,0,2.62-12.72c0-.17-.07-.37.14-.48Zm-63,52.8a8.23,8.23,0,0,1-11-6.08c-.44-2,.34-3.8.74-5.64,2.34-10.75,4.75-21.49,7.14-32.23a3.13,3.13,0,0,1,.28-.41c1.54,6.91,3,13.61,4.52,20.32,1.12,5.06,2.25,10.12,3.35,15.19A7.83,7.83,0,0,1,153,207.31Z'
                 />
               </svg>
-            </a>
+            </Link>
           </div>
 
           <div className='col-6 profile'>
-            <a aria-label='meet' href='/meet'>
+            <Link aria-label='meet' to='/meet'>
               <svg
                 id='meet-icon'
                 data-name='Capa 1'
@@ -75,10 +75,10 @@ const Navbar = (props) => {
                   transform='translate(-17.98 -29.11)'
                 />
               </svg>
-            </a>
-            <a
+            </Link>
+            <Link
               aria-label='meet'
-              href={
+              to={
                 props.conversations && props.conversations.length
                   ? "/"
                   : "/meet"
@@ -88,12 +88,12 @@ const Navbar = (props) => {
                 {" "}
                 <FontAwesomeIcon icon={faComments}></FontAwesomeIcon>
               </span>
-            </a>
-            <a aria-label='profile' href='/profile'>
+            </Link>
+            <Link aria-label='profile' to='/profile'>
               <span>
                 <FontAwesomeIcon icon={faUserCircle}></FontAwesomeIcon>
               </span>
-            </a>
+            </Link>
             {props.user ? (
               <a href='http://localhost:3001/auth/logout'>
                 <button id='logout'>Logout </button>
