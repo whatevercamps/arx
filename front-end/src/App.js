@@ -320,7 +320,11 @@ function App() {
             <Login setUser={setUser} user={user} />
           </Route>
           <Route path='/profile'>
-            <Profile user={user}></Profile>
+            {user ? (
+              <Profile user={user}></Profile>
+            ) : (
+              <Login setUser={setUser} user={user} />
+            )}
           </Route>
           <Route path='/signup'>
             <RegisterInit />
