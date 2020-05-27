@@ -107,20 +107,20 @@ const endConversation = (
 const wsUtils = () => {
   const wsu = {};
 
-  setInterval(() => {
-    console.log("now ***** ", Date.now());
-    console.log("clients");
+  // setInterval(() => {
+  //   console.log("now ***** ", Date.now());
+  //   console.log("clients");
 
-    console.log(
-      connections.map((c) => {
-        let cc = { ...c };
-        cc["client"] = "***";
-        return cc;
-      })
-    );
-    console.log("conversations");
-    console.log(conversations);
-  }, 5000);
+  //   console.log(
+  //     connections.map((c) => {
+  //       let cc = { ...c };
+  //       cc["client"] = "***";
+  //       return cc;
+  //     })
+  //   );
+  //   console.log("conversations");
+  //   console.log(conversations);
+  // }, 15000);
 
   wsu.notify = (userid, data) => {
     const conn = connections.find(
@@ -233,18 +233,18 @@ const wsUtils = () => {
                 !c.userInfo.unconnections.length ||
                 !c.userInfo.unconnections.includes(sender.dbId)) &&
               //que tenga el lookin for
-              sender.userInfo.lkfAgeMax >= c.age &&
-              sender.userInfo.lkfAgeMin <= c.age &&
-              sender.userInfo.lkfGender.includes(c.gender) &&
+              sender.userInfo.lkfAgeMax >= c.userInfo.age &&
+              sender.userInfo.lkfAgeMin <= c.userInfo.age &&
+              sender.userInfo.lkfGender.includes(c.userInfo.gender) &&
               // que yo sea parte de su lookin for
-              c.lkfAgeMax >= sender.userInfo.age &&
-              c.lkfAgeMin <= sender.userInfo.age &&
-              c.lkfGender.includes(sender.userInfo.gender)
+              c.userInfo.lkfAgeMax >= sender.userInfo.age &&
+              c.userInfo.lkfAgeMin <= sender.userInfo.age &&
+              c.userInfo.lkfGender.includes(sender.userInfo.gender)
             );
           });
 
-          console.debug("rec", receiver && receiver.socketId, "fin rec");
-          console.debug("sender", sender && sender.socketId, "fin sender");
+          console.debug("rec", receiver && receiver.userInfo, "fin rec");
+          console.debug("sender", sender && sender.userInfo, "fin sender");
 
           if (receiver && sender) {
             //le mando el mensaje a ese destinatario
@@ -254,6 +254,7 @@ const wsUtils = () => {
                 senderId: id,
                 receiverId: receiver.socketId,
                 message: jsonMessage.message,
+                senderName: sender.userInfo.name,
               })
             );
             receiver["state"] = 0;
@@ -300,7 +301,12 @@ const wsUtils = () => {
               likes: new Set([]),
               startTime: Date.now(),
             });
-            receiver.client.send(dataMessage);
+            receiver.client.send(
+              JSON.stringify({
+                ...jsonMessage,
+                senderName: sender.userInfo.name,
+              })
+            );
             receiver.state = 0;
           } else {
             console.log("the other user is gone");

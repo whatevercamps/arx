@@ -1,35 +1,42 @@
-const JwtStrategy = require("passport-jwt").Strategy;
-const ExtractJwt = require("passport-jwt").ExtractJwt;
-
 const FacebookStrategy = require("passport-facebook").Strategy;
+const LocalStrategy = require("passport-local").Strategy;
 
 const mu = require("./mongoUtils")();
+const bcrypt = require("bcryptjs");
 
 module.exports = function (passport) {
-  const cookieExtractor = function (req) {
-    var token = null;
-    if (req && req.cookies) {
-      token = req.cookies["jwt"];
-    }
-    console.log("token", token);
-    return token || ExtractJwt.fromAuthHeaderWithScheme("jwt");
-  };
-
-  let opts = {};
-  opts.jwtFromRequest = cookieExtractor;
-  opts.secretOrKey = process.env.COOKIE_SESSION_SECRET || "";
-
   passport.use(
-    new JwtStrategy(opts, (jwt_payload, done) => {
-      console.log("user from token in passport ", jwt_payload);
+    new LocalStrategy(function (username, password, done) {
+      console.log("hola");
+
       mu.connect()
-        .then((client) => mu.getUsers(client, jwt_payload._id))
-        .then((users) => {
-          if (users && users.length) {
-            return done(null, users[0]);
+        .then((client) => mu.getUsersByEmail(client, username))
+        .then((resp) => {
+          console.log("resp", resp);
+          if (resp && resp.length) {
+            const user = resp[0];
+            console.log("user", user);
+
+            bcrypt
+              .compare(password, user.password)
+              .then((isMatch) => {
+                console.log("res bycript", isMatch);
+
+                if (isMatch) {
+                  done(null, user);
+                } else {
+                  done(null, false);
+                }
+              })
+              .catch((err) => done(err));
           } else {
-            return done(null, false);
+            done(null, false);
           }
+        })
+        .catch((err) => {
+          console.log("eeror consulting db in login", err);
+
+          done(err);
         });
     })
   );
@@ -55,14 +62,14 @@ module.exports = function (passport) {
             )
             .then((resp) => {
               console.log("user founded in line 58", resp);
-              if (resp && resp.value && resp.value._id)
-                return cb(null, resp.value._id);
+              if (resp && resp.value) return cb(null, resp.value);
               else if (
                 resp &&
                 resp.lastErrorObject &&
                 resp.lastErrorObject.upserted
               )
                 return cb(null, resp.lastErrorObject.upserted);
+              //si akgo falla ese upserted
               else return cb(new Error("User not found"));
             })
             .catch((err) => {

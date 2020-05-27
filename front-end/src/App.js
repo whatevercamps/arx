@@ -19,7 +19,6 @@ const socket = new WebSocket(socketURL);
 
 function App() {
   const [user, setUser] = useState(null);
-  console.log("connecting socket from", socketURL);
 
   const [header, setHeader] = useState(
     "Welcome to Arx, start chatting and meeting new people!!!"
@@ -121,29 +120,7 @@ function App() {
           setUser(responseJson && responseJson.user);
         })
         .catch((error) => {
-          console.log("error ", error);
-          fetch("/auth/emailValidate", {
-            method: "GET",
-            credentials: "include",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-              "Access-Control-Allow-Credentials": true,
-            },
-          })
-            .then((res) => {
-              if (res.status && res.status === 200) return res.json();
-            })
-            .then((data) => {
-              if (data && data.success && data.user) {
-                setUser(data.user);
-              } else {
-                console.log("error validating data", data);
-              }
-            })
-            .catch((err) => {
-              console.log("err validating", err);
-            });
+          console.log("err validating", error);
         });
   }, []);
 
@@ -211,6 +188,7 @@ function App() {
             );
             let c = {
               betterHalf: data.senderId,
+              betterHalfName: data.senderName,
             };
             if (data.receiverId) c["mySocketId"] = data.receiverId;
             setChat(c);
@@ -225,6 +203,7 @@ function App() {
           const c = {
             betterHalf: data.senderId,
             mySocketId: data.receiverId,
+            betterHalfName: data.senderName,
           };
           setChat(c);
         } else if (data.state === 5) {
@@ -329,7 +308,7 @@ function App() {
         />
         <Switch>
           <Route path='/signin'>
-            <Login setUser={setUser} />
+            <Login setUser={setUser} user={user} />
           </Route>
           <Route path='/profile'>
             <Profile user={user}></Profile>
@@ -359,17 +338,13 @@ function App() {
                     onHeart={onHeart}
                     onCancel={onCancel}
                     user={user}
-                    conversations={conversations.conversations}
-                    currentChat={
-                      conversations.conversations[currentConversationIndex]
-                    }
                   />
                 )
               ) : (
                 <Register user={user} changeUserData={changeUserData} />
               )
             ) : (
-              <Login setUser={setUser} />
+              <Login setUser={setUser} user={user} />
             )}
           </Route>
 
@@ -405,18 +380,13 @@ function App() {
                     sendMessage={sendMessage}
                     onHeart={onHeart}
                     onCancel={onCancel}
-                    user={user}
-                    conversations={conversations.conversations}
-                    currentChat={
-                      conversations.conversations[currentConversationIndex]
-                    }
                   />
                 )
               ) : (
                 <Register user={user} changeUserData={changeUserData} />
               )
             ) : (
-              <Login setUser={setUser} />
+              <Login setUser={setUser} user={user} />
             )}
           </Route>
           <Route path='/'>
@@ -452,17 +422,13 @@ function App() {
                     onHeart={onHeart}
                     onCancel={onCancel}
                     user={user}
-                    conversations={conversations.conversations}
-                    currentChat={
-                      conversations.conversations[currentConversationIndex]
-                    }
                   />
                 )
               ) : (
                 <Register user={user} changeUserData={changeUserData} />
               )
             ) : (
-              <Login setUser={setUser} />
+              <Login setUser={setUser} user={user} />
             )}
           </Route>
           <Route path='/random'>{/* landing page */}</Route>

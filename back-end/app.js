@@ -48,11 +48,6 @@ app.use(
   })
 );
 
-app.use("/meet", indexRouter);
-app.use("/users", usersRouter);
-app.use("/conversations", connectionsRounter);
-app.use("/auth", authRouter);
-
 const authCheck = (req, res, next) => {
   console.log("authcheck", req.user);
   if (!req.user) {
@@ -64,6 +59,11 @@ const authCheck = (req, res, next) => {
     next();
   }
 };
+
+app.use("/meet", indexRouter);
+app.use("/users", authCheck, usersRouter);
+app.use("/conversations", connectionsRounter);
+app.use("/auth", authRouter);
 
 // if it's already login, send the profile response,
 // otherwise, send a 401 response that the user is not authenticated

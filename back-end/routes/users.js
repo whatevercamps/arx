@@ -15,13 +15,15 @@ router.post("/", function (req, res) {
   if (req.body.name) user["name"] = req.body.name;
   if (req.body.phone) user["phone"] = req.body.phone;
   if (req.body.email) user["email"] = req.body.email;
+  if (req.body.email) user["email"] = req.body.email;
   if (req.body.info) user["info"] = req.body.info;
   if (req.body.tastes) user["tastes"] = req.body.tastes;
   if (req.body.lookingFor) user["lookingFor"] = req.body.lookingFor;
+
   user["unconnections"] = [];
 
   mu.connect()
-    .then((client) => mu.createClient(client, user))
+    .then((client) => mu.createUser(client, user))
     .then((resp) => {
       res.status(200).json({
         success: true,
@@ -30,6 +32,7 @@ router.post("/", function (req, res) {
       });
     })
     .catch((err) => {
+      console.log("errororor creating user", err);
       return res.status(500).json({
         success: false,
         msg: "Failure creating user",
@@ -40,7 +43,7 @@ router.post("/", function (req, res) {
 
 router.post("/update", function (req, res) {
   let user = {};
-
+  console.log("a ver prro", req.user, req.isAuthenticated());
   if (req.body.name) user["name"] = req.body.name;
   if (req.body.phone) user["phone"] = req.body.phone;
   if (req.body.city) user["city"] = req.body.city;
@@ -55,7 +58,7 @@ router.post("/update", function (req, res) {
   console.log("user", user);
 
   mu.connect()
-    .then((client) => mu.updateUser(client, req.query.userid, user))
+    .then((client) => mu.updateUser(client, req.user._id, user))
     .then((resp) => {
       console.log("response", resp);
       if (resp)
@@ -83,8 +86,10 @@ router.post("/update", function (req, res) {
 });
 
 router.post("/addTastes", function (req, res) {
+  console.log("a ver prro", req.user, req.isAuthenticated());
+
   mu.connect()
-    .then((client) => mu.addTastes(client, req.query.userid, req.body.tastes))
+    .then((client) => mu.addTastes(client, req.user._id, req.body.tastes))
     .then((resp) => {
       res.status(200).json({
         success: true,

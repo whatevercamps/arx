@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserCircle,
@@ -79,9 +80,9 @@ const Navbar = (props) => {
               </span>
             </a>
             {props.user ? (
-              <button onClick={props.handleLogout} id='logout'>
-                Logout{" "}
-              </button>
+              <a href='http://localhost:3001/auth/logout'>
+                <button id='logout'>Logout </button>
+              </a>
             ) : (
               <></>
             )}

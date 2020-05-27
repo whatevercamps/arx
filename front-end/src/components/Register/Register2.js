@@ -6,22 +6,32 @@ import AgeRanger from "../AgeRanger";
 const Register2 = (props) => {
   const [ages, setAges] = useState([18, 90]);
 
-  const [gender, setGender] = useState([false, false]);
+  const [gender, setGender] = useState([]);
 
   const [genderError, setGenderError] = useState("");
 
   const validate = () => {
     let genderError = "";
 
-    if (gender[0] === false && gender[1] === false) {
+    if (gender.length === 0) {
       genderError = "Please select at least one option";
       setGenderError(genderError);
     }
   };
 
+  const addOrRemoveGender = (g) => {
+    let gg = [...gender];
+    if (gg.includes(g)) {
+      gg = gg.filter((gi) => g !== gi);
+    } else {
+      gg.push(g);
+    }
+    setGender(gg);
+  };
+
   const endSecondStep = (evt) => {
     evt.preventDefault();
-    if (gender && (gender[0] || gender[1])) {
+    if (gender.length > 0) {
       const payload = {
         lkfAgeMin: ages[0],
         lkfAgeMax: ages[1],
@@ -71,7 +81,7 @@ const Register2 = (props) => {
               <label>Looking for</label>
               <div class='custom-control custom-checkbox custom-control-inline'>
                 <input
-                  onChange={() => setGender([!gender[0], gender[1]])}
+                  onChange={() => addOrRemoveGender("Female")}
                   type='checkbox'
                   id='customCheckInline1'
                   name='customCheckInline1'
@@ -83,7 +93,7 @@ const Register2 = (props) => {
               </div>
               <div class='custom-control custom-checkbox custom-control-inline'>
                 <input
-                  onChange={() => setGender([gender[0], !gender[1]])}
+                  onChange={() => addOrRemoveGender("Male")}
                   type='checkbox'
                   id='customCheckInline2'
                   name='customCheckInline2'
@@ -91,6 +101,19 @@ const Register2 = (props) => {
                 />
                 <label class='custom-control-label' for='customCheckInline2'>
                   Men{" "}
+                </label>
+              </div>
+
+              <div class='custom-control custom-checkbox custom-control-inline'>
+                <input
+                  onChange={() => addOrRemoveGender("Non Binary")}
+                  type='checkbox'
+                  id='customCheckInline3'
+                  name='customCheckInline3'
+                  class='custom-control-input'
+                />
+                <label class='custom-control-label' for='customCheckInline3'>
+                  Non Binary{" "}
                 </label>
               </div>
             </div>

@@ -51,11 +51,10 @@ const Chat = (props) => {
           <div className='chat'>
             <div className='row chat-header'>
               <div className='col-8'>
-                {props.user.name === props.conversations[0].user1name ? (
-                  <h2>{props.conversations[0].user2name.split(" ")[0]}</h2>
-                ) : (
-                  <h2>{props.conversations[0].user1name.split(" ")[0]}</h2>
-                )}
+                <h3>
+                  {props.chat.betterHalfName &&
+                    props.chat.betterHalfName.split(" ")[0]}
+                </h3>
               </div>
               <div className='row col-4 time'>
                 <div className='col-7'>

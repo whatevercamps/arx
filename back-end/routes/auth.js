@@ -9,24 +9,13 @@ const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
 const mu = require("../utils/mongoUtils")();
 
 router.get("/login/success", (req, res) => {
-  console.log("success? ", req.user);
+  console.log("success? ", req.user, req.isAuthenticated());
   if (req.user) {
-    mu.connect()
-      .then((client) => mu.getUsers(client, req.user))
-      .then((resp) => {
-        console.log("success!*** ", resp);
-        if (resp && resp.length)
-          res.json({
-            success: true,
-            message: "user has successfully authenticated",
-            user: resp[0],
-            cookies: req.cookies,
-          });
-        else throw new Error("no user found");
-      })
-      .catch((err) => {
-        throw new Error("server error", err);
-      });
+    res.json({
+      success: true,
+      message: "user has successfully authenticated",
+      user: req.user,
+    });
   } else {
     res.status(401).json({
       success: false,
@@ -47,6 +36,27 @@ router.get("/logout", (req, res) => {
 
   req.logout();
   res.redirect(CLIENT_HOME_PAGE_URL);
+});
+router.post("/local/login", passport.authenticate("local"), function (
+  req,
+  res
+) {
+  console.log("user in login route", req.user);
+
+  if (req.user) {
+    res.json({ success: true, user: req.user });
+  } else {
+    res.status(401).json({ success: false });
+  }
+});
+
+router.get("/local/login", (req, res, next) => {
+  const form =
+    '<h1>Login Page</h1><form method="POST" action="/auth/login">\
+  Enter Username:<br><input type="text" name="username">\
+  <br>Enter Password:<br><input type="password" name="password">\
+  <br><br><input type="submit" value="Submit"></form>';
+  res.send(form);
 });
 
 router.post("/createUserWithEmail", (req, res) => {
@@ -116,7 +126,7 @@ router.post("/getTokenWithEmail", (req, res) => {
                 msg: "Your token expires in 1 hour",
                 token: token,
               });
-            res.cookie("jwt", token, { httpOnly: true, secure: false });
+            res.cookie("session", token, { httpOnly: true, secure: false });
             return res.status(200).json({ success: true });
           } else {
             return res.json({

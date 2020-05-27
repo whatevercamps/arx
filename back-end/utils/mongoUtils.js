@@ -39,6 +39,7 @@ const MongoUtils = () => {
         throw e; //
       })
       .finally(() => {
+        console.log("finalizing get user by email");
         client.close();
       });
   };
@@ -81,7 +82,7 @@ const MongoUtils = () => {
 
   mu.createUser = (client, user) => {
     return handler(client)
-      .insert(user)
+      .updateOne(user, { $setOnInsert: user }, { upsert: true })
       .catch(function (e) {
         throw e; //
       })

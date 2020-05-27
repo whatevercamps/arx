@@ -1,12 +1,11 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router";
 import "./Login.css";
 import "./Utils.css";
 
 export default function Login(props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const history = useHistory();
   const [emptyError, setEmptyError] = useState("");
   const [emailError, setEmailError] = useState("");
   const [passwordLengthError, setPasswordLError] = useState("");
@@ -14,7 +13,9 @@ export default function Login(props) {
   const [upperError, setUpperError] = useState("");
   const [lowerError, setLowerError] = useState("");
 
-  const validate = () => {
+  const [emailOrPasswordWrong, setEmailOrPasswordWrong] = useState("");
+
+  const validate = (email, password) => {
     let emptyError = "";
     let emailError = "";
     let passwordLError = "";
@@ -22,44 +23,63 @@ export default function Login(props) {
     let upperError = "";
     let lowerError = "";
 
-    if (!email || !password) {
+    if (
+      (email !== false && !email.length) ||
+      (password !== false && !password.length)
+    ) {
       emptyError = "Empty fields, please complete";
       setEmptyError(emptyError);
+    } else {
+      setEmptyError("");
     }
-    if (!email || !email.includes("@")) {
+    if (
+      email &&
+      !email.match(
+        /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9]))\.){3}(?:(2(5[0-5]|[0-4][0-9])|1[0-9][0-9]|[1-9]?[0-9])|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/
+      )
+    ) {
       emailError = "Please type a valid email";
       setEmailError(emailError);
+    } else {
+      setEmailError("");
     }
-    if (!password || !password.match(/^.{8,}$/)) {
+    if (password && !password.match(/^.{8,}$/)) {
       passwordLError = "Password must be al least 8 characters";
       setPasswordLError(passwordLError);
+    } else {
+      setPasswordLError("");
     }
-    if (!password || !password.match(/(.*\d.*)/)) {
+    if (password && !password.match(/(.*\d.*)/)) {
       digitError = "Password must contain at least one digit";
       setDigitError(digitError);
+    } else {
+      setDigitError("");
     }
-    if (!password || !password.match(/(.*[a-z].*)/)) {
-      upperError = "Password must contain at least one uppercase";
+    if (password && !password.match(/(.*[a-z].*)/)) {
+      upperError = "Password must contain at least one lowercase";
       setUpperError(upperError);
+    } else {
+      setUpperError("");
     }
-    if (!password || !password.match(/(.*[A-Z].*)/)) {
-      lowerError = "Password must contain at least one lowercase";
+    if (password && !password.match(/(.*[A-Z].*)/)) {
+      lowerError = "Password must contain at least one uppercase";
       setLowerError(lowerError);
+    } else {
+      setLowerError("");
     }
   };
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-    if (email && email.trim() != "" && password.trim().length > 8) {
+    if (email && email.trim() != "" && password.trim().length >= 8) {
       const payload = {
-        email: email,
+        username: email,
         password: password,
       };
       console.log("registrando", payload);
 
-      fetch("/auth/getTokenWithEmail", {
+      fetch("/auth/local/login", {
         method: "POST",
-        credentials: "include",
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
@@ -68,43 +88,26 @@ export default function Login(props) {
         body: JSON.stringify(payload),
       })
         .then((res) => {
-          if (res.status && res.status === 200) return res.json();
+          if (res.status && res.status === 200) {
+            return res.json();
+          } else {
+            setEmailOrPasswordWrong("Email or passord wrong");
+            throw new Error("Email or passord wrong");
+          }
         })
         .then((data) => {
-          if (data && data.success) {
-            fetch("/auth/emailValidate", {
-              method: "GET",
-              credentials: "include",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-                "Access-Control-Allow-Credentials": true,
-              },
-            })
-              .then((res) => {
-                if (res.status && res.status === 200) return res.json();
-              })
-              .then((data) => {
-                if (data && data.success && data.user) {
-                  props.setUser(data.user);
-                  window.location("/");
-                } else {
-                  console.log("error validating data", data);
-                }
-              })
-              .catch((err) => {
-                console.log("err validating", err);
-              });
-          } else console.log("error", data);
+          console.log("data login", data);
+
+          if (data.success) props.setUser(data.user);
         })
         .catch((err) => {
           console.log("errrror", err);
         });
     }
-    validate();
+    validate(email, password);
   };
 
-  return (
+  return !props.user ? (
     <div className='Login'>
       <div className='container-login100'>
         {" "}
@@ -121,7 +124,10 @@ export default function Login(props) {
               <input
                 className='input100'
                 name='username'
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  validate(e.target.value, false);
+                }}
                 placeholder='email'
               />{" "}
               <span className='focus-input100'></span>{" "}
@@ -135,7 +141,10 @@ export default function Login(props) {
               <input
                 className='input100'
                 type='password'
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validate(false, e.target.value);
+                }}
                 name='pass'
                 placeholder='password'
               />{" "}
@@ -153,6 +162,7 @@ export default function Login(props) {
                 Sign In{" "}
               </button>{" "}
             </div>{" "}
+            <p>{emailOrPasswordWrong}</p>
             <div className='text-center p-t-20 p-b-10'>
               {" "}
               <span className='txt1'> Or login with </span>{" "}
@@ -189,5 +199,7 @@ export default function Login(props) {
         </div>{" "}
       </div>
     </div>
+  ) : (
+    <Redirect to='/' />
   );
 }
