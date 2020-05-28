@@ -95,7 +95,7 @@ const Navbar = (props) => {
               </span>
             </Link>
             {props.user ? (
-              <a href='http://localhost:3001/auth/logout'>
+              <a href='https://arx-speeddating-app.herokuapp.com/auth/logout'>
                 <button id='logout'>Logout </button>
               </a>
             ) : (

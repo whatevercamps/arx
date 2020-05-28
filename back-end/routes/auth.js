@@ -4,7 +4,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const CLIENT_HOME_PAGE_URL = "http://localhost:3000";
+const CLIENT_HOME_PAGE_URL = "/"; //jkasdjkadkjakjdkjakjda
 /* GET home page. */
 const mu = require("../utils/mongoUtils")();
 
@@ -35,7 +35,7 @@ router.get("/logout", (req, res) => {
   console.log("logout intent");
 
   req.logout();
-  res.redirect(CLIENT_HOME_PAGE_URL);
+  res.redirect(CLIENT_HOME_PAGE_URL); //jkasdjkadkjakjdkjakjda
 });
 router.post("/local/login", passport.authenticate("local"), function (
   req,
@@ -187,12 +187,12 @@ router.get(
   "/facebook/callback",
   passport.authenticate("facebook", {
     failureRedirect: "/signin",
-    successRedirect: CLIENT_HOME_PAGE_URL,
+    successRedirect: CLIENT_HOME_PAGE_URL, //jkasdjkadkjakjdkjakjda
   }),
   function (req, res) {
     console.log("profile after auth", req.user);
     // Successful authentication, redirect home.
-    res.redirect("/");
+    res.redirect("/"); //jkasdjkadkjakjdkjakjda
   }
 );
 

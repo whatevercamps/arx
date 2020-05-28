@@ -2,6 +2,7 @@ import React, { useRef, useState } from "react";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
 import "./App.css";
+import ParticlesWrapper from "./components/Particles/ParticlesWrapper";
 
 const Home = (props) => {
   const [message, setMessage] = useState("");
@@ -14,6 +15,7 @@ const Home = (props) => {
 
   return (
     <div className='Home'>
+      {props.usersData && <ParticlesWrapper usersData={props.usersData} />}
       <main className='send-message'>
         <div>
           <h1 id='home-title'>
@@ -22,6 +24,7 @@ const Home = (props) => {
           </h1>
           <form onSubmit={onMessageSent}>
             <input
+              placeholder='type something'
               type='text'
               value={message}
               onChange={(evt) => {

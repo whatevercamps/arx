@@ -35,6 +35,11 @@ function App() {
   const [socket, setSocket] = useState(null);
 
   const [currentConversationIndex, setCurrentConversationIndex] = useState(0);
+
+  const [waitingMessage, setWaitingMessage] = useState(null);
+
+  const [usersData, setUsersData] = useState([]);
+
   const initialState = {
     conversations: [],
   };
@@ -212,6 +217,18 @@ function App() {
             betterHalfName: data.senderName,
           };
           setChat(c);
+        } else if (data.state === 3) {
+          if (data.data) {
+            console.log("me llego nueva usersData", data.data);
+            setUsersData(data.data);
+          } else {
+            console.log("me llego solo estado 3", data);
+          }
+        } else if (data.state === 4) {
+          if (waitingMessage) {
+            sendMessage(waitingMessage);
+            setWaitingMessage(null);
+          }
         } else if (data.state === 5) {
           if (data.timeLeft === "its_gone") {
             setMessages([]);
@@ -297,8 +314,13 @@ function App() {
         )
       );
       console.log("mesg mandado", JSON.stringify(payload));
+    } else if (user && user._id) {
+      console.log("socket not found creating socket");
+      setWaitingMessage(msg);
+      setSocket(new WebSocket(socketURL));
     } else {
-      console.log("socket not found ");
+      setWaitingMessage(msg);
+      console.log("socket and user not found");
     }
   };
 
@@ -338,7 +360,11 @@ function App() {
               user.lkfAgeMax &&
               user.lkfGender ? (
                 !chat ? (
-                  <Home header={header} initChatIntent={sendMessage} />
+                  <Home
+                    header={header}
+                    initChatIntent={sendMessage}
+                    usersData={usersData}
+                  />
                 ) : (
                   <Chat
                     timeLeft={timeLeft}
@@ -383,7 +409,11 @@ function App() {
                     currentConversationMessages={currentConversationMessages}
                   />
                 ) : !chat ? (
-                  <Home header={header} initChatIntent={sendMessage} />
+                  <Home
+                    header={header}
+                    initChatIntent={sendMessage}
+                    usersData={usersData}
+                  />
                 ) : (
                   <Chat
                     timeLeft={timeLeft}
@@ -426,7 +456,11 @@ function App() {
                     currentConversationMessages={currentConversationMessages}
                   />
                 ) : !chat ? (
-                  <Home header={header} initChatIntent={sendMessage} />
+                  <Home
+                    header={header}
+                    initChatIntent={sendMessage}
+                    usersData={usersData}
+                  />
                 ) : (
                   <Chat
                     timeLeft={timeLeft}

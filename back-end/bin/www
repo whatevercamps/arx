@@ -12,6 +12,9 @@ const wsu = require("../utils/wsUtils");
 const mu = require("../utils/mongoUtils")();
 
 mu.connect().then((client) => mu.listenForChanges(client, wsu.notifyAll));
+mu.connect().then((client) =>
+  mu.listenForUserUpdates(client, wsu.updateUserInConnections)
+);
 /**
  * Get port from environment and store in Express.
  */

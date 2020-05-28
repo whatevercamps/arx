@@ -798,3 +798,17 @@ label {
 *::-webkit-scrollbar {
   display: none;
 }
+
+.ParticlesWrapper {
+  position: absolute;
+  top: 0;
+  z-index: -100;
+}
+
+.ParticlesWrapper * {
+  z-index: -100;
+}
+
+.ParticlesWrapper canvas {
+  z-index: -100;
+}

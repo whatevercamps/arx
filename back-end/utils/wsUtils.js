@@ -4,7 +4,7 @@ const mu = require("./mongoUtils")();
 let connections = [];
 let conversations = [];
 
-const MAX_TIME = 20 * 60 * 1000;
+const MAX_TIME = 90 * 1000;
 
 const endConversation = (
   user1id,
@@ -119,9 +119,9 @@ const wsUtils = () => {
         return [c.socketId, c.dbId, c.active, c.state].join("   *-*   ");
       })
     );
-    console.log("conversations");
-    console.log(conversations);
-  }, 5000);
+    // console.log("conversations");
+    // console.log(conversations);
+  }, 2000);
 
   wsu.notify = (userid, data) => {
     const conn = connections.find(
@@ -131,6 +131,30 @@ const wsUtils = () => {
 
     if (conn) conn.client.send(JSON.stringify({ state: 6, data: data }));
     else console.log("no se pudo notificar", userid);
+  };
+
+  wsu.updateUserInConnections = (userData) => {
+    console.log("change user in ws", userData);
+    if (userData.fullDocument) {
+      const user = userData.fullDocument;
+
+      console.log("user a meter", user);
+
+      let conn = connections.find((c) => {
+        console.log(
+          "conn id y userid",
+          c.dbId.toString(),
+          user._id.toString(),
+          c.dbId.toString() == user._id.toString()
+        );
+        return c.dbId.toString() == user._id.toString();
+      });
+
+      if (conn) {
+        console.log("cambiando connection");
+        conn.userInfo = user;
+      }
+    }
   };
 
   wsu.notifyAll = (users_ids, data) => {
@@ -159,7 +183,7 @@ const wsUtils = () => {
 
       ws.on("pong", function heartbeat() {
         const conn = connections.find((c) => c.socketId === id);
-        if (conn) conn["active"] = true;
+        if (conn) conn["time_inactive"] = 0;
 
         const conversation = conversations.find(
           (c) => c.user1 === id || c.user2 === id
@@ -167,7 +191,7 @@ const wsUtils = () => {
 
         if (conversation) {
           let millsLeft = Math.max(
-            -5000,
+            -15000,
             conversation.startTime + MAX_TIME - Date.now()
           );
           const payload = {
@@ -184,7 +208,7 @@ const wsUtils = () => {
             if (conversation.likes.size >= 2) {
               console.log("termina con Match: ", millsLeft);
               endConversation(id, killedId, conversation, false);
-            } else if (millsLeft <= -5000) {
+            } else if (millsLeft <= -15000) {
               console.log("termina forzado: ", millsLeft);
               endConversation(id, killedId, false, conversation);
             }
@@ -196,7 +220,31 @@ const wsUtils = () => {
 
       setInterval(() => {
         const conn = connections.find((c) => c.socketId === id);
-        if (conn) conn["active"] = false;
+        if (conn) {
+          conn["time_inactive"] += 1;
+          if (conn["time_inactive"] >= 10) {
+            conn["active"] = false;
+            console.log("**** eliminando por inactividad", conn.dbId);
+
+            //avisa los usuarios eliminados
+            connections
+              .filter((c) => c.active === true && c.state === 1)
+              .forEach((c) => {
+                c.client.send(
+                  JSON.stringify({
+                    state: 3,
+                    data: {
+                      noUser: conn.dbId,
+                    },
+                  })
+                );
+              });
+
+            connections = connections.filter(
+              (c) => c.socketId !== conn.socketId
+            );
+          }
+        }
         ws.ping(() => {});
       }, 1000);
 
@@ -329,10 +377,54 @@ const wsUtils = () => {
                   socketId: id,
                   client: ws,
                   state: 1,
+                  time_inactive: 0,
                   active: true,
                   dbId: jsonMessage.message,
                   userInfo: resp[0],
                 });
+
+                ws.send(
+                  JSON.stringify({
+                    state: 4,
+                    confirm: true,
+                  })
+                );
+
+                let uss = {};
+
+                connections.forEach((c) => {
+                  if (c.userInfo) {
+                    uss[c.dbId] = {
+                      id: c.dbId,
+                      name:
+                        (c.userInfo.name || "someone").split(" ")[0] +
+                        " is online",
+                    };
+                  }
+                });
+
+                let users = [];
+
+                for (const val in uss) {
+                  users.push(uss[val]);
+                }
+
+                console.log("users", users);
+
+                connections
+                  .filter((c) => c.active === true && c.state === 1)
+                  .forEach((c) => {
+                    c.client.send(
+                      JSON.stringify({
+                        state: 3,
+                        data: {
+                          users: [...users],
+                          distanceFactor: 150,
+                        },
+                      })
+                    );
+                  });
+
                 console.log(
                   "on push",
                   connections.map((c) => {

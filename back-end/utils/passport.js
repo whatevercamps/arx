@@ -41,12 +41,14 @@ module.exports = function (passport) {
     })
   );
 
+  //hola
   passport.use(
     new FacebookStrategy(
       {
         clientID: process.env.FACEBOOK_APP_ID,
         clientSecret: process.env.FACEBOOK_APP_SECRET,
-        callbackURL: "http://localhost:3001/auth/facebook/callback",
+        callbackURL:
+          "https://arx-speeddating-app.herokuapp.com/auth/facebook/callback", //jkasdjkadkjakjdkjakjda
         profileFields: ["id", "displayName", "email"],
       },
       function (accessToken, refreshToken, profile, cb) {

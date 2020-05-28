@@ -59,7 +59,7 @@ const MatchChat = (props) => {
                   )}
                 </div>
                 <div className='col-1 current-header more-ops'>
-                  <button id='more'>
+                  <button disabled id='more'>
                     <FontAwesomeIcon icon={faEllipsisH}></FontAwesomeIcon>
                   </button>
                 </div>

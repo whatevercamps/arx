@@ -67,6 +67,7 @@ const MongoUtils = () => {
           $setOnInsert: doc || query,
         },
         {
+          returnOriginal: false,
           upsert: true, // insert the document if it does not exist
           new: true, // return new doc if one is upserted
         }
@@ -151,6 +152,18 @@ const MongoUtils = () => {
       .finally(() => {
         client.close();
       });
+  };
+
+  mu.listenForUserUpdates = (client, callback) => {
+    console.log("listening for changes in users collection");
+
+    const cursor = handler(client).watch({ fullDocument: "updateLookup" });
+
+    cursor.on("change", (user) => {
+      console.log("change user", user);
+
+      callback(user);
+    });
   };
 
   //

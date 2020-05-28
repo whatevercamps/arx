@@ -20,8 +20,7 @@ const Chat = (props) => {
   const [message, setMessage] = useState("");
   const onMessageSent = (evt) => {
     evt.preventDefault();
-
-    props.sendMessage(message);
+    if (message.trim().length > 0) props.sendMessage(message);
     setMessage("");
   };
 
@@ -104,7 +103,7 @@ const Chat = (props) => {
               </li>
               <li>
                 {" "}
-                <button onClick={onCancel}>
+                <button disabled>
                   <FontAwesomeIcon icon={faStar} id='star'></FontAwesomeIcon>
                 </button>
               </li>

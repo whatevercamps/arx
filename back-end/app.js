@@ -10,7 +10,7 @@ const passport = require("passport");
 
 const passportMiddleware = require("./utils/passport");
 
-var indexRouter = require("./routes/index");
+// var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var authRouter = require("./routes/auth");
 var connectionsRounter = require("./routes/connections");
@@ -32,7 +32,7 @@ app.use(
 );
 
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "build")));
 
 app.use(passport.initialize());
 app.use(passport.session());
@@ -42,7 +42,7 @@ app.set("superSecret", process.env.SECRET || "youreismysecretbaby");
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // allow to server to accept request from different origin
+    origin: "https://arx-speeddating-app.herokuapp.com/", // allow to server to accept request from different origin
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true, // allow session cookie from browser to pass through
   })
@@ -60,10 +60,21 @@ const authCheck = (req, res, next) => {
   }
 };
 
-app.use("/meet", indexRouter);
+// app.use("/meet", indexRouter);
 app.use("/users", authCheck, usersRouter);
 app.use("/conversations", connectionsRounter);
 app.use("/auth", authRouter);
+
+app.get("/ping", (req, res) => {
+  res.status(200).json({
+    authenticated: true,
+    message: "hellow from arx",
+  });
+});
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname + "/build/index.html"));
+});
 
 // if it's already login, send the profile response,
 // otherwise, send a 401 response that the user is not authenticated

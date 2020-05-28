@@ -41,7 +41,7 @@ router.post("/", function (req, res) {
     });
 });
 
-router.post("/update", function (req, res) {
+router.post("/update", function (req, res, next) {
   let user = {};
   console.log("a ver prro", req.user, req.isAuthenticated());
   if (req.body.name) user["name"] = req.body.name;
@@ -61,13 +61,21 @@ router.post("/update", function (req, res) {
     .then((client) => mu.updateUser(client, req.user._id, user))
     .then((resp) => {
       console.log("response", resp);
-      if (resp)
+      if (resp) {
+        if (resp.value) {
+          req.login(resp.value, function (err) {
+            if (err) {
+              return next(err);
+            }
+          });
+        }
         res.status(200).json({
           success: true,
           msg: "User updated successfully",
           data: resp,
         });
-      else
+        res.end();
+      } else
         res.status(200).json({
           success: false,
           msg: "User not updated",
