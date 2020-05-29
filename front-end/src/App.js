@@ -81,6 +81,7 @@ function App() {
   };
 
   useEffect(() => {
+    // se deben evitar los console.log en el client side
     console.log(
       "cambiooooo",
       conversations,
@@ -134,6 +135,7 @@ function App() {
   }, []);
 
   useEffect(() => {
+    // se deben evitar los console.log en el client side
     console.log("cambio user", user);
     if (user && user._id && user.name) {
       if (!socket) setSocket(new WebSocket(socketURL));
@@ -169,7 +171,8 @@ function App() {
   useEffect(() => {
     if (socket && user && user._id) {
       socket.onopen = () => {
-        socket.send(JSON.stringify({ state: 4, message: user._id }));
+        socket.send(JSON.stringify({ state: 4, message: user._id }));        
+    // se deben evitar los console.log en el client side
         console.log("holu socket conectado");
         socket.onerror = function (event) {
           console.error("WebSocket error observed", event);
@@ -204,12 +207,15 @@ function App() {
             if (data.receiverId) c["mySocketId"] = data.receiverId;
             setChat(c);
           } else {
+    // se deben evitar los console.log en el client side
             console.log("socket not found ");
           }
-        } else if (data.state === 1) {
+        } else if (data.state === 1) {          
+    // se deben evitar los console.log en el client side
           console.log("mesg 1", inMsg);
           setHeader(data.message);
         } else if (data.state === 2) {
+    // se deben evitar los console.log en el client side
           console.log("mesg 2", inMsg);
           const c = {
             betterHalf: data.senderId,
@@ -219,9 +225,11 @@ function App() {
           setChat(c);
         } else if (data.state === 3) {
           if (data.data) {
+    // se deben evitar los console.log en el client side
             console.log("me llego nueva usersData", data.data);
             setUsersData(data.data);
           } else {
+    // se deben evitar los console.log en el client side
             console.log("me llego solo estado 3", data);
           }
         } else if (data.state === 4) {
@@ -313,6 +321,7 @@ function App() {
           [...new Set(d)]
         )
       );
+    // se deben evitar los console.log en el client side
       console.log("mesg mandado", JSON.stringify(payload));
     } else if (user && user._id) {
       console.log("socket not found creating socket");
