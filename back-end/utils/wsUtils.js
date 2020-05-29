@@ -1,3 +1,4 @@
+//me parece que esta muy bien estructurado el socket, tal vez les serviria saber que el server socket guarda las conexiones automaticamente y no las replica
 const WebSocket = require("ws");
 const mu = require("./mongoUtils")();
 
