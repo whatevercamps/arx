@@ -1,3 +1,4 @@
+//En la serializacion del usuario estan dejando la contraseña, asi este encriptada no es una buena practica
 const FacebookStrategy = require("passport-facebook").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 
