@@ -1,3 +1,4 @@
+//Hay parted del codigo que segun la estrucutra dada en la clase deberian ir en utils, de resto el codigo es muy limpio, solo falta documentar.
 "use strict";
 
 let express = require("express");
