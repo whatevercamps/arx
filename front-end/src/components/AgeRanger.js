@@ -1,3 +1,5 @@
+// A nivel general el codigo de los componentes del front esta muy bien organizado , identado y limpio, no se encuentra codigo basura 
+// y hacen muy buen uso de los hooks de react.
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Range, getTrackBackground } from "react-range";
