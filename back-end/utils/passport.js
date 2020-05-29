@@ -1,3 +1,4 @@
+//Buena implementacion de las estrategias de passport, la unica recomendacion es documentar el codigo.
 const FacebookStrategy = require("passport-facebook").Strategy;
 const LocalStrategy = require("passport-local").Strategy;
 
