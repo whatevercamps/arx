@@ -4,7 +4,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 
-const CLIENT_HOME_PAGE_URL = "/"; //jkasdjkadkjakjdkjakjda
+const CLIENT_HOME_PAGE_URL = "/"; //jkasdjkadkjakjdkjakjda este comentario es inecesario jaja
 /* GET home page. */
 const mu = require("../utils/mongoUtils")();
 
@@ -35,7 +35,7 @@ router.get("/logout", (req, res) => {
   console.log("logout intent");
 
   req.logout();
-  res.redirect(CLIENT_HOME_PAGE_URL); //jkasdjkadkjakjdkjakjda
+  res.redirect(CLIENT_HOME_PAGE_URL); //jkasdjkadkjakjdkjakjda en serio para que son
 });
 router.post("/local/login", passport.authenticate("local"), function (
   req,
