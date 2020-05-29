@@ -1,3 +1,4 @@
+// La estructura del codigo esta muy bien, adicionalmente usan adecuadamente las variables de entorno. La unica recomendacion es la docuemntacion del codigo.
 "use strict";
 
 const MongoClient = require("mongodb").MongoClient;
