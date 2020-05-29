@@ -1,3 +1,4 @@
+//hace falta el proptypes
 import React, { useRef, useState } from "react";
 import Navbar from "./layout/Navbar";
 import Footer from "./layout/Footer";
