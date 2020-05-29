@@ -1,3 +1,5 @@
+Esta muy bien desarrollado el readme cuenta con los elementos necesarios para que otra persona puede entender y correr el proyecto
+
 # Arx ❤️
 
 ![ArxDemoGif](https://i.imgur.com/c4LvXPI.gif)
