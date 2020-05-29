@@ -1,3 +1,4 @@
+//Se podria modularizar un poco mas las funciones de la base de datos para que sea mas manejable el codigo, probablemente un modulo por coleccion
 "use strict";
 
 const MongoClient = require("mongodb").MongoClient;
